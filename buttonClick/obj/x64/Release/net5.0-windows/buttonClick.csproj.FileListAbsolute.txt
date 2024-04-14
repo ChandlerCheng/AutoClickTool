@@ -1,0 +1,17 @@
+C:\Users\Chandler\source\repos\buttonClick\buttonClick\bin\x64\Release\net5.0-windows\buttonClick.exe
+C:\Users\Chandler\source\repos\buttonClick\buttonClick\bin\x64\Release\net5.0-windows\buttonClick.deps.json
+C:\Users\Chandler\source\repos\buttonClick\buttonClick\bin\x64\Release\net5.0-windows\buttonClick.runtimeconfig.json
+C:\Users\Chandler\source\repos\buttonClick\buttonClick\bin\x64\Release\net5.0-windows\buttonClick.runtimeconfig.dev.json
+C:\Users\Chandler\source\repos\buttonClick\buttonClick\bin\x64\Release\net5.0-windows\buttonClick.dll
+C:\Users\Chandler\source\repos\buttonClick\buttonClick\bin\x64\Release\net5.0-windows\ref\buttonClick.dll
+C:\Users\Chandler\source\repos\buttonClick\buttonClick\bin\x64\Release\net5.0-windows\buttonClick.pdb
+C:\Users\Chandler\source\repos\buttonClick\buttonClick\obj\x64\Release\net5.0-windows\buttonClick.csproj.GenerateResource.cache
+C:\Users\Chandler\source\repos\buttonClick\buttonClick\obj\x64\Release\net5.0-windows\buttonClick.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Chandler\source\repos\buttonClick\buttonClick\obj\x64\Release\net5.0-windows\buttonClick.AssemblyInfoInputs.cache
+C:\Users\Chandler\source\repos\buttonClick\buttonClick\obj\x64\Release\net5.0-windows\buttonClick.AssemblyInfo.cs
+C:\Users\Chandler\source\repos\buttonClick\buttonClick\obj\x64\Release\net5.0-windows\buttonClick.csproj.CoreCompileInputs.cache
+C:\Users\Chandler\source\repos\buttonClick\buttonClick\obj\x64\Release\net5.0-windows\buttonClick.dll
+C:\Users\Chandler\source\repos\buttonClick\buttonClick\obj\x64\Release\net5.0-windows\ref\buttonClick.dll
+C:\Users\Chandler\source\repos\buttonClick\buttonClick\obj\x64\Release\net5.0-windows\buttonClick.pdb
+C:\Users\Chandler\source\repos\buttonClick\buttonClick\obj\x64\Release\net5.0-windows\buttonClick.genruntimeconfig.cache
+C:\Users\Chandler\source\repos\buttonClick\buttonClick\obj\x64\Release\net5.0-windows\buttonClick.KeyboardSimulator.resources
