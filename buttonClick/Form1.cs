@@ -10,42 +10,6 @@ using System.Threading;
 
 namespace buttonClick
 {
-    public class KeyboardSimulator
-    {
-        /*
-            SendKeys.Send("{F5}");
-            SendKeys.SendWait("{F5}");
-            原先使用的兩種方法 , 會導致它的執行與 UI 執行緒之間的競爭條件。
-         */
-        // 匯入 user32.dll 中的 keybd_event 函數
-        [DllImport("user32.dll")]
-        private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
-
-        // 定義按鍵事件的標誌
-        private const int KEYEVENTF_EXTENDEDKEY = 0x0001;
-        private const int KEYEVENTF_KEYUP = 0x0002;
-
-        // 模擬按下按鍵
-        public static void KeyDown(byte keyCode)
-        {
-            keybd_event(keyCode, 0, KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
-        }
-
-        // 模擬釋放按鍵
-        public static void KeyUp(byte keyCode)
-        {
-            keybd_event(keyCode, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, UIntPtr.Zero);
-        }
-
-        // 模擬按下並釋放按鍵
-        public static void KeyPress(byte keyCode)
-        {
-            KeyDown(keyCode);
-            Thread.Sleep(50); // 可調整延遲時間
-            KeyUp(keyCode);
-        }
-    }
-
     public partial class Form1 : Form
     {
         // 匯入User32.dll中的函數
@@ -85,7 +49,7 @@ namespace buttonClick
             RegisterHotKey(this.Handle, 1, 0, (int)Keys.F11); // 啟動
             RegisterHotKey(this.Handle, 2, 0, (int)Keys.F10); // 關閉
             RegisterHotKey(this.Handle, 3, 0, (int)Keys.F9); // 關閉
-            actionThread = new Thread(ActionLoop);            
+            actionThread = new Thread(ActionLoop);
         }
 
         // Form1關閉時取消註冊熱鍵
@@ -106,8 +70,8 @@ namespace buttonClick
             {
                 if (m.WParam.ToInt32() == 1) //取得座標 , 並將座標帶入迴圈程序中
                 {
-                    int x, y,delay;
-                    if(textY.Text.Length==0|| textY.Text.Length==0)
+                    int x, y, delay;
+                    if (textY.Text.Length == 0 || textY.Text.Length == 0)
                     {
                         MessageBox.Show("座標輸入範圍有誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
@@ -129,7 +93,7 @@ namespace buttonClick
                         MessageBox.Show("座標輸入範圍有誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                    if(delay <0|| delay>5000)
+                    if (delay < 0 || delay > 5000)
                     {
                         MessageBox.Show("延遲範圍有誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
@@ -176,7 +140,7 @@ namespace buttonClick
             // 模擬滑鼠左鍵按下
             mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_ABSOLUTE, x, y, 0, UIntPtr.Zero);
             // 延遲一段時間
-            Thread.Sleep(100); 
+            Thread.Sleep(100);
             // 模擬滑鼠左鍵釋放
             mouse_event(MOUSEEVENTF_LEFTUP | MOUSEEVENTF_ABSOLUTE, x, y, 0, UIntPtr.Zero);
         }
@@ -188,4 +152,41 @@ namespace buttonClick
         [DllImport("user32.dll")]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
     }
+    public class KeyboardSimulator
+    {
+        /*
+            SendKeys.Send("{F5}");
+            SendKeys.SendWait("{F5}");
+            原先使用的兩種方法 , 會導致它的執行與 UI 執行緒之間的競爭條件。
+         */
+        // 匯入 user32.dll 中的 keybd_event 函數
+        [DllImport("user32.dll")]
+        private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
+
+        // 定義按鍵事件的標誌
+        private const int KEYEVENTF_EXTENDEDKEY = 0x0001;
+        private const int KEYEVENTF_KEYUP = 0x0002;
+
+        // 模擬按下按鍵
+        public static void KeyDown(byte keyCode)
+        {
+            keybd_event(keyCode, 0, KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
+        }
+
+        // 模擬釋放按鍵
+        public static void KeyUp(byte keyCode)
+        {
+            keybd_event(keyCode, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, UIntPtr.Zero);
+        }
+
+        // 模擬按下並釋放按鍵
+        public static void KeyPress(byte keyCode)
+        {
+            KeyDown(keyCode);
+            Thread.Sleep(50); // 可調整延遲時間
+            KeyUp(keyCode);
+        }
+    }
+
+   
 }

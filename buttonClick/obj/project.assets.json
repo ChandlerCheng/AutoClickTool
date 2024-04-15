@@ -8,28 +8,20 @@
     "net5.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Chandler\\.nuget\\packages\\": {},
-    "E:\\IDE\\Shared\\NuGetPackages": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\chand\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Chandler\\source\\repos\\buttonClick\\buttonClick\\buttonClick.csproj",
+      "projectUniqueName": "D:\\Project\\GiLab\\AutoClickTool\\buttonClick\\buttonClick.csproj",
       "projectName": "buttonClick",
-      "projectPath": "C:\\Users\\Chandler\\source\\repos\\buttonClick\\buttonClick\\buttonClick.csproj",
-      "packagesPath": "C:\\Users\\Chandler\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Chandler\\source\\repos\\buttonClick\\buttonClick\\obj\\",
+      "projectPath": "D:\\Project\\GiLab\\AutoClickTool\\buttonClick\\buttonClick.csproj",
+      "packagesPath": "C:\\Users\\chand\\.nuget\\packages\\",
+      "outputPath": "D:\\Project\\GiLab\\AutoClickTool\\buttonClick\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "E:\\IDE\\Shared\\NuGetPackages",
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Chandler\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\chand\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net5.0-windows7.0"
@@ -71,7 +63,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.416\\RuntimeIdentifierGraph.json"
       }
     }
   }
