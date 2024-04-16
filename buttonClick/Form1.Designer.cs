@@ -41,6 +41,9 @@ namespace buttonClick
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnOpenNumFunc = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.labelNumDisplay = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -129,7 +132,7 @@ namespace buttonClick
             this.groupBox1.Controls.Add(this.textF11Ms);
             this.groupBox1.Controls.Add(this.comboF11HotKey);
             this.groupBox1.Controls.Add(this.comboF11Function);
-            this.groupBox1.Location = new System.Drawing.Point(9, 79);
+            this.groupBox1.Location = new System.Drawing.Point(9, 91);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(243, 115);
             this.groupBox1.TabIndex = 10;
@@ -154,11 +157,43 @@ namespace buttonClick
             this.label3.TabIndex = 9;
             this.label3.Text = "功能選擇";
             // 
+            // btnOpenNumFunc
+            // 
+            this.btnOpenNumFunc.Location = new System.Drawing.Point(130, 41);
+            this.btnOpenNumFunc.Name = "btnOpenNumFunc";
+            this.btnOpenNumFunc.Size = new System.Drawing.Size(74, 22);
+            this.btnOpenNumFunc.TabIndex = 11;
+            this.btnOpenNumFunc.Text = "開啟小鍵";
+            this.btnOpenNumFunc.UseVisualStyleBackColor = true;
+            this.btnOpenNumFunc.Click += new System.EventHandler(this.btnOpenNumFunc_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(129, 73);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(55, 15);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "小鍵功能";
+            // 
+            // labelNumDisplay
+            // 
+            this.labelNumDisplay.AutoSize = true;
+            this.labelNumDisplay.ForeColor = System.Drawing.Color.Red;
+            this.labelNumDisplay.Location = new System.Drawing.Point(190, 73);
+            this.labelNumDisplay.Name = "labelNumDisplay";
+            this.labelNumDisplay.Size = new System.Drawing.Size(31, 15);
+            this.labelNumDisplay.TabIndex = 13;
+            this.labelNumDisplay.Text = "關閉";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(270, 213);
+            this.ClientSize = new System.Drawing.Size(270, 219);
+            this.Controls.Add(this.labelNumDisplay);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.btnOpenNumFunc);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.buttonFunctionRead);
             this.Controls.Add(this.label2);
@@ -190,6 +225,9 @@ namespace buttonClick
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button btnOpenNumFunc;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label labelNumDisplay;
     }
 }
 

@@ -14,6 +14,7 @@ namespace buttonClick
     {
         private Thread actionThread;
         private bool continueAction = false; // 追蹤是否應該繼續執行動作
+        private bool bIsNumKeyOn = false;
         private int actionF11Type = 0;
         private byte actionF11HotKey = (byte)Keys.F5;
         private int actionX = 0;
@@ -34,7 +35,7 @@ namespace buttonClick
                         break;
                     case 1:
                         {
-                            
+
                         }
                         break;
                     default:
@@ -51,12 +52,13 @@ namespace buttonClick
             // Form1載入時註冊熱鍵
             SystemFuction.RegisterHotKey(this.Handle, 1, 0, (int)Keys.F11); // 啟動/關閉
             SystemFuction.RegisterHotKey(this.Handle, 2, 0, (int)Keys.F10); // 抓取座標
+
             actionThread = new Thread(ActionLoop);
 
             // 加入功能選擇
             for (int i = 0; i < GameFunction.GameFunctionList.Length; i++)
                 comboF11Function.Items.Add(GameFunction.GameFunctionList[i]);
-            for (int i = 0; i<KeyboardSimulator.HotKeyList.Length;i++)
+            for (int i = 0; i < KeyboardSimulator.HotKeyList.Length; i++)
                 comboF11HotKey.Items.Add(KeyboardSimulator.HotKeyList[i]);
 
             comboF11Function.SelectedIndex = 0;
@@ -67,6 +69,20 @@ namespace buttonClick
             // Form1關閉時取消註冊熱鍵
             SystemFuction.UnregisterHotKey(this.Handle, 1);
             SystemFuction.UnregisterHotKey(this.Handle, 2);
+
+            if (bIsNumKeyOn)
+            {
+                SystemFuction.UnregisterHotKey(this.Handle, 3);
+                SystemFuction.UnregisterHotKey(this.Handle, 4);
+                SystemFuction.UnregisterHotKey(this.Handle, 5);
+                SystemFuction.UnregisterHotKey(this.Handle, 6);
+                SystemFuction.UnregisterHotKey(this.Handle, 7);
+                SystemFuction.UnregisterHotKey(this.Handle, 8);
+                SystemFuction.UnregisterHotKey(this.Handle, 9);
+                SystemFuction.UnregisterHotKey(this.Handle, 10);
+                SystemFuction.UnregisterHotKey(this.Handle, 11);
+                SystemFuction.UnregisterHotKey(this.Handle, 12);
+            }
             continueAction = false;
             actionThread.Join();
         }
@@ -133,7 +149,7 @@ namespace buttonClick
                     }
                     else
                     {
-                        switch(comboF11HotKey.SelectedIndex)
+                        switch (comboF11HotKey.SelectedIndex)
                         {
                             case 0:
                                 actionF11HotKey = (byte)Keys.F5;
@@ -173,6 +189,45 @@ namespace buttonClick
                     Point cursor = Cursor.Position;
                     textX.Text = cursor.X.ToString();
                     textY.Text = cursor.Y.ToString();
+
+                    EnemyXY.CalculateAllEnemy(cursor.X, cursor.Y);
+                }
+                else if (m.WParam.ToInt32()>=3|| m.WParam.ToInt32()<12)
+                {
+                    int i = m.WParam.ToInt32();
+                    switch (i)
+                    {
+                        case 3: // Num 0 = 10
+                            GameFunction.castSpellOnTarget(EnemyXY.Enemy10[0], EnemyXY.Enemy10[1], actionF11HotKey, actionDelay);
+                            break;
+                        case 4:
+                            GameFunction.castSpellOnTarget(EnemyXY.Enemy1[0], EnemyXY.Enemy1[1], actionF11HotKey, actionDelay);
+                            break;
+                        case 5:
+                            GameFunction.castSpellOnTarget(EnemyXY.Enemy2[0], EnemyXY.Enemy2[1], actionF11HotKey, actionDelay);
+                            break;
+                        case 6:
+                            GameFunction.castSpellOnTarget(EnemyXY.Enemy3[0], EnemyXY.Enemy3[1], actionF11HotKey, actionDelay);
+                            break;
+                        case 7:
+                            GameFunction.castSpellOnTarget(EnemyXY.Enemy4[0], EnemyXY.Enemy4[1], actionF11HotKey, actionDelay);
+                            break;
+                        case 8:
+                            GameFunction.castSpellOnTarget(EnemyXY.Enemy5[0], EnemyXY.Enemy5[1], actionF11HotKey, actionDelay);
+                            break;
+                        case 9:
+                            GameFunction.castSpellOnTarget(EnemyXY.Enemy6[0], EnemyXY.Enemy6[1], actionF11HotKey, actionDelay);
+                            break;
+                        case 10:
+                            GameFunction.castSpellOnTarget(EnemyXY.Enemy7[0], EnemyXY.Enemy7[1], actionF11HotKey, actionDelay);
+                            break;
+                        case 11:
+                            GameFunction.castSpellOnTarget(EnemyXY.Enemy8[0], EnemyXY.Enemy8[1], actionF11HotKey, actionDelay);
+                            break;
+                        case 12:
+                            GameFunction.castSpellOnTarget(EnemyXY.Enemy9[0], EnemyXY.Enemy9[1], actionF11HotKey, actionDelay);
+                            break;
+                    }
                 }
             }
         }
@@ -181,15 +236,56 @@ namespace buttonClick
             // 功能說明
             string instructionsText = "功能說明：\n\n" +
                                       "- F10 : 抓取x,y軸座標。\n" +
-                                      "- F11 : 功能啟動/暫停。\n\n";
+                                      "  (若使用小鍵功能, 請抓\n" +
+                                      "    前排中間)\n" +
+                                      "- F11 : 功能啟動/暫停。\n" +
+                                      "- Num0 ~ 9 : 開啟小鍵功\n" +
+                                      " 能後 , 移動到對應敵人\n" +
+                                      " 處施放熱鍵。\n\n";
 
             // 显示消息框
             MessageBox.Show(instructionsText, "功能說明", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        private void btnOpenNumFunc_Click(object sender, EventArgs e)
+        {
+            if (bIsNumKeyOn == true)
+            {
+                bIsNumKeyOn = false;
+                SystemFuction.UnregisterHotKey(this.Handle, 3);
+                SystemFuction.UnregisterHotKey(this.Handle, 4);
+                SystemFuction.UnregisterHotKey(this.Handle, 5);
+                SystemFuction.UnregisterHotKey(this.Handle, 6);
+                SystemFuction.UnregisterHotKey(this.Handle, 7);
+                SystemFuction.UnregisterHotKey(this.Handle, 8);
+                SystemFuction.UnregisterHotKey(this.Handle, 9);
+                SystemFuction.UnregisterHotKey(this.Handle, 10);
+                SystemFuction.UnregisterHotKey(this.Handle, 11);
+                SystemFuction.UnregisterHotKey(this.Handle, 12);
+                labelNumDisplay.ForeColor = System.Drawing.Color.Red;
+                labelNumDisplay.Text = "關閉";
+            }
+            else
+            {
+                bIsNumKeyOn = true;
+                SystemFuction.RegisterHotKey(this.Handle, 3, 0, (int)Keys.NumPad0);
+                SystemFuction.RegisterHotKey(this.Handle, 4, 0, (int)Keys.NumPad1);
+                SystemFuction.RegisterHotKey(this.Handle, 5, 0, (int)Keys.NumPad2);
+                SystemFuction.RegisterHotKey(this.Handle, 6, 0, (int)Keys.NumPad3);
+                SystemFuction.RegisterHotKey(this.Handle, 7, 0, (int)Keys.NumPad4);
+                SystemFuction.RegisterHotKey(this.Handle, 8, 0, (int)Keys.NumPad5);
+                SystemFuction.RegisterHotKey(this.Handle, 9, 0, (int)Keys.NumPad6);
+                SystemFuction.RegisterHotKey(this.Handle, 10, 0, (int)Keys.NumPad7);
+                SystemFuction.RegisterHotKey(this.Handle, 11, 0, (int)Keys.NumPad8);
+                SystemFuction.RegisterHotKey(this.Handle, 12, 0, (int)Keys.NumPad9);                
+                labelNumDisplay.ForeColor = System.Drawing.Color.Green;
+                labelNumDisplay.Text = "開啟";
+            }
+        }
     }
     public class GameFunction
     {
-        public static string[] GameFunctionList = { "熱鍵後點擊目標(滑鼠左鍵)"};
+        public static string[] GameFunctionList = { "熱鍵後點擊目標(滑鼠左鍵)" };
         public static void castSpellOnTarget(int x, int y, byte keyCode, int delay)
         {
             /*
@@ -209,20 +305,46 @@ namespace buttonClick
                 Thread.Sleep(delay);
         }
     }
-    public class CoordinateSetting
+    public class EnemyXY
     {
         // 敵方座標
-        public int[] Enemy1;
-        public int[] Enemy2;
-        public int[] Enemy3;
-        public int[] Enemy4;
-        public int[] Enemy5;
-        // 友方座標 
-        public int[] Team1;
-        public int[] Team2;
-        public int[] Team3;
-        public int[] Team4;
-        public int[] Team5;
+        public static int[] Enemy1 = new int[2];
+        public static int[] Enemy2 = new int[2];
+        public static int[] Enemy3 = new int[2];
+        public static int[] Enemy4 = new int[2];
+        public static int[] Enemy5 = new int[2];
+        public static int[] Enemy6 = new int[2];
+        public static int[] Enemy7 = new int[2];
+        public static int[] Enemy8 = new int[2];
+        public static int[] Enemy9 = new int[2];
+        public static int[] Enemy10 = new int[2];
+
+        // 計算所有敵人的座標
+        public static void CalculateAllEnemy(int x, int y)
+        {
+            // 計算第三號敵人的座標
+            Enemy3[0] = x;
+            Enemy3[1] = y;
+
+            // 計算其他敵人的座標
+            CalculateEnemy(Enemy3, Enemy2, -68, 56);
+            CalculateEnemy(Enemy2, Enemy1, -68, 56);
+            CalculateEnemy(Enemy3, Enemy4, 68, -56);
+            CalculateEnemy(Enemy4, Enemy5, 68, -56);
+
+            CalculateEnemy(Enemy1, Enemy6, -73, -61);
+            CalculateEnemy(Enemy2, Enemy7, -73, -61);
+            CalculateEnemy(Enemy3, Enemy8, -73, -61);
+            CalculateEnemy(Enemy4, Enemy9, -73, -61);
+            CalculateEnemy(Enemy5, Enemy10, -73, -61);
+        }
+
+        // 計算敵人的座標
+        private static void CalculateEnemy(int[] from, int[] to, int xOffset, int yOffset)
+        {
+            to[0] = from[0] + xOffset;
+            to[1] = from[1] + yOffset;
+        }
     }
     public class MouseSimulator
     {
