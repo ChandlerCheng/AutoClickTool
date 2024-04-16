@@ -11,46 +11,71 @@ using System.Threading;
 namespace buttonClick
 {
     public partial class Form1 : Form
-    {        
+    {
         private Thread actionThread;
         private bool continueAction = false; // 追蹤是否應該繼續執行動作
-        public int actionX = 0;
-        public int actionY = 0;
-        public int actionDelay = 1000;
-        
+        private int actionF11Type = 0;
+        private byte actionF11HotKey = (byte)Keys.F5;
+        private int actionX = 0;
+        private int actionY = 0;
+        private int actionDelay = 1000;
+
         private void ActionLoop()
         {
             // 定義循環運行的方法
             while (continueAction)
             {
-                GameFunction.castSpellOnTarget(actionX, actionY,(byte)Keys.F5, actionDelay);                
+                switch (actionF11Type)
+                {
+                    case 0:
+                        {
+                            GameFunction.castSpellOnTarget(actionX, actionY, actionF11HotKey, actionDelay);
+                        }
+                        break;
+                    case 1:
+                        {
+                            
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         public Form1()
         {
             InitializeComponent();
-        }       
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             // Form1載入時註冊熱鍵
             SystemFuction.RegisterHotKey(this.Handle, 1, 0, (int)Keys.F11); // 啟動/關閉
             SystemFuction.RegisterHotKey(this.Handle, 2, 0, (int)Keys.F10); // 抓取座標
             actionThread = new Thread(ActionLoop);
-        }        
+
+            // 加入功能選擇
+            for (int i = 0; i < GameFunction.GameFunctionList.Length; i++)
+                comboF11Function.Items.Add(GameFunction.GameFunctionList[i]);
+            for (int i = 0; i<KeyboardSimulator.HotKeyList.Length;i++)
+                comboF11HotKey.Items.Add(KeyboardSimulator.HotKeyList[i]);
+
+            comboF11Function.SelectedIndex = 0;
+            comboF11HotKey.SelectedIndex = 0;
+        }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Form1關閉時取消註冊熱鍵
             SystemFuction.UnregisterHotKey(this.Handle, 1);
             SystemFuction.UnregisterHotKey(this.Handle, 2);
-            continueAction = false; 
-            actionThread.Join(); 
-        }        
+            continueAction = false;
+            actionThread.Join();
+        }
         protected override void WndProc(ref Message m)
         {
             // 熱鍵消息處理
             base.WndProc(ref m);
             if (m.Msg == 0x0312)
-            {            
+            {
                 if (m.WParam.ToInt32() == 1) //取得座標 , 並將座標帶入迴圈程序中
                 {
                     int x, y, delay;
@@ -67,7 +92,7 @@ namespace buttonClick
                         MessageBox.Show("座標輸入範圍有誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                    if (textMs.Text.Length == 0)
+                    if (textF11Ms.Text.Length == 0)
                     {
                         MessageBox.Show("延遲輸入有誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
@@ -75,13 +100,12 @@ namespace buttonClick
 
                     x = int.Parse(textX.Text);
                     y = int.Parse(textY.Text);
-                    delay = int.Parse(textMs.Text);
-
-                    if (CheckFunction.CheckCoordinateError(x,y))
+                    if (CheckFunction.CheckCoordinateError(x, y))
                     {
                         MessageBox.Show("座標輸入範圍有誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
+                    delay = int.Parse(textF11Ms.Text);
                     if (CheckFunction.CheckDelayError(delay))
                     {
                         MessageBox.Show("延遲範圍有誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -91,6 +115,46 @@ namespace buttonClick
                     actionY = y;
                     actionDelay = delay;
 
+                    // 選擇循環功能
+                    if (comboF11Function.SelectedIndex == -1)
+                    {
+                        MessageBox.Show("請選擇循環功能", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    else
+                    {
+                        actionF11Type = comboF11Function.SelectedIndex;
+                    }
+                    // 若有熱鍵 , 選擇功能使用的熱鍵
+                    if (comboF11HotKey.SelectedIndex == -1)
+                    {
+                        MessageBox.Show("請選擇熱鍵", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    else
+                    {
+                        switch(comboF11HotKey.SelectedIndex)
+                        {
+                            case 0:
+                                actionF11HotKey = (byte)Keys.F5;
+                                break;
+                            case 1:
+                                actionF11HotKey = (byte)Keys.F6;
+                                break;
+                            case 2:
+                                actionF11HotKey = (byte)Keys.F7;
+                                break;
+                            case 3:
+                                actionF11HotKey = (byte)Keys.F8;
+                                break;
+                            case 4:
+                                actionF11HotKey = (byte)Keys.F9;
+                                break;
+                            default:
+                                actionF11HotKey = (byte)Keys.F5;
+                                break;
+                        }
+                    }
                     // 確保在開始新線程之前先停止舊線程
                     if (actionThread.IsAlive)
                     {
@@ -125,23 +189,40 @@ namespace buttonClick
     }
     public class GameFunction
     {
-        public static void castSpellOnTarget(int x, int y, byte keyCode,int delay)
+        public static string[] GameFunctionList = { "熱鍵後點擊目標(滑鼠左鍵)"};
+        public static void castSpellOnTarget(int x, int y, byte keyCode, int delay)
         {
             /*
                 滑鼠移動到指定座標後 , 按下指定熱鍵 , 點下左鍵
              */
             Cursor.Position = new System.Drawing.Point(x, y);
             KeyboardSimulator.KeyPress(keyCode);
+            Thread.Sleep(500);
             MouseSimulator.LeftMousePress(x, y);
-            Thread.Sleep(delay); 
+            Thread.Sleep(delay);
         }
 
         public static void hotKeyPress(byte keyCode, int delay)
         {
             KeyboardSimulator.KeyPress(keyCode);
             if (delay > 0)
-                Thread.Sleep(delay); 
+                Thread.Sleep(delay);
         }
+    }
+    public class CoordinateSetting
+    {
+        // 敵方座標
+        public int[] Enemy1;
+        public int[] Enemy2;
+        public int[] Enemy3;
+        public int[] Enemy4;
+        public int[] Enemy5;
+        // 友方座標 
+        public int[] Team1;
+        public int[] Team2;
+        public int[] Team3;
+        public int[] Team4;
+        public int[] Team5;
     }
     public class MouseSimulator
     {
@@ -157,7 +238,7 @@ namespace buttonClick
         private const int MOUSEEVENTF_RIGHTUP = 0x0010;
         private const int MOUSEEVENTF_ABSOLUTE = 0x8000;
 
-        public static void LeftMousePress(int x,int y)
+        public static void LeftMousePress(int x, int y)
         {
             // 模擬滑鼠左鍵按下
             mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_ABSOLUTE, x, y, 0, UIntPtr.Zero);
@@ -184,6 +265,8 @@ namespace buttonClick
             原先使用的兩種方法 , 會導致它的執行與 UI 執行緒之間的競爭條件。
          */
         // 匯入 user32.dll 中的 keybd_event 函數
+        public static string[] HotKeyList = { "F5", "F6", "F7", "F8", "F9" };
+
         [DllImport("user32.dll")]
         private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
 
@@ -224,13 +307,12 @@ namespace buttonClick
         public static bool CheckDelayError(int delay)
         {
             //if ((x > 1920 || y > 1080) || (x < 0 || y < 0))
-            if (delay<0)
+            if (delay < 0)
                 return true;
 
             return false;
         }
     }
-
     public class SystemFuction
     {
         // 匯入User32.dll中的RegisterHotKey和UnregisterHotKey函數

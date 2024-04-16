@@ -33,9 +33,15 @@ namespace buttonClick
             this.textY = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textMs = new System.Windows.Forms.TextBox();
+            this.textF11Ms = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.buttonFunctionRead = new System.Windows.Forms.Button();
+            this.comboF11Function = new System.Windows.Forms.ComboBox();
+            this.comboF11HotKey = new System.Windows.Forms.ComboBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // textX
@@ -70,18 +76,18 @@ namespace buttonClick
             this.label2.TabIndex = 3;
             this.label2.Text = "Y軸";
             // 
-            // textMs
+            // textF11Ms
             // 
-            this.textMs.Location = new System.Drawing.Point(42, 70);
-            this.textMs.Name = "textMs";
-            this.textMs.Size = new System.Drawing.Size(72, 23);
-            this.textMs.TabIndex = 5;
-            this.textMs.Text = "500";
+            this.textF11Ms.Location = new System.Drawing.Point(68, 80);
+            this.textF11Ms.Name = "textF11Ms";
+            this.textF11Ms.Size = new System.Drawing.Size(66, 23);
+            this.textF11Ms.TabIndex = 5;
+            this.textF11Ms.Text = "500";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 73);
+            this.label4.Location = new System.Drawing.Point(29, 83);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(31, 15);
             this.label4.TabIndex = 6;
@@ -97,14 +103,64 @@ namespace buttonClick
             this.buttonFunctionRead.UseVisualStyleBackColor = true;
             this.buttonFunctionRead.Click += new System.EventHandler(this.button1_Click);
             // 
+            // comboF11Function
+            // 
+            this.comboF11Function.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboF11Function.FormattingEnabled = true;
+            this.comboF11Function.Location = new System.Drawing.Point(67, 22);
+            this.comboF11Function.Name = "comboF11Function";
+            this.comboF11Function.Size = new System.Drawing.Size(170, 23);
+            this.comboF11Function.TabIndex = 8;
+            // 
+            // comboF11HotKey
+            // 
+            this.comboF11HotKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboF11HotKey.FormattingEnabled = true;
+            this.comboF11HotKey.Location = new System.Drawing.Point(67, 51);
+            this.comboF11HotKey.Name = "comboF11HotKey";
+            this.comboF11HotKey.Size = new System.Drawing.Size(67, 23);
+            this.comboF11HotKey.TabIndex = 9;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.textF11Ms);
+            this.groupBox1.Controls.Add(this.comboF11HotKey);
+            this.groupBox1.Controls.Add(this.comboF11Function);
+            this.groupBox1.Location = new System.Drawing.Point(9, 79);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(243, 115);
+            this.groupBox1.TabIndex = 10;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "F11 循環功能設定";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 54);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(55, 15);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "使用熱鍵";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 25);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(55, 15);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "功能選擇";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(217, 109);
+            this.ClientSize = new System.Drawing.Size(270, 213);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.buttonFunctionRead);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.textMs);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textY);
@@ -113,6 +169,8 @@ namespace buttonClick
             this.Name = "Form1";
             this.Text = "ClickTool";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -124,9 +182,14 @@ namespace buttonClick
         private System.Windows.Forms.TextBox textY;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textMs;
+        private System.Windows.Forms.TextBox textF11Ms;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button buttonFunctionRead;
+        private System.Windows.Forms.ComboBox comboF11Function;
+        private System.Windows.Forms.ComboBox comboF11HotKey;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label5;
     }
 }
 
