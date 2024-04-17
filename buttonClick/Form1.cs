@@ -85,6 +85,12 @@ namespace buttonClick
             comboF11Function.SelectedIndex = 0;
             comboF11HotKey.SelectedIndex = 0;
             comboBoxSkillMode.SelectedIndex = 0;
+
+            labelX.ForeColor = System.Drawing.Color.Red;
+            labelX.Text = "未指定";
+
+            labelY.ForeColor = System.Drawing.Color.Red;
+            labelY.Text = "未指定";
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -131,24 +137,21 @@ namespace buttonClick
                         return;
                     }
 
-                    if (textY.Text.Length == 0 || textY.Text.Length == 0)
+                    if (int.TryParse(labelY.Text, out int number1) == false || int.TryParse(labelX.Text, out int number2) == false)
                     {
-                        MessageBox.Show("座標輸入範圍有誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("未抓取座標", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
+
                     if (textF11Ms.Text.Length == 0)
                     {
                         MessageBox.Show("延遲輸入有誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
-                    x = int.Parse(textX.Text);
-                    y = int.Parse(textY.Text);
-                    if (CheckFunction.CheckCoordinateError(x, y))
-                    {
-                        MessageBox.Show("座標輸入範圍有誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
+                    x = int.Parse(labelX.Text);
+                    y = int.Parse(labelY.Text);
+
                     delay = int.Parse(textF11Ms.Text);
                     if (CheckFunction.CheckDelayError(delay))
                     {
@@ -215,8 +218,11 @@ namespace buttonClick
                 {
                     // 按下 F9 時，抓取滑鼠當前位置並顯示在 TextBox 中
                     Point cursor = Cursor.Position;
-                    textX.Text = cursor.X.ToString();
-                    textY.Text = cursor.Y.ToString();
+                    labelX.Text = cursor.X.ToString();
+                    labelY.Text = cursor.Y.ToString();
+
+                    labelX.ForeColor = System.Drawing.Color.Green;
+                    labelY.ForeColor = System.Drawing.Color.Green;
 
                     EnemyXY.CalculateAllEnemy(cursor.X, cursor.Y);
                 }
@@ -258,18 +264,16 @@ namespace buttonClick
                         case DefineKey.Num0_Skill:
                             {
                                 int x, y;
-                                if (textY.Text.Length == 0 || textY.Text.Length == 0)
+
+                                if (int.TryParse(labelY.Text, out int number1) == false || int.TryParse(labelX.Text, out int number2) == false)
                                 {
-                                    MessageBox.Show("座標輸入範圍有誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    MessageBox.Show("未抓取座標", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     return;
                                 }
-                                x = int.Parse(textX.Text);
-                                y = int.Parse(textY.Text);
-                                if (CheckFunction.CheckCoordinateError(x, y))
-                                {
-                                    MessageBox.Show("座標輸入範圍有誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    return;
-                                }
+
+                                x = int.Parse(labelX.Text);
+                                y = int.Parse(labelY.Text);
+
                                 actionX = x;
                                 actionY = y;
                                 GameFunction.castSpellOnTarget(actionX, actionY, actionF11HotKey, actionDelay);
@@ -389,7 +393,7 @@ namespace buttonClick
     }
     public class GameFunction
     {
-        public static string[] GameFunctionList = { "熱鍵後點擊目標(滑鼠左鍵)" };
+        public static string[] GameFunctionList = { "施放法術" };
         public static void castSpellOnTarget(int x, int y, byte keyCode, int delay)
         {
             /*
