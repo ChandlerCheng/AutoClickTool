@@ -10,13 +10,32 @@ using System.Threading;
 
 namespace buttonClick
 {
+    enum DefineKey
+    {
+        F11 = 1,
+        F12,
+        Num0,
+        Num1,
+        Num2,
+        Num3,
+        Num4,
+        Num5,
+        Num6,
+        Num7,
+        Num8,
+        Num9,
+        Num0_Skill,
+        Decimal_Skill
+    }
     public partial class Form1 : Form
     {
         private Thread actionThread;
         private bool continueAction = false; // 追蹤是否應該繼續執行動作
         private bool bIsNumKeyOn = false;
+        private bool bIsSkillModeOn = false;
         private int actionF11Type = 0;
         private byte actionF11HotKey = (byte)Keys.F5;
+        private byte actionSkillHotKey = (byte)Keys.F5;
         private int actionX = 0;
         private int actionY = 0;
         private int actionDelay = 1000;
@@ -50,8 +69,8 @@ namespace buttonClick
         private void Form1_Load(object sender, EventArgs e)
         {
             // Form1載入時註冊熱鍵
-            SystemFuction.RegisterHotKey(this.Handle, 1, 0, (int)Keys.F11); // 啟動/關閉
-            SystemFuction.RegisterHotKey(this.Handle, 2, 0, (int)Keys.F10); // 抓取座標
+            SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.F11, 0, (int)Keys.F11); // 啟動/關閉
+            SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.F12, 0, (int)Keys.F10); // 抓取座標
 
             actionThread = new Thread(ActionLoop);
 
@@ -60,28 +79,37 @@ namespace buttonClick
                 comboF11Function.Items.Add(GameFunction.GameFunctionList[i]);
             for (int i = 0; i < KeyboardSimulator.HotKeyList.Length; i++)
                 comboF11HotKey.Items.Add(KeyboardSimulator.HotKeyList[i]);
+            for (int i = 0; i < KeyboardSimulator.HotKeyList.Length; i++)
+                comboBoxSkillMode.Items.Add(KeyboardSimulator.HotKeyList[i]);
 
             comboF11Function.SelectedIndex = 0;
             comboF11HotKey.SelectedIndex = 0;
+            comboBoxSkillMode.SelectedIndex = 0;
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Form1關閉時取消註冊熱鍵
-            SystemFuction.UnregisterHotKey(this.Handle, 1);
-            SystemFuction.UnregisterHotKey(this.Handle, 2);
+            SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.F11);
+            SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.F12);
 
             if (bIsNumKeyOn)
             {
-                SystemFuction.UnregisterHotKey(this.Handle, 3);
-                SystemFuction.UnregisterHotKey(this.Handle, 4);
-                SystemFuction.UnregisterHotKey(this.Handle, 5);
-                SystemFuction.UnregisterHotKey(this.Handle, 6);
-                SystemFuction.UnregisterHotKey(this.Handle, 7);
-                SystemFuction.UnregisterHotKey(this.Handle, 8);
-                SystemFuction.UnregisterHotKey(this.Handle, 9);
-                SystemFuction.UnregisterHotKey(this.Handle, 10);
-                SystemFuction.UnregisterHotKey(this.Handle, 11);
-                SystemFuction.UnregisterHotKey(this.Handle, 12);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num0);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num1);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num2);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num3);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num4);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num5);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num6);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num7);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num8);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num9);
+            }
+            else if (bIsSkillModeOn == true)
+            {
+                bIsSkillModeOn = false;
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num0_Skill);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Decimal_Skill);
             }
             continueAction = false;
             actionThread.Join();
@@ -192,40 +220,84 @@ namespace buttonClick
 
                     EnemyXY.CalculateAllEnemy(cursor.X, cursor.Y);
                 }
-                else if (m.WParam.ToInt32()>=3|| m.WParam.ToInt32()<12)
+                else if (m.WParam.ToInt32() >= 3 || m.WParam.ToInt32() < 15)
                 {
-                    int i = m.WParam.ToInt32();
+                    DefineKey i = (DefineKey)m.WParam.ToInt32();
                     switch (i)
                     {
-                        case 3: // Num 0 = 10
+                        case DefineKey.Num0: // Num 0 = 10
                             GameFunction.castSpellOnTarget(EnemyXY.Enemy10[0], EnemyXY.Enemy10[1], actionF11HotKey, actionDelay);
                             break;
-                        case 4:
+                        case DefineKey.Num1:
                             GameFunction.castSpellOnTarget(EnemyXY.Enemy1[0], EnemyXY.Enemy1[1], actionF11HotKey, actionDelay);
                             break;
-                        case 5:
+                        case DefineKey.Num2:
                             GameFunction.castSpellOnTarget(EnemyXY.Enemy2[0], EnemyXY.Enemy2[1], actionF11HotKey, actionDelay);
                             break;
-                        case 6:
+                        case DefineKey.Num3:
                             GameFunction.castSpellOnTarget(EnemyXY.Enemy3[0], EnemyXY.Enemy3[1], actionF11HotKey, actionDelay);
                             break;
-                        case 7:
+                        case DefineKey.Num4:
                             GameFunction.castSpellOnTarget(EnemyXY.Enemy4[0], EnemyXY.Enemy4[1], actionF11HotKey, actionDelay);
                             break;
-                        case 8:
+                        case DefineKey.Num5:
                             GameFunction.castSpellOnTarget(EnemyXY.Enemy5[0], EnemyXY.Enemy5[1], actionF11HotKey, actionDelay);
                             break;
-                        case 9:
+                        case DefineKey.Num6:
                             GameFunction.castSpellOnTarget(EnemyXY.Enemy6[0], EnemyXY.Enemy6[1], actionF11HotKey, actionDelay);
                             break;
-                        case 10:
+                        case DefineKey.Num7:
                             GameFunction.castSpellOnTarget(EnemyXY.Enemy7[0], EnemyXY.Enemy7[1], actionF11HotKey, actionDelay);
                             break;
-                        case 11:
+                        case DefineKey.Num8:
                             GameFunction.castSpellOnTarget(EnemyXY.Enemy8[0], EnemyXY.Enemy8[1], actionF11HotKey, actionDelay);
                             break;
-                        case 12:
+                        case DefineKey.Num9:
                             GameFunction.castSpellOnTarget(EnemyXY.Enemy9[0], EnemyXY.Enemy9[1], actionF11HotKey, actionDelay);
+                            break;
+                        case DefineKey.Num0_Skill:
+                            {
+                                int x, y;
+                                if (textY.Text.Length == 0 || textY.Text.Length == 0)
+                                {
+                                    MessageBox.Show("座標輸入範圍有誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
+                                x = int.Parse(textX.Text);
+                                y = int.Parse(textY.Text);
+                                if (CheckFunction.CheckCoordinateError(x, y))
+                                {
+                                    MessageBox.Show("座標輸入範圍有誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
+                                actionX = x;
+                                actionY = y;
+                                GameFunction.castSpellOnTarget(actionX, actionY, actionF11HotKey, actionDelay);
+                            }
+                            break;
+                        case DefineKey.Decimal_Skill:
+                            switch (comboBoxSkillMode.SelectedIndex)
+                            {
+                                case 0:
+                                    actionSkillHotKey = (byte)Keys.F5;
+                                    break;
+                                case 1:
+                                    actionSkillHotKey = (byte)Keys.F6;
+                                    break;
+                                case 2:
+                                    actionSkillHotKey = (byte)Keys.F7;
+                                    break;
+                                case 3:
+                                    actionSkillHotKey = (byte)Keys.F8;
+                                    break;
+                                case 4:
+                                    actionSkillHotKey = (byte)Keys.F9;
+                                    break;
+                                default:
+                                    actionSkillHotKey = (byte)Keys.F5;
+                                    break;
+                            }
+                            KeyboardSimulator.KeyPress(actionSkillHotKey);
                             break;
                     }
                 }
@@ -238,11 +310,7 @@ namespace buttonClick
                                       "- F10 : 抓取x,y軸座標。\n" +
                                       "  (若使用小鍵功能, 請抓\n" +
                                       "    前排中間)\n" +
-                                      "- F11 : 功能啟動/暫停。\n" +
-                                      "- Num0 ~ 9 : 開啟小鍵功\n" +
-                                      " 能後 , 移動到對應敵人\n" +
-                                      " 處施放熱鍵。\n\n";
-
+                                      "- F11 : 功能啟動/暫停。\n\n";
             // 显示消息框
             MessageBox.Show(instructionsText, "功能說明", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -252,34 +320,70 @@ namespace buttonClick
             if (bIsNumKeyOn == true)
             {
                 bIsNumKeyOn = false;
-                SystemFuction.UnregisterHotKey(this.Handle, 3);
-                SystemFuction.UnregisterHotKey(this.Handle, 4);
-                SystemFuction.UnregisterHotKey(this.Handle, 5);
-                SystemFuction.UnregisterHotKey(this.Handle, 6);
-                SystemFuction.UnregisterHotKey(this.Handle, 7);
-                SystemFuction.UnregisterHotKey(this.Handle, 8);
-                SystemFuction.UnregisterHotKey(this.Handle, 9);
-                SystemFuction.UnregisterHotKey(this.Handle, 10);
-                SystemFuction.UnregisterHotKey(this.Handle, 11);
-                SystemFuction.UnregisterHotKey(this.Handle, 12);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num0);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num1);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num2);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num3);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num4);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num5);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num6);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num7);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num8);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num9);
                 labelNumDisplay.ForeColor = System.Drawing.Color.Red;
                 labelNumDisplay.Text = "關閉";
             }
             else
             {
-                bIsNumKeyOn = true;
-                SystemFuction.RegisterHotKey(this.Handle, 3, 0, (int)Keys.NumPad0);
-                SystemFuction.RegisterHotKey(this.Handle, 4, 0, (int)Keys.NumPad1);
-                SystemFuction.RegisterHotKey(this.Handle, 5, 0, (int)Keys.NumPad2);
-                SystemFuction.RegisterHotKey(this.Handle, 6, 0, (int)Keys.NumPad3);
-                SystemFuction.RegisterHotKey(this.Handle, 7, 0, (int)Keys.NumPad4);
-                SystemFuction.RegisterHotKey(this.Handle, 8, 0, (int)Keys.NumPad5);
-                SystemFuction.RegisterHotKey(this.Handle, 9, 0, (int)Keys.NumPad6);
-                SystemFuction.RegisterHotKey(this.Handle, 10, 0, (int)Keys.NumPad7);
-                SystemFuction.RegisterHotKey(this.Handle, 11, 0, (int)Keys.NumPad8);
-                SystemFuction.RegisterHotKey(this.Handle, 12, 0, (int)Keys.NumPad9);                
-                labelNumDisplay.ForeColor = System.Drawing.Color.Green;
-                labelNumDisplay.Text = "開啟";
+                if (bIsSkillModeOn == false && bIsNumKeyOn == false)
+                {
+                    bIsNumKeyOn = true;
+                    SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.Num0, 0, (int)Keys.NumPad0);
+                    SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.Num1, 0, (int)Keys.NumPad1);
+                    SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.Num2, 0, (int)Keys.NumPad2);
+                    SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.Num3, 0, (int)Keys.NumPad3);
+                    SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.Num4, 0, (int)Keys.NumPad4);
+                    SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.Num5, 0, (int)Keys.NumPad5);
+                    SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.Num6, 0, (int)Keys.NumPad6);
+                    SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.Num7, 0, (int)Keys.NumPad7);
+                    SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.Num8, 0, (int)Keys.NumPad8);
+                    SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.Num9, 0, (int)Keys.NumPad9);
+                    labelNumDisplay.ForeColor = System.Drawing.Color.Green;
+                    labelNumDisplay.Text = "開啟";
+                }
+                else
+                {
+                    MessageBox.Show("請先關閉練技功能", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+        }
+
+        private void btnSkillMode_Click(object sender, EventArgs e)
+        {
+            if (bIsSkillModeOn == true)
+            {
+                bIsSkillModeOn = false;
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Num0_Skill);
+                SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.Decimal_Skill);
+                labelSkillMode.ForeColor = System.Drawing.Color.Red;
+                labelSkillMode.Text = "關閉";
+            }
+            else
+            {
+                if (bIsSkillModeOn == false && bIsNumKeyOn == false)
+                {
+                    bIsSkillModeOn = true;
+                    SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.Num0_Skill, 0, (int)Keys.NumPad0);
+                    SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.Decimal_Skill, 0, (int)Keys.Decimal);
+                    labelSkillMode.ForeColor = System.Drawing.Color.Green;
+                    labelSkillMode.Text = "開啟";
+                }
+                else
+                {
+                    MessageBox.Show("請先關閉小鍵功能", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
             }
         }
     }
