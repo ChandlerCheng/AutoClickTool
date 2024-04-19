@@ -34,6 +34,7 @@ namespace buttonClick
         private bool bIsNumKeyOn = false;
         private bool bIsSkillModeOn = false;
         private int actionF11Type = 0;
+        private int pollingEnemyIndex = 0;
         private byte actionF11HotKey = (byte)Keys.F5;
         private byte actionSkillHotKey = (byte)Keys.F5;
         private int actionX = 0;
@@ -49,12 +50,53 @@ namespace buttonClick
                 {
                     case 0:
                         {
+                            // 施放法術
                             GameFunction.castSpellOnTarget(actionX, actionY, actionF11HotKey, actionDelay);
                         }
                         break;
                     case 1:
                         {
-
+                            //循環施放法術(敵方)
+                            switch (pollingEnemyIndex)
+                            {
+                                case 0:
+                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy10[0], EnemyXY.Enemy10[1], actionF11HotKey, actionDelay);
+                                    break;
+                                case 1:
+                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy1[0], EnemyXY.Enemy1[1], actionF11HotKey, actionDelay);
+                                    break;
+                                case 2:
+                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy2[0], EnemyXY.Enemy2[1], actionF11HotKey, actionDelay);
+                                    break;
+                                case 3:
+                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy3[0], EnemyXY.Enemy3[1], actionF11HotKey, actionDelay);
+                                    break;
+                                case 4:
+                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy4[0], EnemyXY.Enemy4[1], actionF11HotKey, actionDelay);
+                                    break;
+                                case 5:
+                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy5[0], EnemyXY.Enemy5[1], actionF11HotKey, actionDelay);
+                                    break;
+                                case 6:
+                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy6[0], EnemyXY.Enemy6[1], actionF11HotKey, actionDelay);
+                                    break;
+                                case 7:
+                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy7[0], EnemyXY.Enemy7[1], actionF11HotKey, actionDelay);
+                                    break;
+                                case 8:
+                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy8[0], EnemyXY.Enemy8[1], actionF11HotKey, actionDelay);
+                                    break;
+                                case 9:
+                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy9[0], EnemyXY.Enemy9[1], actionF11HotKey, actionDelay);
+                                    break;
+                                default:
+                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy1[0], EnemyXY.Enemy1[1], actionF11HotKey, actionDelay);
+                                    break;
+                            }
+                            /* 直接循環施法 , 最差頂多讀條一半 */
+                            pollingEnemyIndex++;
+                            if (pollingEnemyIndex > 9)
+                                pollingEnemyIndex = 0;
                         }
                         break;
                     default:
@@ -69,7 +111,7 @@ namespace buttonClick
         private void Form1_Load(object sender, EventArgs e)
         {
             // Form1載入時註冊熱鍵
-            SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.F11, 0, (int)Keys.F11); // 啟動/關閉
+            SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.F11, 0, (int)Keys.F11); // 主循環功能啟動/關閉
             SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.F12, 0, (int)Keys.F10); // 抓取座標
 
             actionThread = new Thread(ActionLoop);
@@ -393,7 +435,7 @@ namespace buttonClick
     }
     public class GameFunction
     {
-        public static string[] GameFunctionList = { "施放法術" };
+        public static string[] GameFunctionList = { "施放法術" ,"循環施放法術(敵)"};
         public static void castSpellOnTarget(int x, int y, byte keyCode, int delay)
         {
             /*
