@@ -60,7 +60,7 @@ namespace buttonClick
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 31);
+            this.label1.Location = new System.Drawing.Point(34, 19);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(27, 15);
             this.label1.TabIndex = 2;
@@ -69,7 +69,7 @@ namespace buttonClick
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(30, 60);
+            this.label2.Location = new System.Drawing.Point(34, 48);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(26, 15);
             this.label2.TabIndex = 3;
@@ -129,7 +129,7 @@ namespace buttonClick
             this.groupBox1.Controls.Add(this.textF11Ms);
             this.groupBox1.Controls.Add(this.comboF11HotKey);
             this.groupBox1.Controls.Add(this.comboF11Function);
-            this.groupBox1.Location = new System.Drawing.Point(9, 109);
+            this.groupBox1.Location = new System.Drawing.Point(9, 80);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(200, 154);
             this.groupBox1.TabIndex = 10;
@@ -188,7 +188,7 @@ namespace buttonClick
             this.groupBox2.Controls.Add(this.btnOpenNumFunc);
             this.groupBox2.Controls.Add(this.labelNumDisplay);
             this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Location = new System.Drawing.Point(9, 269);
+            this.groupBox2.Location = new System.Drawing.Point(9, 240);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(200, 54);
             this.groupBox2.TabIndex = 14;
@@ -239,7 +239,7 @@ namespace buttonClick
             this.groupBox3.Controls.Add(this.labelSkillMode);
             this.groupBox3.Controls.Add(this.btnSkillMode);
             this.groupBox3.Controls.Add(this.label7);
-            this.groupBox3.Location = new System.Drawing.Point(9, 343);
+            this.groupBox3.Location = new System.Drawing.Point(9, 314);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(200, 85);
             this.groupBox3.TabIndex = 15;
@@ -254,15 +254,15 @@ namespace buttonClick
             this.groupBox4.Controls.Add(this.label2);
             this.groupBox4.Location = new System.Drawing.Point(9, 3);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(199, 100);
+            this.groupBox4.Size = new System.Drawing.Size(199, 72);
             this.groupBox4.TabIndex = 16;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "groupBox4";
+            this.groupBox4.Text = "座標";
             // 
             // labelY
             // 
             this.labelY.AutoSize = true;
-            this.labelY.Location = new System.Drawing.Point(63, 60);
+            this.labelY.Location = new System.Drawing.Point(67, 48);
             this.labelY.Name = "labelY";
             this.labelY.Size = new System.Drawing.Size(97, 15);
             this.labelY.TabIndex = 5;
@@ -271,7 +271,7 @@ namespace buttonClick
             // labelX
             // 
             this.labelX.AutoSize = true;
-            this.labelX.Location = new System.Drawing.Point(63, 31);
+            this.labelX.Location = new System.Drawing.Point(67, 19);
             this.labelX.Name = "labelX";
             this.labelX.Size = new System.Drawing.Size(98, 15);
             this.labelX.TabIndex = 4;
@@ -281,7 +281,7 @@ namespace buttonClick
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(220, 435);
+            this.ClientSize = new System.Drawing.Size(220, 405);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
