@@ -38,6 +38,8 @@ namespace buttonClick
         private int actionF11Type = 0;
         private int pollingEnemyIndex = 0;
         private byte actionF11HotKey = (byte)Keys.F5;
+        private byte actionDefHotKey = (byte)Keys.F6;
+        private byte actionMPHotKey = (byte)Keys.F9;
         private byte actionSkillHotKey = (byte)Keys.F5;
         private int actionX = 0;
         private int actionY = 0;
@@ -54,55 +56,125 @@ namespace buttonClick
                         {
                             // 施放法術
                             if (GameFunction.BattleCheck() == false)
-                                break;
-                            GameFunction.castSpellOnTarget(actionX, actionY, actionF11HotKey, actionDelay);
+                            {
+                                // 檢查是否需要檢查補魔
+                                if (checkMP.Checked == true)
+                                {
+                                    if (GameFunction.IsNeedReplenishMP(0.4) && GameFunction.NormalCheck())
+                                    {
+                                        // 需要符合抓取魔力條低於40%與抓的到升級按鈕兩個條件
+                                        labelMP.Text = "需要";
+                                        GameFunction.hotKeyPress(actionMPHotKey, 1000);
+                                    }
+                                    else
+                                    {
+                                        labelMP.Text = "不需要補魔";
+                                    }
+                                }
+                                else
+                                    labelMP.Text = "功能關閉";
+                            }
+                            else
+                            {
+                                GameFunction.castSpellOnTarget(actionX, actionY, actionF11HotKey, actionDelay);
+                            }
                         }
                         break;
                     case 1:
                         {
                             if (GameFunction.BattleCheck() == false)
-                                break;
-                            //循環施放法術(敵方)
-                            switch (pollingEnemyIndex)
                             {
-                                case 0:
-                                    GameFunction.castSpellOnTarget(Coordinate.Enemy10[0], Coordinate.Enemy10[1], actionF11HotKey, actionDelay);
-                                    break;
-                                case 1:
-                                    GameFunction.castSpellOnTarget(Coordinate.Enemy1[0], Coordinate.Enemy1[1], actionF11HotKey, actionDelay);
-                                    break;
-                                case 2:
-                                    GameFunction.castSpellOnTarget(Coordinate.Enemy2[0], Coordinate.Enemy2[1], actionF11HotKey, actionDelay);
-                                    break;
-                                case 3:
-                                    GameFunction.castSpellOnTarget(Coordinate.Enemy3[0], Coordinate.Enemy3[1], actionF11HotKey, actionDelay);
-                                    break;
-                                case 4:
-                                    GameFunction.castSpellOnTarget(Coordinate.Enemy4[0], Coordinate.Enemy4[1], actionF11HotKey, actionDelay);
-                                    break;
-                                case 5:
-                                    GameFunction.castSpellOnTarget(Coordinate.Enemy5[0], Coordinate.Enemy5[1], actionF11HotKey, actionDelay);
-                                    break;
-                                case 6:
-                                    GameFunction.castSpellOnTarget(Coordinate.Enemy6[0], Coordinate.Enemy6[1], actionF11HotKey, actionDelay);
-                                    break;
-                                case 7:
-                                    GameFunction.castSpellOnTarget(Coordinate.Enemy7[0], Coordinate.Enemy7[1], actionF11HotKey, actionDelay);
-                                    break;
-                                case 8:
-                                    GameFunction.castSpellOnTarget(Coordinate.Enemy8[0], Coordinate.Enemy8[1], actionF11HotKey, actionDelay);
-                                    break;
-                                case 9:
-                                    GameFunction.castSpellOnTarget(Coordinate.Enemy9[0], Coordinate.Enemy9[1], actionF11HotKey, actionDelay);
-                                    break;
-                                default:
-                                    GameFunction.castSpellOnTarget(Coordinate.Enemy1[0], Coordinate.Enemy1[1], actionF11HotKey, actionDelay);
-                                    break;
+                                // 檢查是否需要檢查補魔
+                                if (checkMP.Checked == true)
+                                {
+                                    if (GameFunction.IsNeedReplenishMP(0.4) && GameFunction.NormalCheck())
+                                    {
+                                        // 需要符合抓取魔力條低於40%與抓的到升級按鈕兩個條件
+                                        labelMP.Text = "需要";
+                                        GameFunction.hotKeyPress(actionMPHotKey, 1000);
+                                    }
+                                    else
+                                    {
+                                        labelMP.Text = "不需要補魔";
+                                    }
+                                }
+                                else
+                                    labelMP.Text = "功能關閉";
                             }
-                            /* 直接循環施法 , 最差頂多讀條一半 */
-                            pollingEnemyIndex++;
-                            if (pollingEnemyIndex > 9)
-                                pollingEnemyIndex = 0;
+                            else
+                            {
+                                //循環施放法術(敵方)
+                                switch (pollingEnemyIndex)
+                                {
+                                    case 0:
+                                        GameFunction.castSpellOnTarget(Coordinate.Enemy10[0], Coordinate.Enemy10[1], actionF11HotKey, actionDelay);
+                                        break;
+                                    case 1:
+                                        GameFunction.castSpellOnTarget(Coordinate.Enemy1[0], Coordinate.Enemy1[1], actionF11HotKey, actionDelay);
+                                        break;
+                                    case 2:
+                                        GameFunction.castSpellOnTarget(Coordinate.Enemy2[0], Coordinate.Enemy2[1], actionF11HotKey, actionDelay);
+                                        break;
+                                    case 3:
+                                        GameFunction.castSpellOnTarget(Coordinate.Enemy3[0], Coordinate.Enemy3[1], actionF11HotKey, actionDelay);
+                                        break;
+                                    case 4:
+                                        GameFunction.castSpellOnTarget(Coordinate.Enemy4[0], Coordinate.Enemy4[1], actionF11HotKey, actionDelay);
+                                        break;
+                                    case 5:
+                                        GameFunction.castSpellOnTarget(Coordinate.Enemy5[0], Coordinate.Enemy5[1], actionF11HotKey, actionDelay);
+                                        break;
+                                    case 6:
+                                        GameFunction.castSpellOnTarget(Coordinate.Enemy6[0], Coordinate.Enemy6[1], actionF11HotKey, actionDelay);
+                                        break;
+                                    case 7:
+                                        GameFunction.castSpellOnTarget(Coordinate.Enemy7[0], Coordinate.Enemy7[1], actionF11HotKey, actionDelay);
+                                        break;
+                                    case 8:
+                                        GameFunction.castSpellOnTarget(Coordinate.Enemy8[0], Coordinate.Enemy8[1], actionF11HotKey, actionDelay);
+                                        break;
+                                    case 9:
+                                        GameFunction.castSpellOnTarget(Coordinate.Enemy9[0], Coordinate.Enemy9[1], actionF11HotKey, actionDelay);
+                                        break;
+                                    default:
+                                        GameFunction.castSpellOnTarget(Coordinate.Enemy1[0], Coordinate.Enemy1[1], actionF11HotKey, actionDelay);
+                                        break;
+                                }
+                                /* 直接循環施法 , 最差頂多讀條一半 */
+                                pollingEnemyIndex++;
+                                if (pollingEnemyIndex > 9)
+                                    pollingEnemyIndex = 0;
+                            }
+                        }
+                        break;
+                    case 2:
+                        {
+                            if (GameFunction.BattleCheck() == false)
+                            {
+                                // 檢查是否需要檢查補魔
+                                if (checkMP.Checked == true)
+                                {
+                                    if (GameFunction.IsNeedReplenishMP(0.4) && GameFunction.NormalCheck())
+                                    {
+                                        // 需要符合抓取魔力條低於40%與抓的到升級按鈕兩個條件
+                                        labelMP.Text = "需要";
+                                        GameFunction.hotKeyPress(actionMPHotKey, 1000);
+                                    }
+                                    else
+                                    {
+                                        labelMP.Text = "不需要補魔";
+                                    }
+                                }
+                                else
+                                    labelMP.Text = "功能關閉";
+                                // 非戰鬥中 , 持續招怪
+                                GameFunction.hotKeyPress(actionF11HotKey, actionDelay);
+                            }
+                            else
+                            {
+                                // 戰鬥中 , 持續鞭炮
+                                GameFunction.hotKeyPress(actionDefHotKey, actionDelay);
+                            }
                         }
                         break;
                     default:
@@ -114,6 +186,7 @@ namespace buttonClick
         {
             InitializeComponent();
         }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             // Form1載入時註冊熱鍵
@@ -130,10 +203,16 @@ namespace buttonClick
                 comboF11HotKey.Items.Add(KeyboardSimulator.HotKeyList[i]);
             for (int i = 0; i < KeyboardSimulator.HotKeyList.Length; i++)
                 comboBoxSkillMode.Items.Add(KeyboardSimulator.HotKeyList[i]);
+            for (int i = 0; i < KeyboardSimulator.HotKeyList.Length; i++)
+                comboDefHotKey.Items.Add(KeyboardSimulator.HotKeyList[i]);
+            for (int i = 0; i < KeyboardSimulator.HotKeyList.Length; i++)
+                comboHotKeyMP.Items.Add(KeyboardSimulator.HotKeyList[i]);
 
             comboF11Function.SelectedIndex = 0;
             comboF11HotKey.SelectedIndex = 0;
             comboBoxSkillMode.SelectedIndex = 0;
+            comboDefHotKey.SelectedIndex = 1;
+            comboHotKeyMP.SelectedIndex = 2;
 
             labelX.ForeColor = System.Drawing.Color.Red;
             labelX.Text = "未指定";
@@ -222,35 +301,74 @@ namespace buttonClick
                         actionF11Type = comboF11Function.SelectedIndex;
                     }
                     // 若有熱鍵 , 選擇功能使用的熱鍵
-                    if (comboF11HotKey.SelectedIndex == -1)
+
+                    switch (comboF11HotKey.SelectedIndex)
                     {
-                        MessageBox.Show("請選擇熱鍵", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        case 0:
+                            actionF11HotKey = (byte)Keys.F5;
+                            break;
+                        case 1:
+                            actionF11HotKey = (byte)Keys.F6;
+                            break;
+                        case 2:
+                            actionF11HotKey = (byte)Keys.F7;
+                            break;
+                        case 3:
+                            actionF11HotKey = (byte)Keys.F8;
+                            break;
+                        case 4:
+                            actionF11HotKey = (byte)Keys.F9;
+                            break;
+                        default:
+                            actionF11HotKey = (byte)Keys.F5;
+                            break;
                     }
-                    else
+
+                    switch (comboHotKeyMP.SelectedIndex)
                     {
-                        switch (comboF11HotKey.SelectedIndex)
-                        {
-                            case 0:
-                                actionF11HotKey = (byte)Keys.F5;
-                                break;
-                            case 1:
-                                actionF11HotKey = (byte)Keys.F6;
-                                break;
-                            case 2:
-                                actionF11HotKey = (byte)Keys.F7;
-                                break;
-                            case 3:
-                                actionF11HotKey = (byte)Keys.F8;
-                                break;
-                            case 4:
-                                actionF11HotKey = (byte)Keys.F9;
-                                break;
-                            default:
-                                actionF11HotKey = (byte)Keys.F5;
-                                break;
-                        }
+                        case 0:
+                            actionMPHotKey = (byte)Keys.F5;
+                            break;
+                        case 1:
+                            actionMPHotKey = (byte)Keys.F6;
+                            break;
+                        case 2:
+                            actionMPHotKey = (byte)Keys.F7;
+                            break;
+                        case 3:
+                            actionMPHotKey = (byte)Keys.F8;
+                            break;
+                        case 4:
+                            actionMPHotKey = (byte)Keys.F9;
+                            break;
+                        default:
+                            actionMPHotKey = (byte)Keys.F5;
+                            break;
                     }
+
+                    switch (comboDefHotKey.SelectedIndex)
+                    {
+                        case 0:
+                            actionDefHotKey = (byte)Keys.F5;
+                            break;
+                        case 1:
+                            actionDefHotKey = (byte)Keys.F6;
+                            break;
+                        case 2:
+                            actionDefHotKey = (byte)Keys.F7;
+                            break;
+                        case 3:
+                            actionDefHotKey = (byte)Keys.F8;
+                            break;
+                        case 4:
+                            actionDefHotKey = (byte)Keys.F9;
+                            break;
+                        default:
+                            actionDefHotKey = (byte)Keys.F5;
+                            break;
+                    }
+
+
                     // 確保在開始新線程之前先停止舊線程
                     if (actionThread.IsAlive)
                     {
@@ -441,7 +559,7 @@ namespace buttonClick
         }
 
         private void button1_Click_1(object sender, EventArgs e)
-        {            
+        {
             // 抓取視窗位置 & 視窗長寬數值
             if (!SystemFuction.GetWindowCoordinates("FairyLand"))
             {
@@ -473,33 +591,12 @@ namespace buttonClick
 
         private void button2_Click(object sender, EventArgs e)
         {
-            // 抓取視窗位置 & 視窗長寬數值
-            if (!SystemFuction.GetWindowCoordinates("FairyLand"))
-            {
-                MessageBox.Show("抓取視窗錯誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            int x, y;
-            int xOffset = Coordinate.windowBoxLineOffset + 18;
-            int yOffset = Coordinate.windowHOffset + 1 +22;
-
-            x = Coordinate.windowTop[0] + xOffset;
-            y = Coordinate.windowTop[1] + yOffset;
-            // 從畫面上擷取指定區域的圖像
-            Bitmap screenshot = BitmapImage.CaptureScreen(x, y, 92, 1);
-            Color FullColor = Color.FromArgb(73, 163, 254); 
-            Color NotFullColor = Color.FromArgb(73, 206, 254);
-            // 計算目標顏色的佔據比例
-            double FullColorCom = BitmapImage.CalculateColorRatio(screenshot, FullColor);
-            double NotFullColorCom = BitmapImage.CalculateColorRatio(screenshot, NotFullColor);
-
-            MessageBox.Show($"滿色比例'{FullColorCom} 的座標\n"+ $"非滿色比例'{NotFullColorCom} 的座標");
+            GameFunction.BattleCheck();
         }
     }
     public class GameFunction
     {
-        public static string[] GameFunctionList = { "施放法術", "循環施放法術(敵)" };
+        public static string[] GameFunctionList = { "施放法術", "循環施放法術(敵)", "循環招怪與鞭炮" };
         public static void castSpellOnTarget(int x, int y, byte keyCode, int delay)
         {
             /*
@@ -511,22 +608,46 @@ namespace buttonClick
             MouseSimulator.LeftMousePress(x, y);
             Thread.Sleep(delay);
         }
-        public static bool BattleCheck()
+
+        public static bool NormalCheck()
         {
-            int x, y;
-            int xOffset = Coordinate.windowBoxLineOffset + 757;
-            int yOffset = Coordinate.windowHOffset;
 
-            x = Coordinate.windowTop[0] + xOffset;
-            y = Coordinate.windowTop[1] + yOffset;
+            int x_LU, y_LU;
+            int xOffset_LU = Coordinate.windowBoxLineOffset + 129;
+            int yOffset_LU = Coordinate.windowHOffset;
+            x_LU = Coordinate.windowTop[0] + xOffset_LU;
+            y_LU = Coordinate.windowTop[1] + yOffset_LU;
 
-            Bitmap resourceBitmap = Properties.Resources.fighting_keybar;
+            Bitmap levelUpBMP = Properties.Resources.levelup;
+
             // 從畫面上擷取指定區域的圖像
-            Bitmap screenshot = BitmapImage.CaptureScreen(x, y, 44, 313);
+            Bitmap screenshot_LevelUp = BitmapImage.CaptureScreen(x_LU, y_LU, 50, 43);
 
             // 比對圖像
-            double similarity = BitmapImage.CompareImages(screenshot, resourceBitmap);
-            if (similarity > 35)
+            double Final_LU = BitmapImage.CompareImages(screenshot_LevelUp, levelUpBMP);
+
+            if (Final_LU > 50)
+                return true;
+            else
+                return false;
+        }
+        public static bool BattleCheck()
+        {
+            int x_key, y_key;
+            int xOffset_key = Coordinate.windowBoxLineOffset + 757;
+            int yOffset_key = Coordinate.windowHOffset;
+
+            x_key = Coordinate.windowTop[0] + xOffset_key;
+            y_key = Coordinate.windowTop[1] + yOffset_key;
+
+            Bitmap fight_keybarBMP = Properties.Resources.fighting_keybar;
+            // 從畫面上擷取指定區域的圖像
+            Bitmap screenshot_keyBar = BitmapImage.CaptureScreen(x_key, y_key, 44, 313);
+
+            // 比對圖像
+            double Final_KeyBar = BitmapImage.CompareImages(screenshot_keyBar, fight_keybarBMP);
+
+            if (Final_KeyBar > 35)
                 return true;
             else
                 return false;
@@ -548,10 +669,13 @@ namespace buttonClick
             double NotFullColorCom = BitmapImage.CalculateColorRatio(screenshot, NotFullColor);
 
             if (FullColorCom > 0)
+            {
                 return false;
+            }
             else if (NotFullColorCom < NeedRatio)
+            {
                 return true;
-
+            }
             return false;
         }
         public static void hotKeyPress(byte keyCode, int delay)

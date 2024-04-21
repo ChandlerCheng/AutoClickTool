@@ -37,6 +37,10 @@ namespace buttonClick
             this.comboF11Function = new System.Windows.Forms.ComboBox();
             this.comboF11HotKey = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.comboDefHotKey = new System.Windows.Forms.ComboBox();
+            this.comboHotKeyMP = new System.Windows.Forms.ComboBox();
+            this.checkMP = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -53,6 +57,8 @@ namespace buttonClick
             this.labelY = new System.Windows.Forms.Label();
             this.labelX = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.labelMP = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -79,7 +85,7 @@ namespace buttonClick
             // 
             // textF11Ms
             // 
-            this.textF11Ms.Location = new System.Drawing.Point(68, 80);
+            this.textF11Ms.Location = new System.Drawing.Point(68, 114);
             this.textF11Ms.Name = "textF11Ms";
             this.textF11Ms.Size = new System.Drawing.Size(66, 23);
             this.textF11Ms.TabIndex = 5;
@@ -88,7 +94,7 @@ namespace buttonClick
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(29, 83);
+            this.label4.Location = new System.Drawing.Point(29, 117);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(31, 15);
             this.label4.TabIndex = 6;
@@ -96,7 +102,7 @@ namespace buttonClick
             // 
             // buttonF11FunctionRead
             // 
-            this.buttonF11FunctionRead.Location = new System.Drawing.Point(6, 125);
+            this.buttonF11FunctionRead.Location = new System.Drawing.Point(6, 180);
             this.buttonF11FunctionRead.Name = "buttonF11FunctionRead";
             this.buttonF11FunctionRead.Size = new System.Drawing.Size(76, 23);
             this.buttonF11FunctionRead.TabIndex = 7;
@@ -124,6 +130,10 @@ namespace buttonClick
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.comboDefHotKey);
+            this.groupBox1.Controls.Add(this.comboHotKeyMP);
+            this.groupBox1.Controls.Add(this.checkMP);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label3);
@@ -132,16 +142,53 @@ namespace buttonClick
             this.groupBox1.Controls.Add(this.textF11Ms);
             this.groupBox1.Controls.Add(this.comboF11HotKey);
             this.groupBox1.Controls.Add(this.comboF11Function);
-            this.groupBox1.Location = new System.Drawing.Point(9, 80);
+            this.groupBox1.Location = new System.Drawing.Point(9, 133);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 154);
+            this.groupBox1.Size = new System.Drawing.Size(200, 209);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "F11 循環功能設定";
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 83);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(55, 15);
+            this.label8.TabIndex = 15;
+            this.label8.Text = "鞭炮熱鍵";
+            // 
+            // comboDefHotKey
+            // 
+            this.comboDefHotKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboDefHotKey.FormattingEnabled = true;
+            this.comboDefHotKey.Location = new System.Drawing.Point(67, 80);
+            this.comboDefHotKey.Name = "comboDefHotKey";
+            this.comboDefHotKey.Size = new System.Drawing.Size(67, 23);
+            this.comboDefHotKey.TabIndex = 14;
+            // 
+            // comboHotKeyMP
+            // 
+            this.comboHotKeyMP.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboHotKeyMP.FormattingEnabled = true;
+            this.comboHotKeyMP.Location = new System.Drawing.Point(86, 145);
+            this.comboHotKeyMP.Name = "comboHotKeyMP";
+            this.comboHotKeyMP.Size = new System.Drawing.Size(67, 23);
+            this.comboHotKeyMP.TabIndex = 13;
+            // 
+            // checkMP
+            // 
+            this.checkMP.AutoSize = true;
+            this.checkMP.Location = new System.Drawing.Point(6, 145);
+            this.checkMP.Name = "checkMP";
+            this.checkMP.Size = new System.Drawing.Size(74, 19);
+            this.checkMP.TabIndex = 12;
+            this.checkMP.Text = "魔力檢查";
+            this.checkMP.UseVisualStyleBackColor = true;
+            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(116, 125);
+            this.button1.Location = new System.Drawing.Point(119, 180);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 11;
@@ -201,7 +248,7 @@ namespace buttonClick
             this.groupBox2.Controls.Add(this.btnOpenNumFunc);
             this.groupBox2.Controls.Add(this.labelNumDisplay);
             this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Location = new System.Drawing.Point(9, 240);
+            this.groupBox2.Location = new System.Drawing.Point(214, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(200, 54);
             this.groupBox2.TabIndex = 14;
@@ -252,7 +299,7 @@ namespace buttonClick
             this.groupBox3.Controls.Add(this.labelSkillMode);
             this.groupBox3.Controls.Add(this.btnSkillMode);
             this.groupBox3.Controls.Add(this.label7);
-            this.groupBox3.Location = new System.Drawing.Point(9, 314);
+            this.groupBox3.Location = new System.Drawing.Point(220, 80);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(200, 85);
             this.groupBox3.TabIndex = 15;
@@ -261,13 +308,15 @@ namespace buttonClick
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.labelMP);
+            this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.labelY);
             this.groupBox4.Controls.Add(this.labelX);
             this.groupBox4.Controls.Add(this.label1);
             this.groupBox4.Controls.Add(this.label2);
             this.groupBox4.Location = new System.Drawing.Point(9, 3);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(199, 72);
+            this.groupBox4.Size = new System.Drawing.Size(199, 120);
             this.groupBox4.TabIndex = 16;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "座標";
@@ -275,7 +324,7 @@ namespace buttonClick
             // labelY
             // 
             this.labelY.AutoSize = true;
-            this.labelY.Location = new System.Drawing.Point(67, 48);
+            this.labelY.Location = new System.Drawing.Point(68, 48);
             this.labelY.Name = "labelY";
             this.labelY.Size = new System.Drawing.Size(97, 15);
             this.labelY.TabIndex = 5;
@@ -292,7 +341,7 @@ namespace buttonClick
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(38, 415);
+            this.button2.Location = new System.Drawing.Point(38, 348);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(130, 23);
             this.button2.TabIndex = 17;
@@ -300,11 +349,29 @@ namespace buttonClick
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(34, 76);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(26, 15);
+            this.label9.TabIndex = 6;
+            this.label9.Text = "MP";
+            // 
+            // labelMP
+            // 
+            this.labelMP.AutoSize = true;
+            this.labelMP.Location = new System.Drawing.Point(68, 76);
+            this.labelMP.Name = "labelMP";
+            this.labelMP.Size = new System.Drawing.Size(84, 15);
+            this.labelMP.TabIndex = 7;
+            this.labelMP.Text = "<Label  MP >";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(220, 460);
+            this.ClientSize = new System.Drawing.Size(215, 383);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -351,6 +418,12 @@ namespace buttonClick
         private System.Windows.Forms.Label labelX;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ComboBox comboHotKeyMP;
+        private System.Windows.Forms.CheckBox checkMP;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox comboDefHotKey;
+        private System.Windows.Forms.Label labelMP;
+        private System.Windows.Forms.Label label9;
     }
 }
 
