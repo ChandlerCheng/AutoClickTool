@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -60,37 +62,37 @@ namespace buttonClick
                             switch (pollingEnemyIndex)
                             {
                                 case 0:
-                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy10[0], EnemyXY.Enemy10[1], actionF11HotKey, actionDelay);
+                                    GameFunction.castSpellOnTarget(Coordinate.Enemy10[0], Coordinate.Enemy10[1], actionF11HotKey, actionDelay);
                                     break;
                                 case 1:
-                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy1[0], EnemyXY.Enemy1[1], actionF11HotKey, actionDelay);
+                                    GameFunction.castSpellOnTarget(Coordinate.Enemy1[0], Coordinate.Enemy1[1], actionF11HotKey, actionDelay);
                                     break;
                                 case 2:
-                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy2[0], EnemyXY.Enemy2[1], actionF11HotKey, actionDelay);
+                                    GameFunction.castSpellOnTarget(Coordinate.Enemy2[0], Coordinate.Enemy2[1], actionF11HotKey, actionDelay);
                                     break;
                                 case 3:
-                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy3[0], EnemyXY.Enemy3[1], actionF11HotKey, actionDelay);
+                                    GameFunction.castSpellOnTarget(Coordinate.Enemy3[0], Coordinate.Enemy3[1], actionF11HotKey, actionDelay);
                                     break;
                                 case 4:
-                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy4[0], EnemyXY.Enemy4[1], actionF11HotKey, actionDelay);
+                                    GameFunction.castSpellOnTarget(Coordinate.Enemy4[0], Coordinate.Enemy4[1], actionF11HotKey, actionDelay);
                                     break;
                                 case 5:
-                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy5[0], EnemyXY.Enemy5[1], actionF11HotKey, actionDelay);
+                                    GameFunction.castSpellOnTarget(Coordinate.Enemy5[0], Coordinate.Enemy5[1], actionF11HotKey, actionDelay);
                                     break;
                                 case 6:
-                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy6[0], EnemyXY.Enemy6[1], actionF11HotKey, actionDelay);
+                                    GameFunction.castSpellOnTarget(Coordinate.Enemy6[0], Coordinate.Enemy6[1], actionF11HotKey, actionDelay);
                                     break;
                                 case 7:
-                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy7[0], EnemyXY.Enemy7[1], actionF11HotKey, actionDelay);
+                                    GameFunction.castSpellOnTarget(Coordinate.Enemy7[0], Coordinate.Enemy7[1], actionF11HotKey, actionDelay);
                                     break;
                                 case 8:
-                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy8[0], EnemyXY.Enemy8[1], actionF11HotKey, actionDelay);
+                                    GameFunction.castSpellOnTarget(Coordinate.Enemy8[0], Coordinate.Enemy8[1], actionF11HotKey, actionDelay);
                                     break;
                                 case 9:
-                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy9[0], EnemyXY.Enemy9[1], actionF11HotKey, actionDelay);
+                                    GameFunction.castSpellOnTarget(Coordinate.Enemy9[0], Coordinate.Enemy9[1], actionF11HotKey, actionDelay);
                                     break;
                                 default:
-                                    GameFunction.castSpellOnTarget(EnemyXY.Enemy1[0], EnemyXY.Enemy1[1], actionF11HotKey, actionDelay);
+                                    GameFunction.castSpellOnTarget(Coordinate.Enemy1[0], Coordinate.Enemy1[1], actionF11HotKey, actionDelay);
                                     break;
                             }
                             /* 直接循環施法 , 最差頂多讀條一半 */
@@ -111,8 +113,9 @@ namespace buttonClick
         private void Form1_Load(object sender, EventArgs e)
         {
             // Form1載入時註冊熱鍵
-            SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.F11, 0, (int)Keys.F11); // 主循環功能啟動/關閉
-            SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.F12, 0, (int)Keys.F10); // 抓取座標
+
+            SystemFuction.RegisterHotKey(this.Handle, 1, 0, (int)Keys.F1); // 主循環功能啟動/關閉
+            SystemFuction.RegisterHotKey(this.Handle, 2, 0, (int)Keys.F2); // 抓取座標
 
             actionThread = new Thread(ActionLoop);
 
@@ -137,8 +140,8 @@ namespace buttonClick
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Form1關閉時取消註冊熱鍵
-            SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.F11);
-            SystemFuction.UnregisterHotKey(this.Handle, (int)DefineKey.F12);
+            SystemFuction.UnregisterHotKey(this.Handle, 1);
+            SystemFuction.UnregisterHotKey(this.Handle, 2);
 
             if (bIsNumKeyOn)
             {
@@ -266,7 +269,7 @@ namespace buttonClick
                     labelX.ForeColor = System.Drawing.Color.Green;
                     labelY.ForeColor = System.Drawing.Color.Green;
 
-                    EnemyXY.CalculateAllEnemy(cursor.X, cursor.Y);
+                    Coordinate.CalculateAllEnemy(cursor.X, cursor.Y);
                 }
                 else if (m.WParam.ToInt32() >= 3 || m.WParam.ToInt32() < 15)
                 {
@@ -274,34 +277,34 @@ namespace buttonClick
                     switch (i)
                     {
                         case DefineKey.Num0: // Num 0 = 10
-                            GameFunction.castSpellOnTarget(EnemyXY.Enemy10[0], EnemyXY.Enemy10[1], actionF11HotKey, actionDelay);
+                            GameFunction.castSpellOnTarget(Coordinate.Enemy10[0], Coordinate.Enemy10[1], actionF11HotKey, actionDelay);
                             break;
                         case DefineKey.Num1:
-                            GameFunction.castSpellOnTarget(EnemyXY.Enemy1[0], EnemyXY.Enemy1[1], actionF11HotKey, actionDelay);
+                            GameFunction.castSpellOnTarget(Coordinate.Enemy1[0], Coordinate.Enemy1[1], actionF11HotKey, actionDelay);
                             break;
                         case DefineKey.Num2:
-                            GameFunction.castSpellOnTarget(EnemyXY.Enemy2[0], EnemyXY.Enemy2[1], actionF11HotKey, actionDelay);
+                            GameFunction.castSpellOnTarget(Coordinate.Enemy2[0], Coordinate.Enemy2[1], actionF11HotKey, actionDelay);
                             break;
                         case DefineKey.Num3:
-                            GameFunction.castSpellOnTarget(EnemyXY.Enemy3[0], EnemyXY.Enemy3[1], actionF11HotKey, actionDelay);
+                            GameFunction.castSpellOnTarget(Coordinate.Enemy3[0], Coordinate.Enemy3[1], actionF11HotKey, actionDelay);
                             break;
                         case DefineKey.Num4:
-                            GameFunction.castSpellOnTarget(EnemyXY.Enemy4[0], EnemyXY.Enemy4[1], actionF11HotKey, actionDelay);
+                            GameFunction.castSpellOnTarget(Coordinate.Enemy4[0], Coordinate.Enemy4[1], actionF11HotKey, actionDelay);
                             break;
                         case DefineKey.Num5:
-                            GameFunction.castSpellOnTarget(EnemyXY.Enemy5[0], EnemyXY.Enemy5[1], actionF11HotKey, actionDelay);
+                            GameFunction.castSpellOnTarget(Coordinate.Enemy5[0], Coordinate.Enemy5[1], actionF11HotKey, actionDelay);
                             break;
                         case DefineKey.Num6:
-                            GameFunction.castSpellOnTarget(EnemyXY.Enemy6[0], EnemyXY.Enemy6[1], actionF11HotKey, actionDelay);
+                            GameFunction.castSpellOnTarget(Coordinate.Enemy6[0], Coordinate.Enemy6[1], actionF11HotKey, actionDelay);
                             break;
                         case DefineKey.Num7:
-                            GameFunction.castSpellOnTarget(EnemyXY.Enemy7[0], EnemyXY.Enemy7[1], actionF11HotKey, actionDelay);
+                            GameFunction.castSpellOnTarget(Coordinate.Enemy7[0], Coordinate.Enemy7[1], actionF11HotKey, actionDelay);
                             break;
                         case DefineKey.Num8:
-                            GameFunction.castSpellOnTarget(EnemyXY.Enemy8[0], EnemyXY.Enemy8[1], actionF11HotKey, actionDelay);
+                            GameFunction.castSpellOnTarget(Coordinate.Enemy8[0], Coordinate.Enemy8[1], actionF11HotKey, actionDelay);
                             break;
                         case DefineKey.Num9:
-                            GameFunction.castSpellOnTarget(EnemyXY.Enemy9[0], EnemyXY.Enemy9[1], actionF11HotKey, actionDelay);
+                            GameFunction.castSpellOnTarget(Coordinate.Enemy9[0], Coordinate.Enemy9[1], actionF11HotKey, actionDelay);
                             break;
                         case DefineKey.Num0_Skill:
                             {
@@ -432,10 +435,67 @@ namespace buttonClick
                 }
             }
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {            
+            // 抓取視窗位置 & 視窗長寬數值
+            if (!SystemFuction.GetWindowCoordinates("FairyLand"))
+            {
+                MessageBox.Show("抓取視窗錯誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            /* 
+               中心怪物位置會位於 800x600中的 275,290的位置
+               遊戲本體800x600
+               視窗總長816x638
+               視窗邊框約8
+               視窗標題列約30
+             */
+            int x, y;
+            int xOffset = Coordinate.windowBoxLineOffset + 275;
+            int yOffset = Coordinate.windowHOffset + 290;
+
+            x = Coordinate.windowTop[0] + xOffset;
+            y = Coordinate.windowTop[1] + yOffset;
+            labelX.Text = x.ToString();
+            labelY.Text = y.ToString();
+
+            labelX.ForeColor = System.Drawing.Color.Green;
+            labelY.ForeColor = System.Drawing.Color.Green;
+
+            //MouseSimulator.RightMousePress(x, y);
+            Coordinate.CalculateAllEnemy(x, y);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            // 抓取視窗位置 & 視窗長寬數值
+            if (!SystemFuction.GetWindowCoordinates("FairyLand"))
+            {
+                MessageBox.Show("抓取視窗錯誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            int x, y;
+            int xOffset = Coordinate.windowBoxLineOffset;
+            int yOffset = Coordinate.windowHOffset + 756;
+
+            x = Coordinate.windowTop[0] + xOffset;
+            y = Coordinate.windowTop[1] + yOffset;
+
+            Bitmap resourceBitmap = Properties.Resources.fighting_keybar;            
+            // 從畫面上擷取指定區域的圖像
+            Bitmap screenshot = BitmapImage.CaptureScreen(x, y, 44, 313);
+
+            // 比對圖像
+            double similarity = BitmapImage.CompareImages(screenshot, resourceBitmap);
+
+            MessageBox.Show($"相似度：{similarity}%");
+        }
     }
     public class GameFunction
     {
-        public static string[] GameFunctionList = { "施放法術" ,"循環施放法術(敵)"};
+        public static string[] GameFunctionList = { "施放法術", "循環施放法術(敵)" };
         public static void castSpellOnTarget(int x, int y, byte keyCode, int delay)
         {
             /*
@@ -455,8 +515,15 @@ namespace buttonClick
                 Thread.Sleep(delay);
         }
     }
-    public class EnemyXY
+    public class Coordinate
     {
+        // 視窗資訊
+        public static int[] windowTop = new int[2];
+        public static int[] windowBottom = new int[2];
+        public static int windowHeigh = 0;
+        public static int windowWidth = 0;
+        public static int windowHOffset = 30;
+        public static int windowBoxLineOffset = 8;
         // 敵方座標
         public static int[] Enemy1 = new int[2];
         public static int[] Enemy2 = new int[2];
@@ -494,6 +561,45 @@ namespace buttonClick
         {
             to[0] = from[0] + xOffset;
             to[1] = from[1] + yOffset;
+        }
+    }
+    public class BitmapImage
+    {
+        public static Bitmap CaptureScreen(int x, int y, int width, int height)
+        {
+            // 建立與畫面相同大小的圖像
+            Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+            using (Graphics graphics = Graphics.FromImage(bitmap))
+            {
+                // 將畫面的內容繪製到圖像上
+                graphics.CopyFromScreen(x, y, 0, 0, bitmap.Size, CopyPixelOperation.SourceCopy);
+            }
+            return bitmap;
+        }
+        public static double CompareImages(Bitmap image1, Bitmap image2)
+        {
+            if (image1.Size != image2.Size)
+                throw new ArgumentException("圖像大小不一致");
+
+            int width = image1.Width;
+            int height = image1.Height;
+
+            // 計算相似度
+            double difference = 0;
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Color pixel1 = image1.GetPixel(x, y);
+                    Color pixel2 = image2.GetPixel(x, y);
+                    difference += Math.Abs(pixel1.R - pixel2.R) + Math.Abs(pixel1.G - pixel2.G) + Math.Abs(pixel1.B - pixel2.B);
+                }
+            }
+
+            double totalPixels = width * height * 3; // 3 是因為每個像素有三個顏色通道(RGB)
+            double percentageSimilarity = (totalPixels - difference) / totalPixels * 100;
+
+            return percentageSimilarity;
         }
     }
     public class MouseSimulator
@@ -593,5 +699,57 @@ namespace buttonClick
 
         [DllImport("user32.dll")]
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        // 匯入 User32.dll 中的 FindWindow 和 GetWindowRect 函數
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32.dll")]
+        public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+        // 定義 RECT 結構
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
+        // 獲取指定名稱視窗的座標
+        public static bool GetWindowCoordinates(string windowTitle)
+        {
+            IntPtr windowHandle = FindWindow(null, windowTitle);
+            if (windowHandle != IntPtr.Zero)
+            {
+                if (GetWindowRect(windowHandle, out RECT GameWindowsInfor))
+                {
+                    /*
+                        遊戲本體800x600
+                        視窗總長816x638
+                        視窗邊框約8
+                     */
+                    Coordinate.windowTop[0] = GameWindowsInfor.Left;
+                    Coordinate.windowTop[1] = GameWindowsInfor.Top;
+                    Coordinate.windowBottom[0] = GameWindowsInfor.Right;
+                    Coordinate.windowBottom[1] = GameWindowsInfor.Bottom;
+                    Coordinate.windowHeigh = GameWindowsInfor.Bottom - GameWindowsInfor.Top;
+                    Coordinate.windowWidth = GameWindowsInfor.Right - GameWindowsInfor.Left;
+                    /*MessageBox.Show($"視窗 '{windowTitle}' 的左邊頂點座標為：({GameWindowsInfor.Left}, {GameWindowsInfor.Top})\n" +
+                    $"右邊底部座標為：({GameWindowsInfor.Right}, {GameWindowsInfor.Bottom})\n" +
+                    $"視窗長寬：({GameWindowsInfor.Right - GameWindowsInfor.Left}, {GameWindowsInfor.Bottom - GameWindowsInfor.Top})\n");*/
+                    return true;
+                }
+                else
+                {
+                    //MessageBox.Show($"無法獲取視窗 '{windowTitle}' 的座標");
+                    return false;
+                }
+            }
+            else
+            {
+                //MessageBox.Show($"找不到名稱為 '{windowTitle}' 的視窗");
+                return false;
+            }
+        }
     }
 }
