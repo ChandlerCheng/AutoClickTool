@@ -480,7 +480,21 @@ namespace buttonClick
                 return;
             }
 
-            
+            int x, y;
+            int xOffset = Coordinate.windowBoxLineOffset + 18;
+            int yOffset = Coordinate.windowHOffset + 1 +22;
+
+            x = Coordinate.windowTop[0] + xOffset;
+            y = Coordinate.windowTop[1] + yOffset;
+            // 從畫面上擷取指定區域的圖像
+            Bitmap screenshot = BitmapImage.CaptureScreen(x, y, 92, 1);
+            Color FullColor = Color.FromArgb(73, 163, 254); 
+            Color NotFullColor = Color.FromArgb(73, 206, 254);
+            // 計算目標顏色的佔據比例
+            double FullColorCom = BitmapImage.CalculateColorRatio(screenshot, FullColor);
+            double NotFullColorCom = BitmapImage.CalculateColorRatio(screenshot, NotFullColor);
+
+            MessageBox.Show($"滿色比例'{FullColorCom} 的座標\n"+ $"非滿色比例'{NotFullColorCom} 的座標");
         }
     }
     public class GameFunction
@@ -516,6 +530,29 @@ namespace buttonClick
                 return true;
             else
                 return false;
+        }
+        public static bool IsNeedReplenishMP(double NeedRatio)
+        {
+            int x, y;
+            int xOffset = Coordinate.windowBoxLineOffset + 18;
+            int yOffset = Coordinate.windowHOffset + 1 + 22;
+
+            x = Coordinate.windowTop[0] + xOffset;
+            y = Coordinate.windowTop[1] + yOffset;
+            // 從畫面上擷取指定區域的圖像
+            Bitmap screenshot = BitmapImage.CaptureScreen(x, y, 92, 1);
+            Color FullColor = Color.FromArgb(73, 163, 254);
+            Color NotFullColor = Color.FromArgb(73, 206, 254);
+            // 計算目標顏色的佔據比例
+            double FullColorCom = BitmapImage.CalculateColorRatio(screenshot, FullColor);
+            double NotFullColorCom = BitmapImage.CalculateColorRatio(screenshot, NotFullColor);
+
+            if (FullColorCom > 0)
+                return false;
+            else if (NotFullColorCom < NeedRatio)
+                return true;
+
+            return false;
         }
         public static void hotKeyPress(byte keyCode, int delay)
         {
@@ -574,6 +611,33 @@ namespace buttonClick
     }
     public class BitmapImage
     {
+        public static double CalculateColorRatio(Bitmap bitmap, Color targetColor)
+        {
+            // 獲取圖像的寬度和高度
+            int width = bitmap.Width;
+            int height = bitmap.Height;
+
+            // 初始化目標顏色像素數量
+            int targetColorCount = 0;
+
+            // 遍歷圖像的每個像素，計算目標顏色的像素數量
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Color pixelColor = bitmap.GetPixel(x, y);
+                    if (pixelColor.R == targetColor.R && pixelColor.G == targetColor.G && pixelColor.B == targetColor.B)
+                    {
+                        targetColorCount++;
+                    }
+                }
+            }
+
+            // 計算目標顏色的佔據比例
+            double targetColorRatio = (double)targetColorCount / (width * height);
+
+            return targetColorRatio;
+        }
         public static Bitmap CaptureScreen(int x, int y, int width, int height)
         {
             // 建立與畫面相同大小的圖像

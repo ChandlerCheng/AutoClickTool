@@ -296,7 +296,7 @@ namespace buttonClick
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(130, 23);
             this.button2.TabIndex = 17;
-            this.button2.Text = "戰鬥畫面檢測(測試)";
+            this.button2.Text = "測試功能";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
