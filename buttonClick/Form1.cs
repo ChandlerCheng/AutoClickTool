@@ -53,11 +53,15 @@ namespace buttonClick
                     case 0:
                         {
                             // 施放法術
+                            if (GameFunction.BattleCheck() == false)
+                                break;
                             GameFunction.castSpellOnTarget(actionX, actionY, actionF11HotKey, actionDelay);
                         }
                         break;
                     case 1:
                         {
+                            if (GameFunction.BattleCheck() == false)
+                                break;
                             //循環施放法術(敵方)
                             switch (pollingEnemyIndex)
                             {
@@ -114,8 +118,8 @@ namespace buttonClick
         {
             // Form1載入時註冊熱鍵
 
-            SystemFuction.RegisterHotKey(this.Handle, 1, 0, (int)Keys.F1); // 主循環功能啟動/關閉
-            SystemFuction.RegisterHotKey(this.Handle, 2, 0, (int)Keys.F2); // 抓取座標
+            SystemFuction.RegisterHotKey(this.Handle, 1, 0, (int)Keys.F11); // 主循環功能啟動/關閉
+            SystemFuction.RegisterHotKey(this.Handle, 2, 0, (int)Keys.F10); // 抓取座標
 
             actionThread = new Thread(ActionLoop);
 
@@ -476,21 +480,7 @@ namespace buttonClick
                 return;
             }
 
-            int x, y;
-            int xOffset = Coordinate.windowBoxLineOffset;
-            int yOffset = Coordinate.windowHOffset + 756;
-
-            x = Coordinate.windowTop[0] + xOffset;
-            y = Coordinate.windowTop[1] + yOffset;
-
-            Bitmap resourceBitmap = Properties.Resources.fighting_keybar;            
-            // 從畫面上擷取指定區域的圖像
-            Bitmap screenshot = BitmapImage.CaptureScreen(x, y, 44, 313);
-
-            // 比對圖像
-            double similarity = BitmapImage.CompareImages(screenshot, resourceBitmap);
-
-            MessageBox.Show($"相似度：{similarity}%");
+            
         }
     }
     public class GameFunction
@@ -507,7 +497,26 @@ namespace buttonClick
             MouseSimulator.LeftMousePress(x, y);
             Thread.Sleep(delay);
         }
+        public static bool BattleCheck()
+        {
+            int x, y;
+            int xOffset = Coordinate.windowBoxLineOffset + 757;
+            int yOffset = Coordinate.windowHOffset;
 
+            x = Coordinate.windowTop[0] + xOffset;
+            y = Coordinate.windowTop[1] + yOffset;
+
+            Bitmap resourceBitmap = Properties.Resources.fighting_keybar;
+            // 從畫面上擷取指定區域的圖像
+            Bitmap screenshot = BitmapImage.CaptureScreen(x, y, 44, 313);
+
+            // 比對圖像
+            double similarity = BitmapImage.CompareImages(screenshot, resourceBitmap);
+            if (similarity > 35)
+                return true;
+            else
+                return false;
+        }
         public static void hotKeyPress(byte keyCode, int delay)
         {
             KeyboardSimulator.KeyPress(keyCode);
@@ -592,11 +601,13 @@ namespace buttonClick
                 {
                     Color pixel1 = image1.GetPixel(x, y);
                     Color pixel2 = image2.GetPixel(x, y);
-                    difference += Math.Abs(pixel1.R - pixel2.R) + Math.Abs(pixel1.G - pixel2.G) + Math.Abs(pixel1.B - pixel2.B);
+
+                    if (Math.Abs(pixel1.R - pixel2.R) > 10 || Math.Abs(pixel1.G - pixel2.G) > 10 || Math.Abs(pixel1.B - pixel2.B) > 10)
+                        difference++;
                 }
             }
 
-            double totalPixels = width * height * 3; // 3 是因為每個像素有三個顏色通道(RGB)
+            double totalPixels = width * height;
             double percentageSimilarity = (totalPixels - difference) / totalPixels * 100;
 
             return percentageSimilarity;
