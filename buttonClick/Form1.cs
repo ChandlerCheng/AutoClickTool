@@ -44,6 +44,9 @@ namespace buttonClick
         private int actionX = 0;
         private int actionY = 0;
         private int actionDelay = 1000;
+        private int registerHK_MainRoop = (int)Keys.F11;
+        private int registerHK_GetCoordinate = (int)Keys.F10;
+
 
         private void ActionLoop()
         {
@@ -63,16 +66,9 @@ namespace buttonClick
                                     if (GameFunction.IsNeedReplenishMP(0.4) && GameFunction.NormalCheck())
                                     {
                                         // 需要符合抓取魔力條低於40%與抓的到升級按鈕兩個條件
-                                        labelMP.Text = "需要";
                                         GameFunction.hotKeyPress(actionMPHotKey, 1000);
                                     }
-                                    else
-                                    {
-                                        labelMP.Text = "不需要補魔";
-                                    }
                                 }
-                                else
-                                    labelMP.Text = "功能關閉";
                             }
                             else
                             {
@@ -90,16 +86,9 @@ namespace buttonClick
                                     if (GameFunction.IsNeedReplenishMP(0.4) && GameFunction.NormalCheck())
                                     {
                                         // 需要符合抓取魔力條低於40%與抓的到升級按鈕兩個條件
-                                        labelMP.Text = "需要";
                                         GameFunction.hotKeyPress(actionMPHotKey, 1000);
                                     }
-                                    else
-                                    {
-                                        labelMP.Text = "不需要補魔";
-                                    }
                                 }
-                                else
-                                    labelMP.Text = "功能關閉";
                             }
                             else
                             {
@@ -157,16 +146,9 @@ namespace buttonClick
                                     if (GameFunction.IsNeedReplenishMP(0.4) && GameFunction.NormalCheck())
                                     {
                                         // 需要符合抓取魔力條低於40%與抓的到升級按鈕兩個條件
-                                        labelMP.Text = "需要";
                                         GameFunction.hotKeyPress(actionMPHotKey, 1000);
                                     }
-                                    else
-                                    {
-                                        labelMP.Text = "不需要補魔";
-                                    }
                                 }
-                                else
-                                    labelMP.Text = "功能關閉";
                                 // 非戰鬥中 , 持續招怪
                                 GameFunction.hotKeyPress(actionF11HotKey, actionDelay);
                             }
@@ -191,8 +173,8 @@ namespace buttonClick
         {
             // Form1載入時註冊熱鍵
 
-            SystemFuction.RegisterHotKey(this.Handle, 1, 0, (int)Keys.F11); // 主循環功能啟動/關閉
-            SystemFuction.RegisterHotKey(this.Handle, 2, 0, (int)Keys.F10); // 抓取座標
+            SystemFuction.RegisterHotKey(this.Handle, 1, 0, registerHK_MainRoop); // 主循環功能啟動/關閉
+            SystemFuction.RegisterHotKey(this.Handle, 2, 0, registerHK_GetCoordinate); // 抓取座標
 
             actionThread = new Thread(ActionLoop);
 
@@ -259,9 +241,9 @@ namespace buttonClick
                     int x, y, delay;
                     if (continueAction)
                     {
-                        continueAction = false; // 停止執行動作
+                        continueAction = false; // 停止執行動作                        
+                        actionThread.Join(); // 等待線程結束
                         this.Text = "已關閉";
-                        actionThread.Join(); // 等待線程結束      
                         return;
                     }
 
@@ -290,17 +272,17 @@ namespace buttonClick
                     actionY = y;
                     actionDelay = delay;
 
-                    // 選擇循環功能
-                    if (comboF11Function.SelectedIndex == -1)
+                    actionF11Type = comboF11Function.SelectedIndex;
+
+                    bool areDifferent = comboF11HotKey.SelectedIndex != comboHotKeyMP.SelectedIndex &&
+                                                    comboF11HotKey.SelectedIndex != comboDefHotKey.SelectedIndex &&
+                                                    comboHotKeyMP.SelectedIndex != comboDefHotKey.SelectedIndex;
+
+                    if (!areDifferent)
                     {
-                        MessageBox.Show("請選擇循環功能", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("熱鍵請勿有任二相同的部分", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                    else
-                    {
-                        actionF11Type = comboF11Function.SelectedIndex;
-                    }
-                    // 若有熱鍵 , 選擇功能使用的熱鍵
 
                     switch (comboF11HotKey.SelectedIndex)
                     {
@@ -369,6 +351,8 @@ namespace buttonClick
                     }
 
 
+                    //if(actionF11Type==1&& Coordinate.IsGetWindows == false)
+
                     // 確保在開始新線程之前先停止舊線程
                     if (actionThread.IsAlive)
                     {
@@ -390,7 +374,7 @@ namespace buttonClick
 
                     labelX.ForeColor = System.Drawing.Color.Green;
                     labelY.ForeColor = System.Drawing.Color.Green;
-
+                    Coordinate.IsGetWindows = false;
                     Coordinate.CalculateAllEnemy(cursor.X, cursor.Y);
                 }
                 else if (m.WParam.ToInt32() >= 3 || m.WParam.ToInt32() < 15)
@@ -558,7 +542,7 @@ namespace buttonClick
             }
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void btnGteWindowsInfor(object sender, EventArgs e)
         {
             // 抓取視窗位置 & 視窗長寬數值
             if (!SystemFuction.GetWindowCoordinates("FairyLand"))
@@ -566,37 +550,50 @@ namespace buttonClick
                 MessageBox.Show("抓取視窗錯誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            Coordinate.IsGetWindows = true;
             /* 
                中心怪物位置會位於 800x600中的 275,290的位置
                遊戲本體800x600
                視窗總長816x638
                視窗邊框約8
                視窗標題列約30
-             */
-            int x, y;
-            int xOffset = Coordinate.windowBoxLineOffset + 275;
-            int yOffset = Coordinate.windowHOffset + 290;
 
-            x = Coordinate.windowTop[0] + xOffset;
-            y = Coordinate.windowTop[1] + yOffset;
-            labelX.Text = x.ToString();
-            labelY.Text = y.ToString();
+                友軍前排3號位529,387
+                敵軍前排3號位275,290
+             */
+            int x_enemy3, y_enemy3;
+            int xOffset_enemy3 = Coordinate.windowBoxLineOffset + 275;
+            int yOffset_enemy3 = Coordinate.windowHOffset + 290;
+
+            x_enemy3 = Coordinate.windowTop[0] + xOffset_enemy3;
+            y_enemy3 = Coordinate.windowTop[1] + yOffset_enemy3;            
+            
+            Coordinate.CalculateAllEnemy(x_enemy3, y_enemy3);
+
+            int x_friends3, y_friends3;
+            int xOffset_friends3 = Coordinate.windowBoxLineOffset + 529;
+            int yOffset_friends3 = Coordinate.windowHOffset + 387;
+
+            x_friends3 = Coordinate.windowTop[0] + xOffset_friends3;
+            y_friends3 = Coordinate.windowTop[1] + yOffset_friends3;
+
+            Coordinate.CalculateAllFreiend(x_friends3, y_friends3);
+
+            labelX.Text = x_enemy3.ToString();
+            labelY.Text = y_enemy3.ToString();
 
             labelX.ForeColor = System.Drawing.Color.Green;
             labelY.ForeColor = System.Drawing.Color.Green;
-
-            //MouseSimulator.RightMousePress(x, y);
-            Coordinate.CalculateAllEnemy(x, y);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnTestFuction(object sender, EventArgs e)
         {
-            GameFunction.BattleCheck();
+            
         }
     }
     public class GameFunction
     {
-        public static string[] GameFunctionList = { "施放法術", "循環施放法術(敵)", "循環招怪與鞭炮" };
+        public static string[] GameFunctionList = { "施放法術", "循環施放法術(敵)", "循環招怪與鞭炮"};
         public static void castSpellOnTarget(int x, int y, byte keyCode, int delay)
         {
             /*
@@ -608,7 +605,6 @@ namespace buttonClick
             MouseSimulator.LeftMousePress(x, y);
             Thread.Sleep(delay);
         }
-
         public static bool NormalCheck()
         {
 
@@ -670,6 +666,7 @@ namespace buttonClick
 
             if (FullColorCom > 0)
             {
+                // 滿魔狀態的顏色與非滿魔狀態不同
                 return false;
             }
             else if (NotFullColorCom < NeedRatio)
@@ -694,6 +691,7 @@ namespace buttonClick
         public static int windowWidth = 0;
         public static int windowHOffset = 30;
         public static int windowBoxLineOffset = 8;
+        public static bool IsGetWindows = false;
         // 敵方座標
         public static int[] Enemy1 = new int[2];
         public static int[] Enemy2 = new int[2];
@@ -705,7 +703,19 @@ namespace buttonClick
         public static int[] Enemy8 = new int[2];
         public static int[] Enemy9 = new int[2];
         public static int[] Enemy10 = new int[2];
+        // 我方座標
+        public static int[] Friends1 = new int[2];
+        public static int[] Friends2 = new int[2];
+        public static int[] Friends3 = new int[2];
+        public static int[] Friends4 = new int[2];
+        public static int[] Friends5 = new int[2];
+        public static int[] Friends6 = new int[2];
+        public static int[] Friends7 = new int[2];
+        public static int[] Friends8 = new int[2];
+        public static int[] Friends9 = new int[2];
+        public static int[] Friends10 = new int[2];
 
+        // 初始化陣列
         // 計算所有敵人的座標
         public static void CalculateAllEnemy(int x, int y)
         {
@@ -714,20 +724,36 @@ namespace buttonClick
             Enemy3[1] = y;
 
             // 計算其他敵人的座標
-            CalculateEnemy(Enemy3, Enemy2, -68, 56);
-            CalculateEnemy(Enemy2, Enemy1, -68, 56);
-            CalculateEnemy(Enemy3, Enemy4, 68, -56);
-            CalculateEnemy(Enemy4, Enemy5, 68, -56);
+            CalculateTargetCoordinate(Enemy3, Enemy2, -68, 56);
+            CalculateTargetCoordinate(Enemy2, Enemy1, -68, 56);
+            CalculateTargetCoordinate(Enemy3, Enemy4, 68, -56);
+            CalculateTargetCoordinate(Enemy4, Enemy5, 68, -56);
 
-            CalculateEnemy(Enemy1, Enemy6, -73, -61);
-            CalculateEnemy(Enemy2, Enemy7, -73, -61);
-            CalculateEnemy(Enemy3, Enemy8, -73, -61);
-            CalculateEnemy(Enemy4, Enemy9, -73, -61);
-            CalculateEnemy(Enemy5, Enemy10, -73, -61);
+            CalculateTargetCoordinate(Enemy1, Enemy6, -73, -61);
+            CalculateTargetCoordinate(Enemy2, Enemy7, -73, -61);
+            CalculateTargetCoordinate(Enemy3, Enemy8, -73, -61);
+            CalculateTargetCoordinate(Enemy4, Enemy9, -73, -61);
+            CalculateTargetCoordinate(Enemy5, Enemy10, -73, -61);
         }
+        public static void CalculateAllFreiend(int x, int y )
+        {            
+            // 計算第三號敵人的座標
+            Friends3[0] = x;
+            Friends3[1] = y;
+            // 計算其他的座標
+            CalculateTargetCoordinate(Friends3, Friends2, -68, 56);
+            CalculateTargetCoordinate(Friends2, Friends1, -68, 56);
+            CalculateTargetCoordinate(Friends3, Friends4, 68, -56);
+            CalculateTargetCoordinate(Friends4, Friends5, 68, -56);
 
-        // 計算敵人的座標
-        private static void CalculateEnemy(int[] from, int[] to, int xOffset, int yOffset)
+            CalculateTargetCoordinate(Friends1, Friends6, 73, 61);
+            CalculateTargetCoordinate(Friends2, Friends7, 73, 61);
+            CalculateTargetCoordinate(Friends3, Friends8, 73, 61);
+            CalculateTargetCoordinate(Friends4, Friends9, 73, 61);
+            CalculateTargetCoordinate(Friends5, Friends10, 73, 61);
+        }
+        // 計算目標的座標
+        private static void CalculateTargetCoordinate(int[] from, int[] to, int xOffset, int yOffset)
         {
             to[0] = from[0] + xOffset;
             to[1] = from[1] + yOffset;
@@ -756,7 +782,6 @@ namespace buttonClick
                     }
                 }
             }
-
             // 計算目標顏色的佔據比例
             double targetColorRatio = (double)targetColorCount / (width * height);
 
@@ -850,7 +875,6 @@ namespace buttonClick
         // 定義按鍵事件的標誌
         private const int KEYEVENTF_EXTENDEDKEY = 0x0001;
         private const int KEYEVENTF_KEYUP = 0x0002;
-
         // 模擬按下按鍵
         public static void KeyDown(byte keyCode)
         {
@@ -862,7 +886,6 @@ namespace buttonClick
         {
             keybd_event(keyCode, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, UIntPtr.Zero);
         }
-
         // 模擬按下並釋放按鍵
         public static void KeyPress(byte keyCode)
         {
@@ -873,14 +896,6 @@ namespace buttonClick
     }
     public class CheckFunction
     {
-        public static bool CheckCoordinateError(int x, int y)
-        {
-            //if ((x > 1920 || y > 1080) || (x < 0 || y < 0))
-            if ((x < 0 || y < 0))
-                return true;
-
-            return false;
-        }
         public static bool CheckDelayError(int delay)
         {
             //if ((x > 1920 || y > 1080) || (x < 0 || y < 0))
