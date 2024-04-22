@@ -52,12 +52,14 @@ namespace buttonClick
         Stopwatch stopwatch = new Stopwatch();
 
         private void ActionLoop()
-        {            
-            stopwatch.Start();
+        {
+            if (checkTimeClose.Checked)
+                stopwatch.Start();
             // 定義循環運行的方法
             while (continueAction)
             {
-                stopwatch.Restart();
+                if (checkTimeClose.Checked)
+                    stopwatch.Restart();
 
                 switch (actionF11Type)
                 {
@@ -168,13 +170,17 @@ namespace buttonClick
                     default:
                         break;
                 }
-                stopwatch.Stop();
 
-                // 累加实际经过的秒数
-                totalTimeoutSecondsNow += stopwatch.ElapsedMilliseconds;
+                if (checkTimeClose.Checked)
+                    stopwatch.Stop();
+
+                
                 // 線程計時器
                 if (checkTimeClose.Checked)
                 {
+                    // 累加实际经过的秒数
+                    totalTimeoutSecondsNow += stopwatch.ElapsedMilliseconds;
+
                     if (totalTimeoutSecondsNow >= totalTimeoutSecondsTarget)
                     {
                         MessageBox.Show("Task completed!"); // 在窗体加载时显示消息框
