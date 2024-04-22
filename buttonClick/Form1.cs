@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -45,35 +46,18 @@ namespace buttonClick
         private int actionY = 0;
         private int actionDelay = 1000;
         private int registerHK_MainRoop = (int)Keys.F1;
-        private int registerHK_GetCoordinate = (int)Keys.F2;
-        private int totalTimeoutSeconds = 0;
-
+        private int registerHK_GetCoordinate = (int)Keys.F2;        
+        private long totalTimeoutSecondsTarget = 0;
+        private long totalTimeoutSecondsNow = 0;
+        Stopwatch stopwatch = new Stopwatch();
 
         private void ActionLoop()
-        {
+        {            
+            stopwatch.Start();
             // 定義循環運行的方法
             while (continueAction)
             {
-                // 線程計時器
-                if (checkTimeClose.Checked)
-                {
-                    if (totalTimeoutSeconds > 0)
-                    {
-                        totalTimeoutSeconds--;
-                        Thread.Sleep(1000);
-                    }
-                    if (totalTimeoutSeconds == 0)
-                    {
-                        MessageBox.Show("Task completed!"); // 在窗体加载时显示消息框
-
-                        this.Invoke((MethodInvoker)delegate
-                        {
-                            this.Text = "時間到 , 已關閉";
-                        });
-                        continueAction = false;
-                        break;
-                    }
-                }
+                stopwatch.Restart();
 
                 switch (actionF11Type)
                 {
@@ -184,6 +168,26 @@ namespace buttonClick
                     default:
                         break;
                 }
+                stopwatch.Stop();
+
+                // 累加实际经过的秒数
+                totalTimeoutSecondsNow += stopwatch.ElapsedMilliseconds;
+                // 線程計時器
+                if (checkTimeClose.Checked)
+                {
+                    if (totalTimeoutSecondsNow >= totalTimeoutSecondsTarget)
+                    {
+                        MessageBox.Show("Task completed!"); // 在窗体加载时显示消息框
+
+                        this.Invoke((MethodInvoker)delegate
+                        {
+                            this.Text = "時間到 , 已關閉";
+                        });
+                        totalTimeoutSecondsNow = 0;
+                        continueAction = false;
+                        break;
+                    }
+                }
             }
         }
         public Form1()
@@ -286,14 +290,14 @@ namespace buttonClick
                         this.Text = "已關閉";
                         return;
                     }
-
+                    totalTimeoutSecondsNow = 0;
                     if (checkTimeClose.Checked)
                     {
                         // 解析文本框中的值
                         int hours = int.Parse(comboTO_Hour.SelectedItem.ToString());
                         int minutes = int.Parse(comboTO_Min.SelectedItem.ToString());
                         int seconds = int.Parse(comboTO_sec.SelectedItem.ToString());
-                        totalTimeoutSeconds = hours * 3600 + minutes * 60 + seconds;
+                        totalTimeoutSecondsTarget =( hours * 3600 + minutes * 60 + seconds )*1000;
                     }
 
                     if (int.TryParse(labelY.Text, out int number1) == false || int.TryParse(labelX.Text, out int number2) == false)
