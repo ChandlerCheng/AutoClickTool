@@ -45,8 +45,13 @@ namespace buttonClick
         private int actionX = 0;
         private int actionY = 0;
         private int actionDelay = 1000;
+#if DEBUG
+        private int registerHK_MainRoop = (int)Keys.F1;
+        private int registerHK_GetCoordinate = (int)Keys.F2;
+#else 
         private int registerHK_MainRoop = (int)Keys.F11;
-        private int registerHK_GetCoordinate = (int)Keys.F10;        
+        private int registerHK_GetCoordinate = (int)Keys.F10;
+#endif
         private long totalTimeoutSecondsTarget = 0;
         private long totalTimeoutSecondsNow = 0;
         Stopwatch stopwatch = new Stopwatch();
