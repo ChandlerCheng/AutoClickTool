@@ -44,8 +44,9 @@ namespace buttonClick
         private int actionX = 0;
         private int actionY = 0;
         private int actionDelay = 1000;
-        private int registerHK_MainRoop = (int)Keys.F11;
-        private int registerHK_GetCoordinate = (int)Keys.F10;
+        private int registerHK_MainRoop = (int)Keys.F1;
+        private int registerHK_GetCoordinate = (int)Keys.F2;
+        private int totalTimeoutSeconds = 0;
 
 
         private void ActionLoop()
@@ -53,6 +54,27 @@ namespace buttonClick
             // 定義循環運行的方法
             while (continueAction)
             {
+                // 線程計時器
+                if (checkTimeClose.Checked)
+                {
+                    if (totalTimeoutSeconds > 0)
+                    {
+                        totalTimeoutSeconds--;
+                        Thread.Sleep(1000);
+                    }
+                    if (totalTimeoutSeconds == 0)
+                    {
+                        MessageBox.Show("Task completed!"); // 在窗体加载时显示消息框
+
+                        this.Invoke((MethodInvoker)delegate
+                        {
+                            this.Text = "時間到 , 已關閉";
+                        });
+                        continueAction = false;
+                        break;
+                    }
+                }
+
                 switch (actionF11Type)
                 {
                     case 0:
@@ -189,12 +211,30 @@ namespace buttonClick
                 comboDefHotKey.Items.Add(KeyboardSimulator.HotKeyList[i]);
             for (int i = 0; i < KeyboardSimulator.HotKeyList.Length; i++)
                 comboHotKeyMP.Items.Add(KeyboardSimulator.HotKeyList[i]);
+            for (int hour = 0; hour < 24; hour++)
+            {
+                string timeString = $"{hour.ToString("00")}";
+                comboTO_Hour.Items.Add(timeString);
+            }
+            for (int minute = 0; minute < 60; minute++)
+            {
+                string timeString = $"{minute.ToString("00")}";
+                comboTO_Min.Items.Add(timeString);
+            }
+            for (int second = 0; second < 60; second++)
+            {
+                string timeString = $"{second.ToString("00")}";
+                comboTO_sec.Items.Add(timeString);
+            }
 
             comboF11Function.SelectedIndex = 0;
             comboF11HotKey.SelectedIndex = 0;
             comboBoxSkillMode.SelectedIndex = 0;
             comboDefHotKey.SelectedIndex = 1;
             comboHotKeyMP.SelectedIndex = 2;
+            comboTO_Hour.SelectedIndex = 0;
+            comboTO_Min.SelectedIndex = 0;
+            comboTO_sec.SelectedIndex = 0;
 
             labelX.ForeColor = System.Drawing.Color.Red;
             labelX.Text = "未指定";
@@ -245,6 +285,15 @@ namespace buttonClick
                         actionThread.Join(); // 等待線程結束
                         this.Text = "已關閉";
                         return;
+                    }
+
+                    if (checkTimeClose.Checked)
+                    {
+                        // 解析文本框中的值
+                        int hours = int.Parse(comboTO_Hour.SelectedItem.ToString());
+                        int minutes = int.Parse(comboTO_Min.SelectedItem.ToString());
+                        int seconds = int.Parse(comboTO_sec.SelectedItem.ToString());
+                        totalTimeoutSeconds = hours * 3600 + minutes * 60 + seconds;
                     }
 
                     if (int.TryParse(labelY.Text, out int number1) == false || int.TryParse(labelX.Text, out int number2) == false)
@@ -349,9 +398,6 @@ namespace buttonClick
                             actionDefHotKey = (byte)Keys.F5;
                             break;
                     }
-
-
-                    //if(actionF11Type==1&& Coordinate.IsGetWindows == false)
 
                     // 確保在開始新線程之前先停止舊線程
                     if (actionThread.IsAlive)
@@ -566,8 +612,8 @@ namespace buttonClick
             int yOffset_enemy3 = Coordinate.windowHOffset + 290;
 
             x_enemy3 = Coordinate.windowTop[0] + xOffset_enemy3;
-            y_enemy3 = Coordinate.windowTop[1] + yOffset_enemy3;            
-            
+            y_enemy3 = Coordinate.windowTop[1] + yOffset_enemy3;
+
             Coordinate.CalculateAllEnemy(x_enemy3, y_enemy3);
 
             int x_friends3, y_friends3;
@@ -588,12 +634,19 @@ namespace buttonClick
 
         private void btnTestFuction(object sender, EventArgs e)
         {
-            
+            if (checkTimeClose.Checked)
+            {
+                // 解析文本框中的值
+                int hours = int.Parse(comboTO_Hour.SelectedItem.ToString());
+                int minutes = int.Parse(comboTO_Min.SelectedItem.ToString());
+                int seconds = int.Parse(comboTO_sec.SelectedItem.ToString());
+
+            }
         }
     }
     public class GameFunction
     {
-        public static string[] GameFunctionList = { "施放法術", "循環施放法術(敵)", "循環招怪與鞭炮"};
+        public static string[] GameFunctionList = { "施放法術", "循環施放法術(敵)", "循環招怪與鞭炮" };
         public static void castSpellOnTarget(int x, int y, byte keyCode, int delay)
         {
             /*
@@ -735,8 +788,8 @@ namespace buttonClick
             CalculateTargetCoordinate(Enemy4, Enemy9, -73, -61);
             CalculateTargetCoordinate(Enemy5, Enemy10, -73, -61);
         }
-        public static void CalculateAllFreiend(int x, int y )
-        {            
+        public static void CalculateAllFreiend(int x, int y)
+        {
             // 計算第三號敵人的座標
             Friends3[0] = x;
             Friends3[1] = y;

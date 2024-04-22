@@ -37,6 +37,9 @@ namespace buttonClick
             this.comboF11Function = new System.Windows.Forms.ComboBox();
             this.comboF11HotKey = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboTO_Min = new System.Windows.Forms.ComboBox();
+            this.comboTO_Hour = new System.Windows.Forms.ComboBox();
+            this.checkTimeClose = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.comboDefHotKey = new System.Windows.Forms.ComboBox();
             this.comboHotKeyMP = new System.Windows.Forms.ComboBox();
@@ -68,6 +71,7 @@ namespace buttonClick
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.comboTO_sec = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -112,7 +116,7 @@ namespace buttonClick
             // 
             // buttonF11FunctionRead
             // 
-            this.buttonF11FunctionRead.Location = new System.Drawing.Point(6, 180);
+            this.buttonF11FunctionRead.Location = new System.Drawing.Point(6, 225);
             this.buttonF11FunctionRead.Name = "buttonF11FunctionRead";
             this.buttonF11FunctionRead.Size = new System.Drawing.Size(76, 23);
             this.buttonF11FunctionRead.TabIndex = 7;
@@ -140,6 +144,10 @@ namespace buttonClick
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.comboTO_sec);
+            this.groupBox1.Controls.Add(this.comboTO_Min);
+            this.groupBox1.Controls.Add(this.comboTO_Hour);
+            this.groupBox1.Controls.Add(this.checkTimeClose);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.comboDefHotKey);
             this.groupBox1.Controls.Add(this.comboHotKeyMP);
@@ -154,10 +162,37 @@ namespace buttonClick
             this.groupBox1.Controls.Add(this.comboF11Function);
             this.groupBox1.Location = new System.Drawing.Point(9, 88);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 209);
+            this.groupBox1.Size = new System.Drawing.Size(200, 292);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "F11 循環功能設定";
+            // 
+            // comboTO_Min
+            // 
+            this.comboTO_Min.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboTO_Min.FormattingEnabled = true;
+            this.comboTO_Min.Location = new System.Drawing.Point(86, 181);
+            this.comboTO_Min.Name = "comboTO_Min";
+            this.comboTO_Min.Size = new System.Drawing.Size(48, 23);
+            this.comboTO_Min.TabIndex = 21;
+            // 
+            // comboTO_Hour
+            // 
+            this.comboTO_Hour.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboTO_Hour.FormattingEnabled = true;
+            this.comboTO_Hour.Location = new System.Drawing.Point(34, 181);
+            this.comboTO_Hour.Name = "comboTO_Hour";
+            this.comboTO_Hour.Size = new System.Drawing.Size(48, 23);
+            this.comboTO_Hour.TabIndex = 20;
+            // 
+            // checkTimeClose
+            // 
+            this.checkTimeClose.AutoSize = true;
+            this.checkTimeClose.Location = new System.Drawing.Point(9, 181);
+            this.checkTimeClose.Name = "checkTimeClose";
+            this.checkTimeClose.Size = new System.Drawing.Size(15, 14);
+            this.checkTimeClose.TabIndex = 19;
+            this.checkTimeClose.UseVisualStyleBackColor = true;
             // 
             // label8
             // 
@@ -181,7 +216,7 @@ namespace buttonClick
             // 
             this.comboHotKeyMP.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboHotKeyMP.FormattingEnabled = true;
-            this.comboHotKeyMP.Location = new System.Drawing.Point(86, 145);
+            this.comboHotKeyMP.Location = new System.Drawing.Point(89, 145);
             this.comboHotKeyMP.Name = "comboHotKeyMP";
             this.comboHotKeyMP.Size = new System.Drawing.Size(67, 23);
             this.comboHotKeyMP.TabIndex = 13;
@@ -189,7 +224,7 @@ namespace buttonClick
             // checkMP
             // 
             this.checkMP.AutoSize = true;
-            this.checkMP.Location = new System.Drawing.Point(6, 145);
+            this.checkMP.Location = new System.Drawing.Point(9, 145);
             this.checkMP.Name = "checkMP";
             this.checkMP.Size = new System.Drawing.Size(74, 19);
             this.checkMP.TabIndex = 12;
@@ -198,7 +233,7 @@ namespace buttonClick
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(119, 180);
+            this.button1.Location = new System.Drawing.Point(116, 225);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 11;
@@ -349,7 +384,7 @@ namespace buttonClick
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(38, 303);
+            this.button2.Location = new System.Drawing.Point(38, 375);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(130, 23);
             this.button2.TabIndex = 17;
@@ -476,11 +511,20 @@ namespace buttonClick
             this.radioButton1.TabStop = true;
             this.radioButton1.UseVisualStyleBackColor = true;
             // 
+            // comboTO_sec
+            // 
+            this.comboTO_sec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboTO_sec.FormattingEnabled = true;
+            this.comboTO_sec.Location = new System.Drawing.Point(140, 181);
+            this.comboTO_sec.Name = "comboTO_sec";
+            this.comboTO_sec.Size = new System.Drawing.Size(48, 23);
+            this.comboTO_sec.TabIndex = 22;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(218, 334);
+            this.ClientSize = new System.Drawing.Size(218, 410);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox4);
@@ -545,6 +589,10 @@ namespace buttonClick
         private System.Windows.Forms.RadioButton radioButton3;
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.CheckBox checkTimeClose;
+        private System.Windows.Forms.ComboBox comboTO_Min;
+        private System.Windows.Forms.ComboBox comboTO_Hour;
+        private System.Windows.Forms.ComboBox comboTO_sec;
     }
 }
 
