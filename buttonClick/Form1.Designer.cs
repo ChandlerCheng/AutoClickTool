@@ -37,6 +37,9 @@ namespace buttonClick
             this.comboF11Function = new System.Windows.Forms.ComboBox();
             this.comboF11HotKey = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnGetMpNow = new System.Windows.Forms.Button();
+            this.comboCheckMPRatio = new System.Windows.Forms.ComboBox();
+            this.comboTO_sec = new System.Windows.Forms.ComboBox();
             this.comboTO_Min = new System.Windows.Forms.ComboBox();
             this.comboTO_Hour = new System.Windows.Forms.ComboBox();
             this.checkTimeClose = new System.Windows.Forms.CheckBox();
@@ -44,9 +47,9 @@ namespace buttonClick
             this.comboDefHotKey = new System.Windows.Forms.ComboBox();
             this.comboHotKeyMP = new System.Windows.Forms.ComboBox();
             this.checkMP = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.btnOpenNumFunc = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.labelNumDisplay = new System.Windows.Forms.Label();
@@ -60,29 +63,18 @@ namespace buttonClick
             this.labelY = new System.Windows.Forms.Label();
             this.labelX = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.radioButton6 = new System.Windows.Forms.RadioButton();
-            this.radioButton7 = new System.Windows.Forms.RadioButton();
-            this.radioButton8 = new System.Windows.Forms.RadioButton();
-            this.radioButton9 = new System.Windows.Forms.RadioButton();
-            this.radioButton10 = new System.Windows.Forms.RadioButton();
-            this.radioButton5 = new System.Windows.Forms.RadioButton();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.comboTO_sec = new System.Windows.Forms.ComboBox();
+            this.checkPetSupport = new System.Windows.Forms.CheckBox();
+            this.comboPetSup_Master = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(34, 19);
+            this.label1.Location = new System.Drawing.Point(10, 26);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(27, 15);
             this.label1.TabIndex = 2;
@@ -91,7 +83,7 @@ namespace buttonClick
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(34, 48);
+            this.label2.Location = new System.Drawing.Point(10, 49);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(26, 15);
             this.label2.TabIndex = 3;
@@ -116,7 +108,7 @@ namespace buttonClick
             // 
             // buttonF11FunctionRead
             // 
-            this.buttonF11FunctionRead.Location = new System.Drawing.Point(6, 225);
+            this.buttonF11FunctionRead.Location = new System.Drawing.Point(6, 260);
             this.buttonF11FunctionRead.Name = "buttonF11FunctionRead";
             this.buttonF11FunctionRead.Size = new System.Drawing.Size(76, 23);
             this.buttonF11FunctionRead.TabIndex = 7;
@@ -144,6 +136,10 @@ namespace buttonClick
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.comboPetSup_Master);
+            this.groupBox1.Controls.Add(this.checkPetSupport);
+            this.groupBox1.Controls.Add(this.btnGetMpNow);
+            this.groupBox1.Controls.Add(this.comboCheckMPRatio);
             this.groupBox1.Controls.Add(this.comboTO_sec);
             this.groupBox1.Controls.Add(this.comboTO_Min);
             this.groupBox1.Controls.Add(this.comboTO_Hour);
@@ -152,7 +148,6 @@ namespace buttonClick
             this.groupBox1.Controls.Add(this.comboDefHotKey);
             this.groupBox1.Controls.Add(this.comboHotKeyMP);
             this.groupBox1.Controls.Add(this.checkMP);
-            this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.buttonF11FunctionRead);
@@ -160,12 +155,40 @@ namespace buttonClick
             this.groupBox1.Controls.Add(this.textF11Ms);
             this.groupBox1.Controls.Add(this.comboF11HotKey);
             this.groupBox1.Controls.Add(this.comboF11Function);
-            this.groupBox1.Location = new System.Drawing.Point(9, 88);
+            this.groupBox1.Location = new System.Drawing.Point(9, 111);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 292);
+            this.groupBox1.Size = new System.Drawing.Size(200, 289);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "F11 循環功能設定";
+            // 
+            // btnGetMpNow
+            // 
+            this.btnGetMpNow.Location = new System.Drawing.Point(108, 260);
+            this.btnGetMpNow.Name = "btnGetMpNow";
+            this.btnGetMpNow.Size = new System.Drawing.Size(80, 23);
+            this.btnGetMpNow.TabIndex = 21;
+            this.btnGetMpNow.Text = "魔量檢查";
+            this.btnGetMpNow.UseVisualStyleBackColor = true;
+            this.btnGetMpNow.Click += new System.EventHandler(this.btnGetMpNow_Click);
+            // 
+            // comboCheckMPRatio
+            // 
+            this.comboCheckMPRatio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboCheckMPRatio.FormattingEnabled = true;
+            this.comboCheckMPRatio.Location = new System.Drawing.Point(86, 143);
+            this.comboCheckMPRatio.Name = "comboCheckMPRatio";
+            this.comboCheckMPRatio.Size = new System.Drawing.Size(40, 23);
+            this.comboCheckMPRatio.TabIndex = 23;
+            // 
+            // comboTO_sec
+            // 
+            this.comboTO_sec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboTO_sec.FormattingEnabled = true;
+            this.comboTO_sec.Location = new System.Drawing.Point(140, 181);
+            this.comboTO_sec.Name = "comboTO_sec";
+            this.comboTO_sec.Size = new System.Drawing.Size(48, 23);
+            this.comboTO_sec.TabIndex = 22;
             // 
             // comboTO_Min
             // 
@@ -188,7 +211,7 @@ namespace buttonClick
             // checkTimeClose
             // 
             this.checkTimeClose.AutoSize = true;
-            this.checkTimeClose.Location = new System.Drawing.Point(9, 181);
+            this.checkTimeClose.Location = new System.Drawing.Point(10, 185);
             this.checkTimeClose.Name = "checkTimeClose";
             this.checkTimeClose.Size = new System.Drawing.Size(15, 14);
             this.checkTimeClose.TabIndex = 19;
@@ -216,9 +239,9 @@ namespace buttonClick
             // 
             this.comboHotKeyMP.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboHotKeyMP.FormattingEnabled = true;
-            this.comboHotKeyMP.Location = new System.Drawing.Point(89, 145);
+            this.comboHotKeyMP.Location = new System.Drawing.Point(132, 143);
             this.comboHotKeyMP.Name = "comboHotKeyMP";
-            this.comboHotKeyMP.Size = new System.Drawing.Size(67, 23);
+            this.comboHotKeyMP.Size = new System.Drawing.Size(51, 23);
             this.comboHotKeyMP.TabIndex = 13;
             // 
             // checkMP
@@ -230,16 +253,6 @@ namespace buttonClick
             this.checkMP.TabIndex = 12;
             this.checkMP.Text = "魔力檢查";
             this.checkMP.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(116, 225);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 11;
-            this.button1.Text = "抓取視窗";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.btnGteWindowsInfor);
             // 
             // label5
             // 
@@ -258,6 +271,16 @@ namespace buttonClick
             this.label3.Size = new System.Drawing.Size(55, 15);
             this.label3.TabIndex = 9;
             this.label3.Text = "功能選擇";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(59, 73);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 11;
+            this.button1.Text = "抓取視窗";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.btnGteWindowsInfor);
             // 
             // btnOpenNumFunc
             // 
@@ -293,7 +316,7 @@ namespace buttonClick
             this.groupBox2.Controls.Add(this.btnOpenNumFunc);
             this.groupBox2.Controls.Add(this.labelNumDisplay);
             this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Location = new System.Drawing.Point(214, 12);
+            this.groupBox2.Location = new System.Drawing.Point(569, 28);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(200, 54);
             this.groupBox2.TabIndex = 14;
@@ -344,7 +367,7 @@ namespace buttonClick
             this.groupBox3.Controls.Add(this.labelSkillMode);
             this.groupBox3.Controls.Add(this.btnSkillMode);
             this.groupBox3.Controls.Add(this.label7);
-            this.groupBox3.Location = new System.Drawing.Point(220, 80);
+            this.groupBox3.Location = new System.Drawing.Point(569, 135);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(194, 85);
             this.groupBox3.TabIndex = 15;
@@ -357,9 +380,10 @@ namespace buttonClick
             this.groupBox4.Controls.Add(this.labelX);
             this.groupBox4.Controls.Add(this.label1);
             this.groupBox4.Controls.Add(this.label2);
+            this.groupBox4.Controls.Add(this.button1);
             this.groupBox4.Location = new System.Drawing.Point(9, 3);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(199, 79);
+            this.groupBox4.Size = new System.Drawing.Size(199, 102);
             this.groupBox4.TabIndex = 16;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "座標";
@@ -367,7 +391,7 @@ namespace buttonClick
             // labelY
             // 
             this.labelY.AutoSize = true;
-            this.labelY.Location = new System.Drawing.Point(68, 48);
+            this.labelY.Location = new System.Drawing.Point(43, 49);
             this.labelY.Name = "labelY";
             this.labelY.Size = new System.Drawing.Size(97, 15);
             this.labelY.TabIndex = 5;
@@ -376,7 +400,7 @@ namespace buttonClick
             // labelX
             // 
             this.labelX.AutoSize = true;
-            this.labelX.Location = new System.Drawing.Point(67, 19);
+            this.labelX.Location = new System.Drawing.Point(43, 26);
             this.labelX.Name = "labelX";
             this.labelX.Size = new System.Drawing.Size(98, 15);
             this.labelX.TabIndex = 4;
@@ -384,7 +408,7 @@ namespace buttonClick
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(38, 375);
+            this.button2.Location = new System.Drawing.Point(474, 269);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(130, 23);
             this.button2.TabIndex = 17;
@@ -392,140 +416,30 @@ namespace buttonClick
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.btnTestFuction);
             // 
-            // groupBox5
+            // checkPetSupport
             // 
-            this.groupBox5.Controls.Add(this.radioButton6);
-            this.groupBox5.Controls.Add(this.radioButton7);
-            this.groupBox5.Controls.Add(this.radioButton8);
-            this.groupBox5.Controls.Add(this.radioButton9);
-            this.groupBox5.Controls.Add(this.radioButton10);
-            this.groupBox5.Controls.Add(this.radioButton5);
-            this.groupBox5.Controls.Add(this.radioButton4);
-            this.groupBox5.Controls.Add(this.radioButton3);
-            this.groupBox5.Controls.Add(this.radioButton2);
-            this.groupBox5.Controls.Add(this.radioButton1);
-            this.groupBox5.Location = new System.Drawing.Point(264, 180);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(200, 76);
-            this.groupBox5.TabIndex = 18;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "友軍選擇";
+            this.checkPetSupport.AutoSize = true;
+            this.checkPetSupport.Location = new System.Drawing.Point(10, 220);
+            this.checkPetSupport.Name = "checkPetSupport";
+            this.checkPetSupport.Size = new System.Drawing.Size(74, 19);
+            this.checkPetSupport.TabIndex = 24;
+            this.checkPetSupport.Text = "寵物輔助";
+            this.checkPetSupport.UseVisualStyleBackColor = true;
             // 
-            // radioButton6
+            // comboPetSup_Master
             // 
-            this.radioButton6.AutoSize = true;
-            this.radioButton6.Location = new System.Drawing.Point(139, 53);
-            this.radioButton6.Name = "radioButton6";
-            this.radioButton6.Size = new System.Drawing.Size(14, 13);
-            this.radioButton6.TabIndex = 9;
-            this.radioButton6.TabStop = true;
-            this.radioButton6.UseVisualStyleBackColor = true;
-            // 
-            // radioButton7
-            // 
-            this.radioButton7.AutoSize = true;
-            this.radioButton7.Location = new System.Drawing.Point(110, 53);
-            this.radioButton7.Name = "radioButton7";
-            this.radioButton7.Size = new System.Drawing.Size(14, 13);
-            this.radioButton7.TabIndex = 8;
-            this.radioButton7.TabStop = true;
-            this.radioButton7.UseVisualStyleBackColor = true;
-            // 
-            // radioButton8
-            // 
-            this.radioButton8.AutoSize = true;
-            this.radioButton8.Location = new System.Drawing.Point(81, 53);
-            this.radioButton8.Name = "radioButton8";
-            this.radioButton8.Size = new System.Drawing.Size(14, 13);
-            this.radioButton8.TabIndex = 7;
-            this.radioButton8.TabStop = true;
-            this.radioButton8.UseVisualStyleBackColor = true;
-            // 
-            // radioButton9
-            // 
-            this.radioButton9.AutoSize = true;
-            this.radioButton9.Location = new System.Drawing.Point(52, 53);
-            this.radioButton9.Name = "radioButton9";
-            this.radioButton9.Size = new System.Drawing.Size(14, 13);
-            this.radioButton9.TabIndex = 6;
-            this.radioButton9.TabStop = true;
-            this.radioButton9.UseVisualStyleBackColor = true;
-            // 
-            // radioButton10
-            // 
-            this.radioButton10.AutoSize = true;
-            this.radioButton10.Location = new System.Drawing.Point(23, 53);
-            this.radioButton10.Name = "radioButton10";
-            this.radioButton10.Size = new System.Drawing.Size(14, 13);
-            this.radioButton10.TabIndex = 5;
-            this.radioButton10.TabStop = true;
-            this.radioButton10.UseVisualStyleBackColor = true;
-            // 
-            // radioButton5
-            // 
-            this.radioButton5.AutoSize = true;
-            this.radioButton5.Location = new System.Drawing.Point(139, 28);
-            this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(14, 13);
-            this.radioButton5.TabIndex = 4;
-            this.radioButton5.TabStop = true;
-            this.radioButton5.UseVisualStyleBackColor = true;
-            // 
-            // radioButton4
-            // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(110, 28);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(14, 13);
-            this.radioButton4.TabIndex = 3;
-            this.radioButton4.TabStop = true;
-            this.radioButton4.UseVisualStyleBackColor = true;
-            // 
-            // radioButton3
-            // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(81, 28);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(14, 13);
-            this.radioButton3.TabIndex = 2;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(52, 28);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(14, 13);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(23, 28);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(14, 13);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // comboTO_sec
-            // 
-            this.comboTO_sec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboTO_sec.FormattingEnabled = true;
-            this.comboTO_sec.Location = new System.Drawing.Point(140, 181);
-            this.comboTO_sec.Name = "comboTO_sec";
-            this.comboTO_sec.Size = new System.Drawing.Size(48, 23);
-            this.comboTO_sec.TabIndex = 22;
+            this.comboPetSup_Master.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboPetSup_Master.FormattingEnabled = true;
+            this.comboPetSup_Master.Location = new System.Drawing.Point(86, 218);
+            this.comboPetSup_Master.Name = "comboPetSup_Master";
+            this.comboPetSup_Master.Size = new System.Drawing.Size(48, 23);
+            this.comboPetSup_Master.TabIndex = 25;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(218, 410);
-            this.Controls.Add(this.groupBox5);
+            this.ClientSize = new System.Drawing.Size(222, 408);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -543,8 +457,6 @@ namespace buttonClick
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -578,21 +490,14 @@ namespace buttonClick
         private System.Windows.Forms.CheckBox checkMP;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox comboDefHotKey;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.RadioButton radioButton6;
-        private System.Windows.Forms.RadioButton radioButton7;
-        private System.Windows.Forms.RadioButton radioButton8;
-        private System.Windows.Forms.RadioButton radioButton9;
-        private System.Windows.Forms.RadioButton radioButton10;
-        private System.Windows.Forms.RadioButton radioButton5;
-        private System.Windows.Forms.RadioButton radioButton4;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.CheckBox checkTimeClose;
         private System.Windows.Forms.ComboBox comboTO_Min;
         private System.Windows.Forms.ComboBox comboTO_Hour;
         private System.Windows.Forms.ComboBox comboTO_sec;
+        private System.Windows.Forms.ComboBox comboCheckMPRatio;
+        private System.Windows.Forms.Button btnGetMpNow;
+        private System.Windows.Forms.ComboBox comboPetSup_Master;
+        private System.Windows.Forms.CheckBox checkPetSupport;
     }
 }
 

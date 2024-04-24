@@ -30,6 +30,7 @@ namespace buttonClick
         Num0_Skill,
         Decimal_Skill
     }
+   
     public partial class Form1 : Form
     {
         private Thread actionThread;
@@ -45,6 +46,7 @@ namespace buttonClick
         private int actionX = 0;
         private int actionY = 0;
         private int actionDelay = 1000;
+        private double checkMpRatioSel = 0.5;
 #if DEBUG
         private int registerHK_MainRoop = (int)Keys.F1;
         private int registerHK_GetCoordinate = (int)Keys.F2;
@@ -76,7 +78,7 @@ namespace buttonClick
                                 // 檢查是否需要檢查補魔
                                 if (checkMP.Checked == true)
                                 {
-                                    if (GameFunction.IsNeedReplenishMP(0.4) && GameFunction.NormalCheck())
+                                    if (GameFunction.IsNeedReplenishMP(checkMpRatioSel) && GameFunction.NormalCheck())
                                     {
                                         // 需要符合抓取魔力條低於40%與抓的到升級按鈕兩個條件
                                         GameFunction.hotKeyPress(actionMPHotKey, 1000);
@@ -96,7 +98,7 @@ namespace buttonClick
                                 // 檢查是否需要檢查補魔
                                 if (checkMP.Checked == true)
                                 {
-                                    if (GameFunction.IsNeedReplenishMP(0.4) && GameFunction.NormalCheck())
+                                    if (GameFunction.IsNeedReplenishMP(checkMpRatioSel) && GameFunction.NormalCheck())
                                     {
                                         // 需要符合抓取魔力條低於40%與抓的到升級按鈕兩個條件
                                         GameFunction.hotKeyPress(actionMPHotKey, 1000);
@@ -156,7 +158,7 @@ namespace buttonClick
                                 // 檢查是否需要檢查補魔
                                 if (checkMP.Checked == true)
                                 {
-                                    if (GameFunction.IsNeedReplenishMP(0.4) && GameFunction.NormalCheck())
+                                    if (GameFunction.IsNeedReplenishMP(checkMpRatioSel) && GameFunction.NormalCheck())
                                     {
                                         // 需要符合抓取魔力條低於40%與抓的到升級按鈕兩個條件
                                         GameFunction.hotKeyPress(actionMPHotKey, 1000);
@@ -241,6 +243,11 @@ namespace buttonClick
                 string timeString = $"{second.ToString("00")}";
                 comboTO_sec.Items.Add(timeString);
             }
+            for (int i = 0; i < GameFunction.CheckMpRatio.Length; i++)
+                comboCheckMPRatio.Items.Add(GameFunction.CheckMpRatio[i]);
+            for (int i = 0; i < GameFunction.PetSupport_Master.Length; i++)
+                comboPetSup_Master.Items.Add(GameFunction.PetSupport_Master[i]);
+
 
             comboF11Function.SelectedIndex = 0;
             comboF11HotKey.SelectedIndex = 0;
@@ -250,6 +257,7 @@ namespace buttonClick
             comboTO_Hour.SelectedIndex = 0;
             comboTO_Min.SelectedIndex = 0;
             comboTO_sec.SelectedIndex = 0;
+            comboCheckMPRatio.SelectedIndex = 0;
 
             labelX.ForeColor = System.Drawing.Color.Red;
             labelX.Text = "未指定";
@@ -310,10 +318,19 @@ namespace buttonClick
                         int seconds = int.Parse(comboTO_sec.SelectedItem.ToString());
                         totalTimeoutSecondsTarget =( hours * 3600 + minutes * 60 + seconds )*1000;
                     }
+                    if (checkMP.Checked)
+                    {
+                        checkMpRatioSel = double.Parse(comboCheckMPRatio.SelectedItem.ToString());
+                    }
 
                     if (int.TryParse(labelY.Text, out int number1) == false || int.TryParse(labelX.Text, out int number2) == false)
                     {
                         MessageBox.Show("未抓取座標", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    if (bIsSkillModeOn == true || bIsNumKeyOn == true)
+                    {
+                        MessageBox.Show("請先關閉所有小鍵盤上的功能", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
@@ -335,7 +352,6 @@ namespace buttonClick
                     actionX = x;
                     actionY = y;
                     actionDelay = delay;
-
                     actionF11Type = comboF11Function.SelectedIndex;
 
                     bool areDifferent = comboF11HotKey.SelectedIndex != comboHotKeyMP.SelectedIndex &&
@@ -567,6 +583,10 @@ namespace buttonClick
                     labelNumDisplay.ForeColor = System.Drawing.Color.Green;
                     labelNumDisplay.Text = "開啟";
                 }
+                else if (continueAction==true)
+                {
+                    MessageBox.Show("禁止在主迴圈功能執行下使用", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 else
                 {
                     MessageBox.Show("請先關閉練技功能", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -594,6 +614,10 @@ namespace buttonClick
                     SystemFuction.RegisterHotKey(this.Handle, (int)DefineKey.Decimal_Skill, 0, (int)Keys.Decimal);
                     labelSkillMode.ForeColor = System.Drawing.Color.Green;
                     labelSkillMode.Text = "開啟";
+                }
+                else if (continueAction == true)
+                {
+                    MessageBox.Show("禁止在主迴圈功能執行下使用", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
@@ -649,19 +673,35 @@ namespace buttonClick
 
         private void btnTestFuction(object sender, EventArgs e)
         {
-            if (checkTimeClose.Checked)
-            {
-                // 解析文本框中的值
-                int hours = int.Parse(comboTO_Hour.SelectedItem.ToString());
-                int minutes = int.Parse(comboTO_Min.SelectedItem.ToString());
-                int seconds = int.Parse(comboTO_sec.SelectedItem.ToString());
 
+        }
+        private void btnGetMpNow_Click(object sender, EventArgs e)
+        {
+            if (GameFunction.BattleCheck() == false&& GameFunction.NormalCheck()==true)
+            {
+                int x, y;
+                int xOffset = Coordinate.windowBoxLineOffset + 18;
+                int yOffset = Coordinate.windowHOffset + 1 + 22;
+
+                x = Coordinate.windowTop[0] + xOffset;
+                y = Coordinate.windowTop[1] + yOffset;
+                // 從畫面上擷取指定區域的圖像
+                Bitmap screenshot = BitmapImage.CaptureScreen(x, y, 92, 1);
+                Color FullColor = Color.FromArgb(73, 163, 254);
+                Color NotFullColor = Color.FromArgb(73, 206, 254);
+                // 計算目標顏色的佔據比例
+                double FullColorCom = BitmapImage.CalculateColorRatio(screenshot, FullColor);
+                double NotFullColorCom = BitmapImage.CalculateColorRatio(screenshot, NotFullColor);
+
+                MessageBox.Show($"滿魔比例檢測為 '{FullColorCom * 100}' %的)\n"+ $"非滿魔比例檢測為 '{NotFullColorCom * 100}' %的)\n");
             }
         }
     }
     public class GameFunction
     {
         public static string[] GameFunctionList = { "施放法術", "循環施放法術(敵)", "循環招怪與鞭炮" };
+        public static string[] CheckMpRatio = {"0.5","0.4", "0.3", "0.2", "0.1"};
+        public static string[] PetSupport_Master = {"1號位", "2號位", "3號位", "4號位", "5號位" };
         public static void castSpellOnTarget(int x, int y, byte keyCode, int delay)
         {
             /*
