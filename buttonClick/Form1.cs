@@ -46,6 +46,7 @@ namespace buttonClick
         private int actionX = 0;
         private int actionY = 0;
         private int actionDelay = 1000;
+        private int petSupportTarget = 0;
         private double checkMpRatioSel = 0.5;
 #if DEBUG
         private int registerHK_MainRoop = (int)Keys.F1;
@@ -114,6 +115,10 @@ namespace buttonClick
                                 pollingEnemyIndex++;
                                 if (pollingEnemyIndex > 9)
                                     pollingEnemyIndex = 0;
+
+                                // 寵物輔助功能 , 輔助法術需與循環法術同一熱鍵 , 目標限制為前排
+                                if(checkPetSupport.Checked)
+                                    GameFunction.castSpellOnTarget(Coordinate.Friends[petSupportTarget, 0], Coordinate.Friends[petSupportTarget, 1], actionF11HotKey, actionDelay);
                             }
                         }
                         break;
@@ -283,6 +288,16 @@ namespace buttonClick
                         int minutes = int.Parse(comboTO_Min.SelectedItem.ToString());
                         int seconds = int.Parse(comboTO_sec.SelectedItem.ToString());
                         totalTimeoutSecondsTarget = (hours * 3600 + minutes * 60 + seconds) * 1000;
+                    }
+                    if (checkPetSupport.Checked)
+                    {
+                        if (comboPetSup_Master.SelectedIndex == -1)
+                        {
+                            MessageBox.Show("請選擇寵物輔助的目標位(對象必須為前排)", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        petSupportTarget = comboPetSup_Master.SelectedIndex;
                     }
                     if (checkMP.Checked)
                     {
