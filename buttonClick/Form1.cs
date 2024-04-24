@@ -29,12 +29,11 @@ namespace buttonClick
         Num9,
         Num0_Skill,
         Decimal_Skill
-    }
-
+    }    
     public partial class Form1 : Form
     {
         private Thread actionThread;
-        private bool continueAction = false; // 追蹤是否應該繼續執行動作
+        private bool continueAction = false; 
         private bool bIsNumKeyOn = false;
         private bool bIsSkillModeOn = false;
         private int actionF11Type = 0;
@@ -49,6 +48,7 @@ namespace buttonClick
         private int petSupportTarget = 0;
         private double checkMpRatioSel = 0.5;
 #if DEBUG
+        /* 預設熱鍵會影響debug mode下使用單步執行 */
         private int registerHK_MainRoop = (int)Keys.F1;
         private int registerHK_GetCoordinate = (int)Keys.F2;
 #else 
