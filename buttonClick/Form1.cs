@@ -30,7 +30,7 @@ namespace buttonClick
         Num0_Skill,
         Decimal_Skill
     }
-   
+
     public partial class Form1 : Form
     {
         private Thread actionThread;
@@ -107,43 +107,9 @@ namespace buttonClick
                             }
                             else
                             {
-                                //循環施放法術(敵方)
-                                switch (pollingEnemyIndex)
-                                {
-                                    case 0:
-                                        GameFunction.castSpellOnTarget(Coordinate.Enemy10[0], Coordinate.Enemy10[1], actionF11HotKey, actionDelay);
-                                        break;
-                                    case 1:
-                                        GameFunction.castSpellOnTarget(Coordinate.Enemy1[0], Coordinate.Enemy1[1], actionF11HotKey, actionDelay);
-                                        break;
-                                    case 2:
-                                        GameFunction.castSpellOnTarget(Coordinate.Enemy2[0], Coordinate.Enemy2[1], actionF11HotKey, actionDelay);
-                                        break;
-                                    case 3:
-                                        GameFunction.castSpellOnTarget(Coordinate.Enemy3[0], Coordinate.Enemy3[1], actionF11HotKey, actionDelay);
-                                        break;
-                                    case 4:
-                                        GameFunction.castSpellOnTarget(Coordinate.Enemy4[0], Coordinate.Enemy4[1], actionF11HotKey, actionDelay);
-                                        break;
-                                    case 5:
-                                        GameFunction.castSpellOnTarget(Coordinate.Enemy5[0], Coordinate.Enemy5[1], actionF11HotKey, actionDelay);
-                                        break;
-                                    case 6:
-                                        GameFunction.castSpellOnTarget(Coordinate.Enemy6[0], Coordinate.Enemy6[1], actionF11HotKey, actionDelay);
-                                        break;
-                                    case 7:
-                                        GameFunction.castSpellOnTarget(Coordinate.Enemy7[0], Coordinate.Enemy7[1], actionF11HotKey, actionDelay);
-                                        break;
-                                    case 8:
-                                        GameFunction.castSpellOnTarget(Coordinate.Enemy8[0], Coordinate.Enemy8[1], actionF11HotKey, actionDelay);
-                                        break;
-                                    case 9:
-                                        GameFunction.castSpellOnTarget(Coordinate.Enemy9[0], Coordinate.Enemy9[1], actionF11HotKey, actionDelay);
-                                        break;
-                                    default:
-                                        GameFunction.castSpellOnTarget(Coordinate.Enemy1[0], Coordinate.Enemy1[1], actionF11HotKey, actionDelay);
-                                        break;
-                                }
+                                //循環施放法術(敵方)                                
+                                GameFunction.castSpellOnTarget(Coordinate.Enemy[pollingEnemyIndex, 0], Coordinate.Enemy[pollingEnemyIndex,1], actionF11HotKey, actionDelay);
+ 
                                 /* 直接循環施法 , 最差頂多讀條一半 */
                                 pollingEnemyIndex++;
                                 if (pollingEnemyIndex > 9)
@@ -181,7 +147,7 @@ namespace buttonClick
                 if (checkTimeClose.Checked)
                     stopwatch.Stop();
 
-                
+
                 // 線程計時器
                 if (checkTimeClose.Checked)
                 {
@@ -316,7 +282,7 @@ namespace buttonClick
                         int hours = int.Parse(comboTO_Hour.SelectedItem.ToString());
                         int minutes = int.Parse(comboTO_Min.SelectedItem.ToString());
                         int seconds = int.Parse(comboTO_sec.SelectedItem.ToString());
-                        totalTimeoutSecondsTarget =( hours * 3600 + minutes * 60 + seconds )*1000;
+                        totalTimeoutSecondsTarget = (hours * 3600 + minutes * 60 + seconds) * 1000;
                     }
                     if (checkMP.Checked)
                     {
@@ -452,14 +418,15 @@ namespace buttonClick
                     labelX.ForeColor = System.Drawing.Color.Green;
                     labelY.ForeColor = System.Drawing.Color.Green;
                     Coordinate.IsGetWindows = false;
-                    Coordinate.CalculateAllEnemy(cursor.X, cursor.Y);
+                    //Coordinate.CalculateAllEnemy(cursor.X, cursor.Y);
+                    Coordinate.CalculateAllFriends(cursor.X, cursor.Y);
                 }
                 else if (m.WParam.ToInt32() >= 3 || m.WParam.ToInt32() < 15)
                 {
                     DefineKey i = (DefineKey)m.WParam.ToInt32();
                     switch (i)
                     {
-                        case DefineKey.Num0: // Num 0 = 10
+                        /*case DefineKey.Num0: // Num 0 = 10
                             GameFunction.castSpellOnTarget(Coordinate.Enemy10[0], Coordinate.Enemy10[1], actionF11HotKey, actionDelay);
                             break;
                         case DefineKey.Num1:
@@ -488,7 +455,7 @@ namespace buttonClick
                             break;
                         case DefineKey.Num9:
                             GameFunction.castSpellOnTarget(Coordinate.Enemy9[0], Coordinate.Enemy9[1], actionF11HotKey, actionDelay);
-                            break;
+                            break;*/
                         case DefineKey.Num0_Skill:
                             {
                                 int x, y;
@@ -530,6 +497,8 @@ namespace buttonClick
                                     break;
                             }
                             KeyboardSimulator.KeyPress(actionSkillHotKey);
+                            break;
+                        default:
                             break;
                     }
                 }
@@ -583,7 +552,7 @@ namespace buttonClick
                     labelNumDisplay.ForeColor = System.Drawing.Color.Green;
                     labelNumDisplay.Text = "開啟";
                 }
-                else if (continueAction==true)
+                else if (continueAction == true)
                 {
                     MessageBox.Show("禁止在主迴圈功能執行下使用", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -662,7 +631,7 @@ namespace buttonClick
             x_friends3 = Coordinate.windowTop[0] + xOffset_friends3;
             y_friends3 = Coordinate.windowTop[1] + yOffset_friends3;
 
-            Coordinate.CalculateAllFreiend(x_friends3, y_friends3);
+            Coordinate.CalculateAllFriends(x_friends3, y_friends3);
 
             labelX.Text = x_enemy3.ToString();
             labelY.Text = y_enemy3.ToString();
@@ -677,7 +646,7 @@ namespace buttonClick
         }
         private void btnGetMpNow_Click(object sender, EventArgs e)
         {
-            if (GameFunction.BattleCheck() == false&& GameFunction.NormalCheck()==true)
+            if (GameFunction.BattleCheck() == false && GameFunction.NormalCheck() == true)
             {
                 int x, y;
                 int xOffset = Coordinate.windowBoxLineOffset + 18;
@@ -693,15 +662,15 @@ namespace buttonClick
                 double FullColorCom = BitmapImage.CalculateColorRatio(screenshot, FullColor);
                 double NotFullColorCom = BitmapImage.CalculateColorRatio(screenshot, NotFullColor);
 
-                MessageBox.Show($"滿魔比例檢測為 '{FullColorCom * 100}' %的)\n"+ $"非滿魔比例檢測為 '{NotFullColorCom * 100}' %的)\n");
+                MessageBox.Show($"滿魔比例檢測為 '{FullColorCom * 100}' %的)\n" + $"非滿魔比例檢測為 '{NotFullColorCom * 100}' %的)\n");
             }
         }
     }
     public class GameFunction
     {
         public static string[] GameFunctionList = { "施放法術", "循環施放法術(敵)", "循環招怪與鞭炮" };
-        public static string[] CheckMpRatio = {"0.5","0.4", "0.3", "0.2", "0.1"};
-        public static string[] PetSupport_Master = {"1號位", "2號位", "3號位", "4號位", "5號位" };
+        public static string[] CheckMpRatio = { "0.5", "0.4", "0.3", "0.2", "0.1" };
+        public static string[] PetSupport_Master = { "1號位", "2號位", "3號位", "4號位", "5號位" };
         public static void castSpellOnTarget(int x, int y, byte keyCode, int delay)
         {
             /*
@@ -800,71 +769,71 @@ namespace buttonClick
         public static int windowHOffset = 30;
         public static int windowBoxLineOffset = 8;
         public static bool IsGetWindows = false;
-        // 敵方座標
-        public static int[] Enemy1 = new int[2];
-        public static int[] Enemy2 = new int[2];
-        public static int[] Enemy3 = new int[2];
-        public static int[] Enemy4 = new int[2];
-        public static int[] Enemy5 = new int[2];
-        public static int[] Enemy6 = new int[2];
-        public static int[] Enemy7 = new int[2];
-        public static int[] Enemy8 = new int[2];
-        public static int[] Enemy9 = new int[2];
-        public static int[] Enemy10 = new int[2];
-        // 我方座標
-        public static int[] Friends1 = new int[2];
-        public static int[] Friends2 = new int[2];
-        public static int[] Friends3 = new int[2];
-        public static int[] Friends4 = new int[2];
-        public static int[] Friends5 = new int[2];
-        public static int[] Friends6 = new int[2];
-        public static int[] Friends7 = new int[2];
-        public static int[] Friends8 = new int[2];
-        public static int[] Friends9 = new int[2];
-        public static int[] Friends10 = new int[2];
+        /*
+                敵方座標(目視)
+                67890
+                12345
+                
+                陣列值
+                56789
+                01234
+         */
+        public static int[,] Enemy = new int[10, 2];
+        /*
+               我方座標(目視)
+               12345
+               67890
 
-        // 初始化陣列
-        // 計算所有敵人的座標
+               陣列值
+               01234
+               56789
+        */
+        public static int[,] Friends = new int[10, 2];
         public static void CalculateAllEnemy(int x, int y)
         {
-            // 計算第三號敵人的座標
-            Enemy3[0] = x;
-            Enemy3[1] = y;
+            // 計算第三號敵人的座標 (陣列索引為2)
+            Enemy[2, 0] = x;
+            Enemy[2, 1] = y;
 
             // 計算其他敵人的座標
-            CalculateTargetCoordinate(Enemy3, Enemy2, -68, 56);
-            CalculateTargetCoordinate(Enemy2, Enemy1, -68, 56);
-            CalculateTargetCoordinate(Enemy3, Enemy4, 68, -56);
-            CalculateTargetCoordinate(Enemy4, Enemy5, 68, -56);
+            CalculateTargetCoordinate(Enemy, 2, 1, -68, 56);
+            CalculateTargetCoordinate(Enemy, 1, 0, -68, 56);
+            CalculateTargetCoordinate(Enemy, 2, 3, 68, -56);
+            CalculateTargetCoordinate(Enemy, 3, 4, 68, -56);
 
-            CalculateTargetCoordinate(Enemy1, Enemy6, -73, -61);
-            CalculateTargetCoordinate(Enemy2, Enemy7, -73, -61);
-            CalculateTargetCoordinate(Enemy3, Enemy8, -73, -61);
-            CalculateTargetCoordinate(Enemy4, Enemy9, -73, -61);
-            CalculateTargetCoordinate(Enemy5, Enemy10, -73, -61);
+            CalculateTargetCoordinate(Enemy, 0, 5, -73, -61);
+            CalculateTargetCoordinate(Enemy, 1, 6, -73, -61);
+            CalculateTargetCoordinate(Enemy, 2, 7, -73, -61);
+            CalculateTargetCoordinate(Enemy, 3, 8, -73, -61);
+            CalculateTargetCoordinate(Enemy, 4, 9, -73, -61);
         }
-        public static void CalculateAllFreiend(int x, int y)
+        public static void CalculateAllFriends(int x, int y)
         {
-            // 計算第三號敵人的座標
-            Friends3[0] = x;
-            Friends3[1] = y;
+            // 計算第三號敵人的座標 (陣列索引為2)
+            Friends[2, 0] = x;
+            Friends[2, 1] = y;
             // 計算其他的座標
-            CalculateTargetCoordinate(Friends3, Friends2, -68, 56);
-            CalculateTargetCoordinate(Friends2, Friends1, -68, 56);
-            CalculateTargetCoordinate(Friends3, Friends4, 68, -56);
-            CalculateTargetCoordinate(Friends4, Friends5, 68, -56);
+            CalculateTargetCoordinate(Friends, 2, 1, -68, 56);
+            CalculateTargetCoordinate(Friends, 1, 0, -68, 56);
+            CalculateTargetCoordinate(Friends, 2, 3, 68, -56);
+            CalculateTargetCoordinate(Friends, 3, 4, 68, -56);
 
-            CalculateTargetCoordinate(Friends1, Friends6, 73, 61);
-            CalculateTargetCoordinate(Friends2, Friends7, 73, 61);
-            CalculateTargetCoordinate(Friends3, Friends8, 73, 61);
-            CalculateTargetCoordinate(Friends4, Friends9, 73, 61);
-            CalculateTargetCoordinate(Friends5, Friends10, 73, 61);
+            CalculateTargetCoordinate(Friends, 0, 5, 73, 61);
+            CalculateTargetCoordinate(Friends, 1, 6, 73, 61);
+            CalculateTargetCoordinate(Friends, 2, 7, 73, 61);
+            CalculateTargetCoordinate(Friends, 3, 8, 73, 61);
+            CalculateTargetCoordinate(Friends, 4, 9, 73, 61);
         }
         // 計算目標的座標
-        private static void CalculateTargetCoordinate(int[] from, int[] to, int xOffset, int yOffset)
+        private static void CalculateTargetCoordinate(int[,] enemyArray, int fromIndex, int toIndex, int xOffset, int yOffset)
         {
-            to[0] = from[0] + xOffset;
-            to[1] = from[1] + yOffset;
+            // 获取源坐标的值
+            int fromX = enemyArray[fromIndex, 0];
+            int fromY = enemyArray[fromIndex, 1];
+
+            // 计算目标坐标并赋值给目标索引
+            enemyArray[toIndex, 0] = fromX + xOffset;
+            enemyArray[toIndex, 1] = fromY + yOffset;
         }
     }
     public class BitmapImage
