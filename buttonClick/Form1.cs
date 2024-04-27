@@ -29,13 +29,14 @@ namespace buttonClick
         Num9,
         Num0_Skill,
         Decimal_Skill
-    }    
+    }
     public partial class Form1 : Form
     {
         private Thread actionThread;
-        private bool continueAction = false; 
+        private bool continueAction = false;
         private bool bIsNumKeyOn = false;
         private bool bIsSkillModeOn = false;
+        private int checkPlusTimeOut = 0;
         private int actionF11Type = 0;
         private int pollingEnemyIndex = 0;
         private byte actionF11HotKey = (byte)Keys.F5;
@@ -108,16 +109,25 @@ namespace buttonClick
                             }
                             else
                             {
+                                if (checkGetEnemyPlus.Checked==true)
+                                {
+                                    int i = GameFunction.getEnemyCoor();
+                                    if (i > 0)
+                                    {
+                                        GameFunction.castSpellOnTarget(Coordinate.Enemy[i-1, 0], Coordinate.Enemy[i-1, 1], actionF11HotKey, actionDelay);
+                                        break;
+                                    }
+                                }
                                 //循環施放法術(敵方)                                
-                                GameFunction.castSpellOnTarget(Coordinate.Enemy[pollingEnemyIndex, 0], Coordinate.Enemy[pollingEnemyIndex,1], actionF11HotKey, actionDelay);
- 
+                                GameFunction.castSpellOnTarget(Coordinate.Enemy[pollingEnemyIndex, 0], Coordinate.Enemy[pollingEnemyIndex, 1], actionF11HotKey, actionDelay);
+
                                 /* 直接循環施法 , 最差頂多讀條一半 */
                                 pollingEnemyIndex++;
                                 if (pollingEnemyIndex > 9)
                                     pollingEnemyIndex = 0;
 
                                 // 寵物輔助功能 , 輔助法術需與循環法術同一熱鍵 , 目標限制為前排
-                                if(checkPetSupport.Checked)
+                                if (checkPetSupport.Checked)
                                     GameFunction.castSpellOnTarget(Coordinate.Friends[petSupportTarget, 0], Coordinate.Friends[petSupportTarget, 1], actionF11HotKey, actionDelay);
                             }
                         }
@@ -187,7 +197,7 @@ namespace buttonClick
             SystemFuction.RegisterHotKey(this.Handle, 2, 0, registerHK_GetCoordinate); // 抓取座標
 
             actionThread = new Thread(ActionLoop);
-
+            Coordinate.CalculateEnemyCheckXY();
             // 加入功能選擇
             for (int i = 0; i < GameFunction.GameFunctionList.Length; i++)
                 comboF11Function.Items.Add(GameFunction.GameFunctionList[i]);
@@ -433,8 +443,8 @@ namespace buttonClick
                     labelX.ForeColor = System.Drawing.Color.Green;
                     labelY.ForeColor = System.Drawing.Color.Green;
                     Coordinate.IsGetWindows = false;
-                    //Coordinate.CalculateAllEnemy(cursor.X, cursor.Y);
-                    Coordinate.CalculateAllFriends(cursor.X, cursor.Y);
+                    Coordinate.CalculateAllEnemy(cursor.X, cursor.Y);
+                    //Coordinate.CalculateAllFriends(cursor.X, cursor.Y);
                 }
                 else if (m.WParam.ToInt32() >= 3 || m.WParam.ToInt32() < 15)
                 {
@@ -657,7 +667,32 @@ namespace buttonClick
 
         private void btnTestFuction(object sender, EventArgs e)
         {
+            if (GameFunction.BattleCheck() == true)
+            {
+                int xOffset = Coordinate.windowBoxLineOffset + Coordinate.windowTop[0];
+                int yOffset = Coordinate.windowHOffset + 1 + Coordinate.windowTop[1];
+                int result = 0;
+                Bitmap[] enemyGetBmp = new Bitmap[10];
 
+                for (int i = 0; i < 10; i++)
+                    enemyGetBmp[i] = BitmapImage.CaptureScreen(Coordinate.checkEnemy[i, 0] + xOffset, Coordinate.checkEnemy[i, 1] + yOffset, 1, 1);
+
+                Color EnemyExistColor = Color.FromArgb(255, 255, 255);
+
+                for (int i = 0; i < 10; i++)
+                {
+                    double EnemyExistRatio = BitmapImage.CalculateColorRatio(enemyGetBmp[i], EnemyExistColor);
+                    if (EnemyExistRatio > 0)
+                    {
+                        result = i + 1;
+                        break;
+                    }
+                }
+
+                MessageBox.Show($"第一個抓到的值為{result}\n");
+            }
+            else
+                MessageBox.Show($"非戰鬥狀態\n");
         }
         private void btnGetMpNow_Click(object sender, EventArgs e)
         {
@@ -696,6 +731,34 @@ namespace buttonClick
             Thread.Sleep(500);
             MouseSimulator.LeftMousePress(x, y);
             Thread.Sleep(delay);
+        }
+        public static int getEnemyCoor()
+        {
+            int result = 0;
+
+            if (GameFunction.BattleCheck() == true)
+            {
+                int xOffset = Coordinate.windowBoxLineOffset + Coordinate.windowTop[0];
+                int yOffset = Coordinate.windowHOffset + 1 + Coordinate.windowTop[1];
+                
+                Bitmap[] enemyGetBmp = new Bitmap[10];
+
+                for (int i = 0; i < 10; i++)
+                    enemyGetBmp[i] = BitmapImage.CaptureScreen(Coordinate.checkEnemy[i, 0] + xOffset, Coordinate.checkEnemy[i, 1] + yOffset, 1, 1);
+
+                Color EnemyExistColor = Color.FromArgb(255, 255, 255);
+
+                for (int i = 0; i < 10; i++)
+                {
+                    double EnemyExistRatio = BitmapImage.CalculateColorRatio(enemyGetBmp[i], EnemyExistColor);
+                    if (EnemyExistRatio > 0)
+                    {
+                        result = i + 1;
+                        return result;
+                    }
+                }
+            }
+            return 0;
         }
         public static bool NormalCheck()
         {
@@ -761,7 +824,7 @@ namespace buttonClick
                 // 滿魔狀態的顏色與非滿魔狀態不同
                 return false;
             }
-            else if (NotFullColorCom < NeedRatio)
+            else if (NotFullColorCom < NeedRatio && NotFullColorCom > 0)
             {
                 return true;
             }
@@ -794,6 +857,7 @@ namespace buttonClick
                 01234
          */
         public static int[,] Enemy = new int[10, 2];
+        public static int[,] checkEnemy = new int[10, 2];
         /*
                我方座標(目視)
                12345
@@ -838,6 +902,27 @@ namespace buttonClick
             CalculateTargetCoordinate(Friends, 2, 7, 73, 61);
             CalculateTargetCoordinate(Friends, 3, 8, 73, 61);
             CalculateTargetCoordinate(Friends, 4, 9, 73, 61);
+        }
+        public static void CalculateEnemyCheckXY()
+        {
+            /*
+             * 抓取是否有怪物的白色圓環 , 參考最大體型生物為威奇迷宮
+             *  20240424 - > 實際上不可行 , 上半截怪物體型大會被遮住(且怪物有循環動作)
+             *  下半截則在1號位會有文字遮住怪物圓環的狀況
+             */
+            checkEnemy[0, 0] = 100;
+            checkEnemy[0, 1] = 399;
+
+            CalculateTargetCoordinate(checkEnemy, 0, 1, 72, -54);
+            CalculateTargetCoordinate(checkEnemy, 1, 2, 72, -54);
+            CalculateTargetCoordinate(checkEnemy, 2, 3, 72, -54);
+            CalculateTargetCoordinate(checkEnemy, 3, 4, 72, -54);
+
+            CalculateTargetCoordinate(checkEnemy, 0, 5, -64, -60);
+            CalculateTargetCoordinate(checkEnemy, 1, 6, -64, -60);
+            CalculateTargetCoordinate(checkEnemy, 2, 7, -64, -60);
+            CalculateTargetCoordinate(checkEnemy, 3, 8, -64, -60);
+            CalculateTargetCoordinate(checkEnemy, 4, 9, -64, -60);
         }
         // 計算目標的座標
         private static void CalculateTargetCoordinate(int[,] enemyArray, int fromIndex, int toIndex, int xOffset, int yOffset)

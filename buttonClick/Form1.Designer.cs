@@ -37,6 +37,9 @@ namespace buttonClick
             this.comboF11Function = new System.Windows.Forms.ComboBox();
             this.comboF11HotKey = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkGetEnemyPlus = new System.Windows.Forms.CheckBox();
+            this.comboPetSup_Master = new System.Windows.Forms.ComboBox();
+            this.checkPetSupport = new System.Windows.Forms.CheckBox();
             this.btnGetMpNow = new System.Windows.Forms.Button();
             this.comboCheckMPRatio = new System.Windows.Forms.ComboBox();
             this.comboTO_sec = new System.Windows.Forms.ComboBox();
@@ -63,8 +66,6 @@ namespace buttonClick
             this.labelY = new System.Windows.Forms.Label();
             this.labelX = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
-            this.checkPetSupport = new System.Windows.Forms.CheckBox();
-            this.comboPetSup_Master = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -108,7 +109,7 @@ namespace buttonClick
             // 
             // buttonF11FunctionRead
             // 
-            this.buttonF11FunctionRead.Location = new System.Drawing.Point(6, 260);
+            this.buttonF11FunctionRead.Location = new System.Drawing.Point(9, 272);
             this.buttonF11FunctionRead.Name = "buttonF11FunctionRead";
             this.buttonF11FunctionRead.Size = new System.Drawing.Size(76, 23);
             this.buttonF11FunctionRead.TabIndex = 7;
@@ -136,6 +137,7 @@ namespace buttonClick
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkGetEnemyPlus);
             this.groupBox1.Controls.Add(this.comboPetSup_Master);
             this.groupBox1.Controls.Add(this.checkPetSupport);
             this.groupBox1.Controls.Add(this.btnGetMpNow);
@@ -157,14 +159,43 @@ namespace buttonClick
             this.groupBox1.Controls.Add(this.comboF11Function);
             this.groupBox1.Location = new System.Drawing.Point(9, 111);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 289);
+            this.groupBox1.Size = new System.Drawing.Size(200, 308);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "F11 循環功能設定";
             // 
+            // checkGetEnemyPlus
+            // 
+            this.checkGetEnemyPlus.AutoSize = true;
+            this.checkGetEnemyPlus.Location = new System.Drawing.Point(11, 247);
+            this.checkGetEnemyPlus.Name = "checkGetEnemyPlus";
+            this.checkGetEnemyPlus.Size = new System.Drawing.Size(74, 19);
+            this.checkGetEnemyPlus.TabIndex = 26;
+            this.checkGetEnemyPlus.Text = "抓怪判斷";
+            this.checkGetEnemyPlus.UseVisualStyleBackColor = true;
+            // 
+            // comboPetSup_Master
+            // 
+            this.comboPetSup_Master.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboPetSup_Master.FormattingEnabled = true;
+            this.comboPetSup_Master.Location = new System.Drawing.Point(86, 218);
+            this.comboPetSup_Master.Name = "comboPetSup_Master";
+            this.comboPetSup_Master.Size = new System.Drawing.Size(48, 23);
+            this.comboPetSup_Master.TabIndex = 25;
+            // 
+            // checkPetSupport
+            // 
+            this.checkPetSupport.AutoSize = true;
+            this.checkPetSupport.Location = new System.Drawing.Point(10, 220);
+            this.checkPetSupport.Name = "checkPetSupport";
+            this.checkPetSupport.Size = new System.Drawing.Size(74, 19);
+            this.checkPetSupport.TabIndex = 24;
+            this.checkPetSupport.Text = "寵物輔助";
+            this.checkPetSupport.UseVisualStyleBackColor = true;
+            // 
             // btnGetMpNow
             // 
-            this.btnGetMpNow.Location = new System.Drawing.Point(108, 260);
+            this.btnGetMpNow.Location = new System.Drawing.Point(111, 272);
             this.btnGetMpNow.Name = "btnGetMpNow";
             this.btnGetMpNow.Size = new System.Drawing.Size(80, 23);
             this.btnGetMpNow.TabIndex = 21;
@@ -178,7 +209,7 @@ namespace buttonClick
             this.comboCheckMPRatio.FormattingEnabled = true;
             this.comboCheckMPRatio.Location = new System.Drawing.Point(86, 143);
             this.comboCheckMPRatio.Name = "comboCheckMPRatio";
-            this.comboCheckMPRatio.Size = new System.Drawing.Size(40, 23);
+            this.comboCheckMPRatio.Size = new System.Drawing.Size(48, 23);
             this.comboCheckMPRatio.TabIndex = 23;
             // 
             // comboTO_sec
@@ -408,38 +439,19 @@ namespace buttonClick
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(474, 269);
+            this.button2.Location = new System.Drawing.Point(52, 425);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(130, 23);
+            this.button2.Size = new System.Drawing.Size(112, 23);
             this.button2.TabIndex = 17;
             this.button2.Text = "測試功能";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.btnTestFuction);
             // 
-            // checkPetSupport
-            // 
-            this.checkPetSupport.AutoSize = true;
-            this.checkPetSupport.Location = new System.Drawing.Point(10, 220);
-            this.checkPetSupport.Name = "checkPetSupport";
-            this.checkPetSupport.Size = new System.Drawing.Size(74, 19);
-            this.checkPetSupport.TabIndex = 24;
-            this.checkPetSupport.Text = "寵物輔助";
-            this.checkPetSupport.UseVisualStyleBackColor = true;
-            // 
-            // comboPetSup_Master
-            // 
-            this.comboPetSup_Master.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboPetSup_Master.FormattingEnabled = true;
-            this.comboPetSup_Master.Location = new System.Drawing.Point(86, 218);
-            this.comboPetSup_Master.Name = "comboPetSup_Master";
-            this.comboPetSup_Master.Size = new System.Drawing.Size(48, 23);
-            this.comboPetSup_Master.TabIndex = 25;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(222, 408);
+            this.ClientSize = new System.Drawing.Size(218, 455);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -498,6 +510,7 @@ namespace buttonClick
         private System.Windows.Forms.Button btnGetMpNow;
         private System.Windows.Forms.ComboBox comboPetSup_Master;
         private System.Windows.Forms.CheckBox checkPetSupport;
+        private System.Windows.Forms.CheckBox checkGetEnemyPlus;
     }
 }
 
