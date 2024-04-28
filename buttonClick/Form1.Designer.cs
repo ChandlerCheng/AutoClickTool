@@ -29,6 +29,7 @@ namespace buttonClick
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.textF11Ms = new System.Windows.Forms.TextBox();
@@ -37,6 +38,7 @@ namespace buttonClick
             this.comboF11Function = new System.Windows.Forms.ComboBox();
             this.comboF11HotKey = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.getPicture = new System.Windows.Forms.Button();
             this.checkGetEnemyPlus = new System.Windows.Forms.CheckBox();
             this.comboPetSup_Master = new System.Windows.Forms.ComboBox();
             this.checkPetSupport = new System.Windows.Forms.CheckBox();
@@ -163,6 +165,16 @@ namespace buttonClick
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "F11 循環功能設定";
+            // 
+            // getPicture
+            // 
+            this.getPicture.Location = new System.Drawing.Point(12, 425);
+            this.getPicture.Name = "getPicture";
+            this.getPicture.Size = new System.Drawing.Size(75, 23);
+            this.getPicture.TabIndex = 18;
+            this.getPicture.Text = "截圖";
+            this.getPicture.UseVisualStyleBackColor = true;
+            this.getPicture.Click += new System.EventHandler(this.getPicture_Click);
             // 
             // checkGetEnemyPlus
             // 
@@ -439,7 +451,7 @@ namespace buttonClick
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(52, 425);
+            this.button2.Location = new System.Drawing.Point(97, 425);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(112, 23);
             this.button2.TabIndex = 17;
@@ -451,13 +463,15 @@ namespace buttonClick
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(218, 455);
+            this.ClientSize = new System.Drawing.Size(217, 455);
+            this.Controls.Add(this.getPicture);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "ClickTool";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -511,6 +525,7 @@ namespace buttonClick
         private System.Windows.Forms.ComboBox comboPetSup_Master;
         private System.Windows.Forms.CheckBox checkPetSupport;
         private System.Windows.Forms.CheckBox checkGetEnemyPlus;
+        private System.Windows.Forms.Button getPicture;
     }
 }
 

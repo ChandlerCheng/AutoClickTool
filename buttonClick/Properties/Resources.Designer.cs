@@ -73,6 +73,26 @@ namespace buttonClick.Properties {
         /// <summary>
         ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         /// </summary>
+        internal static System.Drawing.Bitmap fighting_keybar_pet {
+            get {
+                object obj = ResourceManager.GetObject("fighting_keybar_pet", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        /// </summary>
+        internal static System.Drawing.Bitmap fighting_keybar_player {
+            get {
+                object obj = ResourceManager.GetObject("fighting_keybar_player", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        /// </summary>
         internal static System.Drawing.Bitmap levelup {
             get {
                 object obj = ResourceManager.GetObject("levelup", resourceCulture);

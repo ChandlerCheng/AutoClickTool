@@ -75,49 +75,37 @@ namespace buttonClick
                     case 0:
                         {
                             // 施放法術
-                            if (GameFunction.BattleCheck() == false)
+                            if (GameFunction.BattleCheck_Player(false) == true)
                             {
-                                // 檢查是否需要檢查補魔
-                                if (checkMP.Checked == true)
-                                {
-                                    if (GameFunction.IsNeedReplenishMP(checkMpRatioSel) && GameFunction.NormalCheck())
-                                    {
-                                        // 需要符合抓取魔力條低於40%與抓的到升級按鈕兩個條件
-                                        GameFunction.hotKeyPress(actionMPHotKey, 1000);
-                                    }
-                                }
+                                GameFunction.castSpellOnTarget(actionX, actionY, actionF11HotKey, actionDelay);
+                            }
+                            else if (GameFunction.BattleCheck_Pet(false) == true)
+                            {
+                                GameFunction.pressDefendButton(actionDelay);
                             }
                             else
                             {
-                                GameFunction.castSpellOnTarget(actionX, actionY, actionF11HotKey, actionDelay);
+                                if (GameFunction.NormalCheck() == true)
+                                {
+
+                                }
                             }
                         }
                         break;
                     case 1:
                         {
-                            if (GameFunction.BattleCheck() == false)
+                            if (GameFunction.BattleCheck_Player(false) == true)
                             {
-                                // 檢查是否需要檢查補魔
-                                if (checkMP.Checked == true)
-                                {
-                                    if (GameFunction.IsNeedReplenishMP(checkMpRatioSel) && GameFunction.NormalCheck())
-                                    {
-                                        // 需要符合抓取魔力條低於40%與抓的到升級按鈕兩個條件
-                                        GameFunction.hotKeyPress(actionMPHotKey, 1000);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (checkGetEnemyPlus.Checked==true)
+                                if (checkGetEnemyPlus.Checked == true)
                                 {
                                     int i = GameFunction.getEnemyCoor();
                                     if (i > 0)
                                     {
-                                        GameFunction.castSpellOnTarget(Coordinate.Enemy[i-1, 0], Coordinate.Enemy[i-1, 1], actionF11HotKey, actionDelay);
+                                        GameFunction.castSpellOnTarget(Coordinate.Enemy[i - 1, 0], Coordinate.Enemy[i - 1, 1], actionF11HotKey, actionDelay);
                                         break;
                                     }
                                 }
+
                                 //循環施放法術(敵方)                                
                                 GameFunction.castSpellOnTarget(Coordinate.Enemy[pollingEnemyIndex, 0], Coordinate.Enemy[pollingEnemyIndex, 1], actionF11HotKey, actionDelay);
 
@@ -125,33 +113,54 @@ namespace buttonClick
                                 pollingEnemyIndex++;
                                 if (pollingEnemyIndex > 9)
                                     pollingEnemyIndex = 0;
-
-                                // 寵物輔助功能 , 輔助法術需與循環法術同一熱鍵 , 目標限制為前排
-                                if (checkPetSupport.Checked)
+                            }
+                            else if (GameFunction.BattleCheck_Pet(false) == true)
+                            {
+                                if (checkPetSupport.Checked == true)
+                                {
                                     GameFunction.castSpellOnTarget(Coordinate.Friends[petSupportTarget, 0], Coordinate.Friends[petSupportTarget, 1], actionF11HotKey, actionDelay);
+                                    break;
+                                }
+
+                                GameFunction.pressDefendButton(actionDelay);
+                            }
+                            else
+                            {
+                                if (GameFunction.NormalCheck() == true)
+                                {
+
+                                }
                             }
                         }
                         break;
                     case 2:
                         {
-                            if (GameFunction.BattleCheck() == false)
-                            {
-                                // 檢查是否需要檢查補魔
-                                if (checkMP.Checked == true)
-                                {
-                                    if (GameFunction.IsNeedReplenishMP(checkMpRatioSel) && GameFunction.NormalCheck())
-                                    {
-                                        // 需要符合抓取魔力條低於40%與抓的到升級按鈕兩個條件
-                                        GameFunction.hotKeyPress(actionMPHotKey, 1000);
-                                    }
-                                }
-                                // 非戰鬥中 , 持續招怪
-                                GameFunction.hotKeyPress(actionF11HotKey, actionDelay);
-                            }
-                            else
+                            // 施放法術
+                            if (GameFunction.BattleCheck_Player(false) == true)
                             {
                                 // 戰鬥中 , 持續鞭炮
                                 GameFunction.hotKeyPress(actionDefHotKey, actionDelay);
+                            }
+                            else if (GameFunction.BattleCheck_Pet(false) == true)
+                            {
+                                GameFunction.pressDefendButton(actionDelay);
+                            }
+                            else
+                            {
+                                if (GameFunction.NormalCheck() == true)
+                                {
+                                    // 檢查是否需要檢查補魔
+                                    if (checkMP.Checked == true)
+                                    {
+                                        if (GameFunction.IsNeedReplenishMP(checkMpRatioSel))
+                                        {
+                                            // 需要符合抓取魔力條低於40%與抓的到升級按鈕兩個條件
+                                            GameFunction.hotKeyPress(actionMPHotKey, 1000);
+                                        }
+                                    }
+                                    // 非戰鬥中 , 持續招怪
+                                    GameFunction.hotKeyPress(actionF11HotKey, actionDelay);
+                                }
                             }
                         }
                         break;
@@ -435,6 +444,11 @@ namespace buttonClick
                 }
                 else if (m.WParam.ToInt32() == 2) // 取得x,y軸座標並直接套入Text中以供使用
                 {
+                    if (SystemFuction.GetGameAllCoordinates() == false)
+                    {
+                        //MessageBox.Show("請先確認有打開遊戲", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                     // 按下 F9 時，抓取滑鼠當前位置並顯示在 TextBox 中
                     Point cursor = Cursor.Position;
                     labelX.Text = cursor.X.ToString();
@@ -442,9 +456,6 @@ namespace buttonClick
 
                     labelX.ForeColor = System.Drawing.Color.Green;
                     labelY.ForeColor = System.Drawing.Color.Green;
-                    Coordinate.IsGetWindows = false;
-                    Coordinate.CalculateAllEnemy(cursor.X, cursor.Y);
-                    //Coordinate.CalculateAllFriends(cursor.X, cursor.Y);
                 }
                 else if (m.WParam.ToInt32() >= 3 || m.WParam.ToInt32() < 15)
                 {
@@ -667,36 +678,22 @@ namespace buttonClick
 
         private void btnTestFuction(object sender, EventArgs e)
         {
-            if (GameFunction.BattleCheck() == true)
+            if (GameFunction.BattleCheck_Player(true) == true)
             {
-                int xOffset = Coordinate.windowBoxLineOffset + Coordinate.windowTop[0];
-                int yOffset = Coordinate.windowHOffset + 1 + Coordinate.windowTop[1];
-                int result = 0;
-                Bitmap[] enemyGetBmp = new Bitmap[10];
-
-                for (int i = 0; i < 10; i++)
-                    enemyGetBmp[i] = BitmapImage.CaptureScreen(Coordinate.checkEnemy[i, 0] + xOffset, Coordinate.checkEnemy[i, 1] + yOffset, 1, 1);
-
-                Color EnemyExistColor = Color.FromArgb(255, 255, 255);
-
-                for (int i = 0; i < 10; i++)
-                {
-                    double EnemyExistRatio = BitmapImage.CalculateColorRatio(enemyGetBmp[i], EnemyExistColor);
-                    if (EnemyExistRatio > 0)
-                    {
-                        result = i + 1;
-                        break;
-                    }
-                }
-
-                MessageBox.Show($"第一個抓到的值為{result}\n");
+                MessageBox.Show($"人物視角\n");
+            }
+            else if (GameFunction.BattleCheck_Pet(true) == true)
+            {
+                MessageBox.Show($"寵物視角\n");
             }
             else
-                MessageBox.Show($"非戰鬥狀態\n");
+            {
+                MessageBox.Show($"例外情況\n");
+            }
         }
         private void btnGetMpNow_Click(object sender, EventArgs e)
         {
-            if (GameFunction.BattleCheck() == false && GameFunction.NormalCheck() == true)
+            if (GameFunction.BattleCheck_Player(false) == false && GameFunction.NormalCheck() == true)
             {
                 int x, y;
                 int xOffset = Coordinate.windowBoxLineOffset + 18;
@@ -715,6 +712,19 @@ namespace buttonClick
                 MessageBox.Show($"滿魔比例檢測為 '{FullColorCom * 100}' %的)\n" + $"非滿魔比例檢測為 '{NotFullColorCom * 100}' %的)\n");
             }
         }
+
+        private void getPicture_Click(object sender, EventArgs e)
+        {
+            int x_key, y_key;
+            int xOffset_key = Coordinate.windowBoxLineOffset + 766;
+            int yOffset_key = Coordinate.windowHOffset + 98;
+
+            x_key = Coordinate.windowTop[0] + xOffset_key;
+            y_key = Coordinate.windowTop[1] + yOffset_key;
+            // 從畫面上擷取指定區域的圖像
+            Bitmap screenshot_keyBar = BitmapImage.CaptureScreen(x_key, y_key, 33, 34);
+            screenshot_keyBar.Save("fighting_keybar_pet.bmp", ImageFormat.Bmp);
+        }
     }
     public class GameFunction
     {
@@ -732,15 +742,27 @@ namespace buttonClick
             MouseSimulator.LeftMousePress(x, y);
             Thread.Sleep(delay);
         }
+        public static void pressDefendButton(int delay)
+        {
+            int xOffset = Coordinate.windowBoxLineOffset + Coordinate.windowTop[0];
+            int yOffset = Coordinate.windowHOffset + Coordinate.windowTop[1];
+            int x, y;
+
+            x = 766 + xOffset;
+            y = 98 + yOffset;
+
+            MouseSimulator.LeftMousePress(x, y);
+            Thread.Sleep(delay);
+        }
         public static int getEnemyCoor()
         {
             int result = 0;
 
-            if (GameFunction.BattleCheck() == true)
+            if (GameFunction.BattleCheck_Player(false) == true || GameFunction.BattleCheck_Pet(false) == true)
             {
                 int xOffset = Coordinate.windowBoxLineOffset + Coordinate.windowTop[0];
                 int yOffset = Coordinate.windowHOffset + 1 + Coordinate.windowTop[1];
-                
+
                 Bitmap[] enemyGetBmp = new Bitmap[10];
 
                 for (int i = 0; i < 10; i++)
@@ -782,23 +804,54 @@ namespace buttonClick
             else
                 return false;
         }
-        public static bool BattleCheck()
+        public static bool BattleCheck_Player(bool IsDebug)
         {
             int x_key, y_key;
-            int xOffset_key = Coordinate.windowBoxLineOffset + 757;
-            int yOffset_key = Coordinate.windowHOffset;
+            int xOffset_key = Coordinate.windowBoxLineOffset + 766;
+            int yOffset_key = Coordinate.windowHOffset + 98;
 
             x_key = Coordinate.windowTop[0] + xOffset_key;
             y_key = Coordinate.windowTop[1] + yOffset_key;
 
-            Bitmap fight_keybarBMP = Properties.Resources.fighting_keybar;
+            Bitmap fight_keybarBMP = Properties.Resources.fighting_keybar_player;
             // 從畫面上擷取指定區域的圖像
-            Bitmap screenshot_keyBar = BitmapImage.CaptureScreen(x_key, y_key, 44, 313);
+            Bitmap screenshot_keyBar = BitmapImage.CaptureScreen(x_key, y_key, 33, 34);
 
             // 比對圖像
             double Final_KeyBar = BitmapImage.CompareImages(screenshot_keyBar, fight_keybarBMP);
 
-            if (Final_KeyBar > 35)
+            if (IsDebug == true)
+            {
+                MessageBox.Show($"玩家檢測值為 '{Final_KeyBar}')\n");
+            }
+
+            if (Final_KeyBar > 80)
+                return true;
+            else
+                return false;
+        }
+        public static bool BattleCheck_Pet(bool IsDebug)
+        {
+            int x_key, y_key;
+            int xOffset_key = Coordinate.windowBoxLineOffset + 766;
+            int yOffset_key = Coordinate.windowHOffset + 98;
+
+            x_key = Coordinate.windowTop[0] + xOffset_key;
+            y_key = Coordinate.windowTop[1] + yOffset_key;
+
+            Bitmap fight_keybarPetBMP = Properties.Resources.fighting_keybar_pet;
+            // 從畫面上擷取指定區域的圖像
+            Bitmap screenshot_keyBarPet = BitmapImage.CaptureScreen(x_key, y_key, 33, 34);
+
+            // 比對圖像
+            double Final_KeyBar = BitmapImage.CompareImages(screenshot_keyBarPet, fight_keybarPetBMP);
+
+            if (IsDebug == true)
+            {
+                MessageBox.Show($"寵物檢測值為 '{Final_KeyBar}')\n");
+            }
+
+            if (Final_KeyBar > 80)
                 return true;
             else
                 return false;
@@ -1141,6 +1194,44 @@ namespace buttonClick
                 //MessageBox.Show($"找不到名稱為 '{windowTitle}' 的視窗");
                 return false;
             }
+        }
+        public static bool GetGameAllCoordinates()
+        {
+            // 抓取視窗位置 & 視窗長寬數值
+            if (!GetWindowCoordinates("FairyLand"))
+            {
+                MessageBox.Show("抓取視窗錯誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            Coordinate.IsGetWindows = true;
+            /* 
+               中心怪物位置會位於 800x600中的 275,290的位置
+               遊戲本體800x600
+               視窗總長816x638
+               視窗邊框約8
+               視窗標題列約30
+
+                友軍前排3號位529,387
+                敵軍前排3號位275,290
+             */
+            int x_enemy3, y_enemy3;
+            int xOffset_enemy3 = Coordinate.windowBoxLineOffset + 275;
+            int yOffset_enemy3 = Coordinate.windowHOffset + 290;
+
+            x_enemy3 = Coordinate.windowTop[0] + xOffset_enemy3;
+            y_enemy3 = Coordinate.windowTop[1] + yOffset_enemy3;
+
+            Coordinate.CalculateAllEnemy(x_enemy3, y_enemy3);
+
+            int x_friends3, y_friends3;
+            int xOffset_friends3 = Coordinate.windowBoxLineOffset + 529;
+            int yOffset_friends3 = Coordinate.windowHOffset + 387;
+
+            x_friends3 = Coordinate.windowTop[0] + xOffset_friends3;
+            y_friends3 = Coordinate.windowTop[1] + yOffset_friends3;
+
+            Coordinate.CalculateAllFriends(x_friends3, y_friends3);
+            return true;
         }
     }
 }
