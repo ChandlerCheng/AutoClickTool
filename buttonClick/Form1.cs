@@ -48,28 +48,23 @@ namespace buttonClick
         private int actionDelay = 1000;
         private int petSupportTarget = 0;
         private double checkMpRatioSel = 0.5;
+        DateTime targetTime;
 #if DEBUG
         /* 預設熱鍵會影響debug mode下使用單步執行 */
-        private int registerHK_MainRoop = (int)Keys.F1;
+        private int registerHK_MainLoop = (int)Keys.F1;
         private int registerHK_GetCoordinate = (int)Keys.F2;
 #else 
-        private int registerHK_MainRoop = (int)Keys.F11;
+        private int registerHK_MainLoop = (int)Keys.F11;
         private int registerHK_GetCoordinate = (int)Keys.F10;
 #endif
-        private long totalTimeoutSecondsTarget = 0;
-        private long totalTimeoutSecondsNow = 0;
+
         Stopwatch stopwatch = new Stopwatch();
 
         private void ActionLoop()
         {
-            if (checkTimeClose.Checked)
-                stopwatch.Start();
             // 定義循環運行的方法
             while (continueAction)
             {
-                if (checkTimeClose.Checked)
-                    stopwatch.Restart();
-
                 switch (actionF11Type)
                 {
                     case 0:
@@ -169,26 +164,12 @@ namespace buttonClick
                 }
 
                 if (checkTimeClose.Checked)
-                    stopwatch.Stop();
-
-
-                // 線程計時器
-                if (checkTimeClose.Checked)
                 {
-                    // 累加实际经过的秒数
-                    totalTimeoutSecondsNow += stopwatch.ElapsedMilliseconds;
-
-                    if (totalTimeoutSecondsNow >= totalTimeoutSecondsTarget)
+                    DateTime currentTime = DateTime.Now;
+                    if (currentTime <= targetTime)
                     {
-                        MessageBox.Show("Task completed!"); // 在窗体加载时显示消息框
-
-                        this.Invoke((MethodInvoker)delegate
-                        {
-                            this.Text = "時間到 , 已關閉";
-                        });
-                        totalTimeoutSecondsNow = 0;
                         continueAction = false;
-                        break;
+                        targetTime = DateTime.MinValue;
                     }
                 }
             }
@@ -202,7 +183,7 @@ namespace buttonClick
         {
             // Form1載入時註冊熱鍵
 
-            SystemFuction.RegisterHotKey(this.Handle, 1, 0, registerHK_MainRoop); // 主循環功能啟動/關閉
+            SystemFuction.RegisterHotKey(this.Handle, 1, 0, registerHK_MainLoop); // 主循環功能啟動/關閉
             SystemFuction.RegisterHotKey(this.Handle, 2, 0, registerHK_GetCoordinate); // 抓取座標
 
             actionThread = new Thread(ActionLoop);
@@ -248,6 +229,7 @@ namespace buttonClick
             comboTO_Min.SelectedIndex = 0;
             comboTO_sec.SelectedIndex = 0;
             comboCheckMPRatio.SelectedIndex = 0;
+            targetTime = DateTime.MinValue;
 
             labelX.ForeColor = System.Drawing.Color.Red;
             labelX.Text = "未指定";
@@ -299,14 +281,20 @@ namespace buttonClick
                         this.Text = "已關閉";
                         return;
                     }
-                    totalTimeoutSecondsNow = 0;
+
                     if (checkTimeClose.Checked)
                     {
                         // 解析文本框中的值
                         int hours = int.Parse(comboTO_Hour.SelectedItem.ToString());
                         int minutes = int.Parse(comboTO_Min.SelectedItem.ToString());
                         int seconds = int.Parse(comboTO_sec.SelectedItem.ToString());
-                        totalTimeoutSecondsTarget = (hours * 3600 + minutes * 60 + seconds) * 1000;
+
+                        if (hours > 0)
+                            targetTime = targetTime.AddHours(hours);
+                        if (minutes > 0)
+                            targetTime = targetTime.AddMinutes(minutes);
+                        if (seconds > 0)
+                            targetTime = targetTime.AddSeconds(minutes);
                     }
                     if (checkPetSupport.Checked)
                     {

@@ -69,6 +69,8 @@ namespace buttonClick
             this.labelX = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.textGetImgName = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.textGetImgH = new System.Windows.Forms.TextBox();
             this.textGetImgW = new System.Windows.Forms.TextBox();
             this.textGetImgY = new System.Windows.Forms.TextBox();
@@ -77,8 +79,6 @@ namespace buttonClick
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.textGetImgName = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -463,7 +463,7 @@ namespace buttonClick
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(97, 425);
+            this.button2.Location = new System.Drawing.Point(52, 425);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(112, 23);
             this.button2.TabIndex = 17;
@@ -490,6 +490,23 @@ namespace buttonClick
             this.groupBox5.TabIndex = 19;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "截圖工具";
+            // 
+            // textGetImgName
+            // 
+            this.textGetImgName.Font = new System.Drawing.Font("Microsoft JhengHei UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textGetImgName.Location = new System.Drawing.Point(69, 128);
+            this.textGetImgName.Name = "textGetImgName";
+            this.textGetImgName.Size = new System.Drawing.Size(66, 21);
+            this.textGetImgName.TabIndex = 35;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(8, 127);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(31, 15);
+            this.label13.TabIndex = 34;
+            this.label13.Text = "名稱";
             // 
             // textGetImgH
             // 
@@ -558,23 +575,6 @@ namespace buttonClick
             this.label9.Size = new System.Drawing.Size(39, 15);
             this.label9.TabIndex = 27;
             this.label9.Text = "遊戲X";
-            // 
-            // textGetImgName
-            // 
-            this.textGetImgName.Font = new System.Drawing.Font("Microsoft JhengHei UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textGetImgName.Location = new System.Drawing.Point(69, 128);
-            this.textGetImgName.Name = "textGetImgName";
-            this.textGetImgName.Size = new System.Drawing.Size(66, 21);
-            this.textGetImgName.TabIndex = 35;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(8, 127);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(31, 15);
-            this.label13.TabIndex = 34;
-            this.label13.Text = "名稱";
             // 
             // Form1
             // 
