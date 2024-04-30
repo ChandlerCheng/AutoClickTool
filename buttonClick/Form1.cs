@@ -748,6 +748,9 @@ namespace buttonClick
         }
         public static void pressDefendButton(int delay)
         {
+            /*
+                有小bug , 會變成點擊原先停點上的怪物 , 而不是指向防禦按鈕
+             */
             int xOffset = Coordinate.windowBoxLineOffset + Coordinate.windowTop[0];
             int yOffset = Coordinate.windowHOffset + Coordinate.windowTop[1];
             int x, y;
@@ -760,6 +763,9 @@ namespace buttonClick
         }
         public static int getEnemyCoor()
         {
+            /*
+                已知土萊姆等怪物會遮住目前抓的檢查點 , 但目前抓不到會走輪尋打怪所以暫時不修改                
+             */
             int result = 0;
 
             if (GameFunction.BattleCheck_Player(false) == true || GameFunction.BattleCheck_Pet(false) == true)
