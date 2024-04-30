@@ -715,15 +715,31 @@ namespace buttonClick
 
         private void getPicture_Click(object sender, EventArgs e)
         {
+            if (int.TryParse(textGetImgX.Text, out int imgX) == false || int.TryParse(textGetImgY.Text, out int imgY) == false)
+            {
+                MessageBox.Show("座標有誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+           if (int.TryParse(textGetImgW.Text, out int imgW) == false || int.TryParse(textGetImgH.Text, out int imgH) == false)
+            {
+                MessageBox.Show("圖片長寬", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+           if(textGetImgName.Text.Length<=0)
+            {
+                MessageBox.Show("請輸入名稱", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             int x_key, y_key;
-            int xOffset_key = Coordinate.windowBoxLineOffset + 766;
-            int yOffset_key = Coordinate.windowHOffset + 98;
+            int xOffset_key = Coordinate.windowBoxLineOffset + imgX;
+            int yOffset_key = Coordinate.windowHOffset + imgY;
 
             x_key = Coordinate.windowTop[0] + xOffset_key;
             y_key = Coordinate.windowTop[1] + yOffset_key;
             // 從畫面上擷取指定區域的圖像
-            Bitmap screenshot_keyBar = BitmapImage.CaptureScreen(x_key, y_key, 33, 34);
-            screenshot_keyBar.Save("fighting_keybar_pet.bmp", ImageFormat.Bmp);
+            Bitmap screenshot_keyBar = BitmapImage.CaptureScreen(x_key, y_key, imgW, imgH);
+            screenshot_keyBar.Save(textGetImgName.Text+ ".bmp", ImageFormat.Bmp);
         }
     }
     public class GameFunction
