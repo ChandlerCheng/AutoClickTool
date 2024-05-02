@@ -67,7 +67,7 @@ namespace buttonClick
             {
                 switch (actionF11Type)
                 {
-                    case 0:
+                    case 0: // 定點施法
                         {
                             // 施放法術
                             if (GameFunction.BattleCheck_Player(false) == true)
@@ -87,7 +87,7 @@ namespace buttonClick
                             }
                         }
                         break;
-                    case 1:
+                    case 1: // 循環施法打怪 & 自動尋怪功能 & 寵物施法功能(前排)
                         {
                             if (GameFunction.BattleCheck_Player(false) == true)
                             {
@@ -128,9 +128,8 @@ namespace buttonClick
                             }
                         }
                         break;
-                    case 2:
+                    case 2: // 招怪與防禦(鞭炮)
                         {
-                            // 施放法術
                             if (GameFunction.BattleCheck_Player(false) == true)
                             {
                                 // 戰鬥中 , 持續鞭炮
@@ -156,6 +155,23 @@ namespace buttonClick
                                     // 非戰鬥中 , 持續招怪
                                     GameFunction.hotKeyPress(actionF11HotKey, actionDelay);
                                 }
+                            }
+                        }
+                        break;
+                    case 3: // 防禦 (鞭炮)
+                        {
+                            if (GameFunction.BattleCheck_Player(false) == true)
+                            {
+                                // 戰鬥中 , 持續鞭炮
+                                GameFunction.hotKeyPress(actionDefHotKey, actionDelay);
+                            }
+                            else if (GameFunction.BattleCheck_Pet(false) == true)
+                            {
+                                GameFunction.pressDefendButton(actionDelay);
+                            }
+                            else
+                            {
+
                             }
                         }
                         break;
@@ -732,9 +748,9 @@ namespace buttonClick
     }
     public class GameFunction
     {
-        public static string[] GameFunctionList = { "施放法術", "循環施放法術(敵)", "循環招怪與鞭炮" };
+        public static string[] GameFunctionList = { "施放法術", "循環施放法術(敵)", "循環招怪與鞭炮","循環鞭炮" };
         public static string[] CheckMpRatio = { "0.5", "0.4", "0.3", "0.2", "0.1" };
-        public static string[] PetSupport_Master = { "1號位", "2號位", "3號位", "4號位", "5號位" };
+        public static string[] PetSupport_Master = { "1前", "2前", "3前", "4前", "5前" };
         public static void castSpellOnTarget(int x, int y, byte keyCode, int delay)
         {
             /*
