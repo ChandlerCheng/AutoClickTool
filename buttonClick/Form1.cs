@@ -257,6 +257,9 @@ namespace buttonClick
 
             labelY.ForeColor = System.Drawing.Color.Red;
             labelY.Text = "未指定";
+
+            labelVersion.Text = "程式版本 v" + Application.ProductVersion;
+            labelVersion.ForeColor = System.Drawing.Color.Red;
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {

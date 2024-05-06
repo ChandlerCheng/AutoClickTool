@@ -79,6 +79,7 @@ namespace buttonClick
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.labelVersion = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -171,7 +172,7 @@ namespace buttonClick
             this.groupBox1.Controls.Add(this.textF11Ms);
             this.groupBox1.Controls.Add(this.comboF11HotKey);
             this.groupBox1.Controls.Add(this.comboF11Function);
-            this.groupBox1.Location = new System.Drawing.Point(9, 111);
+            this.groupBox1.Location = new System.Drawing.Point(9, 135);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(200, 308);
             this.groupBox1.TabIndex = 10;
@@ -436,7 +437,7 @@ namespace buttonClick
             this.groupBox4.Controls.Add(this.label1);
             this.groupBox4.Controls.Add(this.label2);
             this.groupBox4.Controls.Add(this.button1);
-            this.groupBox4.Location = new System.Drawing.Point(9, 3);
+            this.groupBox4.Location = new System.Drawing.Point(9, 27);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(199, 102);
             this.groupBox4.TabIndex = 16;
@@ -463,7 +464,7 @@ namespace buttonClick
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(52, 425);
+            this.button2.Location = new System.Drawing.Point(52, 449);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(112, 23);
             this.button2.TabIndex = 17;
@@ -576,11 +577,21 @@ namespace buttonClick
             this.label9.TabIndex = 27;
             this.label9.Text = "遊戲X";
             // 
+            // labelVersion
+            // 
+            this.labelVersion.AutoSize = true;
+            this.labelVersion.Location = new System.Drawing.Point(19, 9);
+            this.labelVersion.Name = "labelVersion";
+            this.labelVersion.Size = new System.Drawing.Size(49, 15);
+            this.labelVersion.TabIndex = 20;
+            this.labelVersion.Text = "label14";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(220, 455);
+            this.ClientSize = new System.Drawing.Size(220, 483);
+            this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox4);
@@ -603,6 +614,7 @@ namespace buttonClick
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -656,6 +668,7 @@ namespace buttonClick
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox textGetImgName;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label labelVersion;
     }
 }
 
