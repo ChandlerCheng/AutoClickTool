@@ -51,8 +51,8 @@ namespace buttonClick
         DateTime targetTime;
 #if DEBUG
         /* 預設熱鍵會影響debug mode下使用單步執行 */
-        private int registerHK_MainLoop = (int)Keys.F1;
-        private int registerHK_GetCoordinate = (int)Keys.F2;
+        private int registerHK_MainLoop = (int)Keys.F2;
+        private int registerHK_GetCoordinate = (int)Keys.F1;
 #else 
         private int registerHK_MainLoop = (int)Keys.F11;
         private int registerHK_GetCoordinate = (int)Keys.F10;
@@ -69,6 +69,7 @@ namespace buttonClick
                 {
                     case 0: // 定點施法
                         {
+#if !DEBUG
                             // 施放法術
                             if (GameFunction.BattleCheck_Player(false) == true)
                             {
@@ -85,6 +86,7 @@ namespace buttonClick
 
                                 }
                             }
+#endif
                         }
                         break;
                     case 1: // 循環施法打怪 & 自動尋怪功能 & 寵物施法功能(前排)
@@ -182,9 +184,12 @@ namespace buttonClick
                 if (checkTimeClose.Checked)
                 {
                     DateTime currentTime = DateTime.Now;
-                    if (currentTime <= targetTime)
+                    if (currentTime >= targetTime)
                     {
-                        continueAction = false;
+                        continueAction = false; // 停止執行動作                        
+                        MessageBox.Show("線程已經關閉", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // 在 UI 線程上更改窗口標題
+                        this.Invoke(new Action(() => this.Text = "已結束"));
                         targetTime = DateTime.MinValue;
                     }
                 }
@@ -305,12 +310,14 @@ namespace buttonClick
                         int minutes = int.Parse(comboTO_Min.SelectedItem.ToString());
                         int seconds = int.Parse(comboTO_sec.SelectedItem.ToString());
 
+                        targetTime = DateTime.Now;
+
                         if (hours > 0)
                             targetTime = targetTime.AddHours(hours);
                         if (minutes > 0)
                             targetTime = targetTime.AddMinutes(minutes);
                         if (seconds > 0)
-                            targetTime = targetTime.AddSeconds(minutes);
+                            targetTime = targetTime.AddSeconds(seconds);
                     }
                     if (checkPetSupport.Checked)
                     {
@@ -448,11 +455,13 @@ namespace buttonClick
                 }
                 else if (m.WParam.ToInt32() == 2) // 取得x,y軸座標並直接套入Text中以供使用
                 {
+#if !DEBUG
                     if (SystemFuction.GetGameAllCoordinates() == false)
                     {
                         //MessageBox.Show("請先確認有打開遊戲", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
+#endif
                     // 按下 F9 時，抓取滑鼠當前位置並顯示在 TextBox 中
                     Point cursor = Cursor.Position;
                     labelX.Text = cursor.X.ToString();
