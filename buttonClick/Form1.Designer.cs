@@ -182,6 +182,8 @@ namespace buttonClick
             // checkGetEnemyPlus
             // 
             this.checkGetEnemyPlus.AutoSize = true;
+            this.checkGetEnemyPlus.Checked = true;
+            this.checkGetEnemyPlus.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkGetEnemyPlus.Location = new System.Drawing.Point(11, 247);
             this.checkGetEnemyPlus.Name = "checkGetEnemyPlus";
             this.checkGetEnemyPlus.Size = new System.Drawing.Size(74, 19);
@@ -383,7 +385,7 @@ namespace buttonClick
             // 
             this.comboBoxSkillMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxSkillMode.FormattingEnabled = true;
-            this.comboBoxSkillMode.Location = new System.Drawing.Point(6, 53);
+            this.comboBoxSkillMode.Location = new System.Drawing.Point(34, 53);
             this.comboBoxSkillMode.Name = "comboBoxSkillMode";
             this.comboBoxSkillMode.Size = new System.Drawing.Size(74, 23);
             this.comboBoxSkillMode.TabIndex = 17;
@@ -392,7 +394,7 @@ namespace buttonClick
             // 
             this.labelSkillMode.AutoSize = true;
             this.labelSkillMode.ForeColor = System.Drawing.Color.Red;
-            this.labelSkillMode.Location = new System.Drawing.Point(147, 28);
+            this.labelSkillMode.Location = new System.Drawing.Point(86, 86);
             this.labelSkillMode.Name = "labelSkillMode";
             this.labelSkillMode.Size = new System.Drawing.Size(31, 15);
             this.labelSkillMode.TabIndex = 16;
@@ -401,7 +403,7 @@ namespace buttonClick
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(86, 28);
+            this.label7.Location = new System.Drawing.Point(25, 86);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(55, 15);
             this.label7.TabIndex = 15;
@@ -409,7 +411,7 @@ namespace buttonClick
             // 
             // btnSkillMode
             // 
-            this.btnSkillMode.Location = new System.Drawing.Point(6, 24);
+            this.btnSkillMode.Location = new System.Drawing.Point(34, 24);
             this.btnSkillMode.Name = "btnSkillMode";
             this.btnSkillMode.Size = new System.Drawing.Size(74, 23);
             this.btnSkillMode.TabIndex = 14;
@@ -423,9 +425,9 @@ namespace buttonClick
             this.groupBox3.Controls.Add(this.labelSkillMode);
             this.groupBox3.Controls.Add(this.btnSkillMode);
             this.groupBox3.Controls.Add(this.label7);
-            this.groupBox3.Location = new System.Drawing.Point(569, 135);
+            this.groupBox3.Location = new System.Drawing.Point(228, 200);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(194, 85);
+            this.groupBox3.Size = new System.Drawing.Size(141, 113);
             this.groupBox3.TabIndex = 15;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "練技模式";
@@ -582,15 +584,15 @@ namespace buttonClick
             this.labelVersion.AutoSize = true;
             this.labelVersion.Location = new System.Drawing.Point(19, 9);
             this.labelVersion.Name = "labelVersion";
-            this.labelVersion.Size = new System.Drawing.Size(49, 15);
+            this.labelVersion.Size = new System.Drawing.Size(111, 15);
             this.labelVersion.TabIndex = 20;
-            this.labelVersion.Text = "label14";
+            this.labelVersion.Text = "<Version Display>";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(220, 483);
+            this.ClientSize = new System.Drawing.Size(219, 483);
             this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.button2);

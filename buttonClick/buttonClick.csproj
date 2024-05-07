@@ -7,6 +7,9 @@
     <Platforms>AnyCPU;x64</Platforms>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <Nullable>enable</Nullable>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

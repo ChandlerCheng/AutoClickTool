@@ -313,20 +313,22 @@ namespace buttonClick
                         int minutes = int.Parse(comboTO_Min.SelectedItem.ToString());
                         int seconds = int.Parse(comboTO_sec.SelectedItem.ToString());
 
-                        targetTime = DateTime.Now;
+                        //targetTime = DateTime.Now;
 
-                        if (hours > 0)
-                            targetTime = targetTime.AddHours(hours);
-                        if (minutes > 0)
-                            targetTime = targetTime.AddMinutes(minutes);
-                        if (seconds > 0)
-                            targetTime = targetTime.AddSeconds(seconds);
+                        //if (hours > 0)
+                        //    targetTime = targetTime.AddHours(hours);
+                        //if (minutes > 0)
+                        //    targetTime = targetTime.AddMinutes(minutes);
+                        //if (seconds > 0)
+                        //    targetTime = targetTime.AddSeconds(seconds);
+
+                        targetTime = DateTime.Today.Add(new TimeSpan(hours, minutes, seconds));
                     }
                     if (checkPetSupport.Checked)
                     {
                         if (comboPetSup_Master.SelectedIndex == -1)
                         {
-                            MessageBox.Show("請選擇寵物輔助的目標位(對象必須為前排)", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("請選擇寵物輔助的目標位", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
 
@@ -527,6 +529,7 @@ namespace buttonClick
                             }
                             break;
                         case DefineKey.Decimal_Skill:
+                            // 一般來說是鞭炮熱鍵
                             switch (comboBoxSkillMode.SelectedIndex)
                             {
                                 case 0:
@@ -561,8 +564,6 @@ namespace buttonClick
             // 功能說明
             string instructionsText = "功能說明：\n\n" +
                                       "- F10 : 抓取x,y軸座標。\n" +
-                                      "  (若使用小鍵功能, 請抓\n" +
-                                      "    前排中間)\n" +
                                       "- F11 : 功能啟動/暫停。\n\n";
             // 显示消息框
             MessageBox.Show(instructionsText, "功能說明", MessageBoxButtons.OK, MessageBoxIcon.Information);
