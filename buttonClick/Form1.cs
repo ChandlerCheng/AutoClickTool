@@ -260,6 +260,14 @@ namespace buttonClick
 
             labelVersion.Text = "程式版本 v" + Application.ProductVersion;
             labelVersion.ForeColor = System.Drawing.Color.Red;
+
+#if !DEBUG
+            labelDebug.Text = "標準版";
+            labelDebug.ForeColor = System.Drawing.Color.Green;
+#else
+            labelDebug.Text = "測試版";
+            labelDebug.ForeColor = System.Drawing.Color.Red;
+#endif
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {

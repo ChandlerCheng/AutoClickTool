@@ -80,6 +80,7 @@ namespace buttonClick
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.labelVersion = new System.Windows.Forms.Label();
+            this.labelDebug = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -588,11 +589,21 @@ namespace buttonClick
             this.labelVersion.TabIndex = 20;
             this.labelVersion.Text = "<Version Display>";
             // 
+            // labelDebug
+            // 
+            this.labelDebug.AutoSize = true;
+            this.labelDebug.Location = new System.Drawing.Point(158, 9);
+            this.labelDebug.Name = "labelDebug";
+            this.labelDebug.Size = new System.Drawing.Size(49, 15);
+            this.labelDebug.TabIndex = 21;
+            this.labelDebug.Text = "label14";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(219, 483);
+            this.Controls.Add(this.labelDebug);
             this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.button2);
@@ -671,6 +682,7 @@ namespace buttonClick
         private System.Windows.Forms.TextBox textGetImgName;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label labelVersion;
+        private System.Windows.Forms.Label labelDebug;
     }
 }
 
