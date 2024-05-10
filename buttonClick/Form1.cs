@@ -48,7 +48,7 @@ namespace buttonClick
         private int actionDelay = 1000;
         private int petSupportTarget = 0;
         private double checkMpRatioSel = 0.5;
-        DateTime targetTime;
+        DateTime targetTime;        
 #if DEBUG
         /* 預設熱鍵會影響debug mode下使用單步執行 */
         private int registerHK_MainLoop = (int)Keys.F2;
@@ -106,7 +106,7 @@ namespace buttonClick
                                 //循環施放法術(敵方)                                
                                 GameFunction.castSpellOnTarget(Coordinate.Enemy[pollingEnemyIndex, 0], Coordinate.Enemy[pollingEnemyIndex, 1], actionF11HotKey, actionDelay);
 
-                                /* 直接循環施法 , 最差頂多讀條一半 */
+                                /* 若無法正常取得怪物座標 , 則直接朝所有怪物位置循環點擊 , 最差頂多讀條一半 */
                                 pollingEnemyIndex++;
                                 if (pollingEnemyIndex > 9)
                                     pollingEnemyIndex = 0;
@@ -115,6 +115,8 @@ namespace buttonClick
                             {
                                 if (checkPetSupport.Checked == true)
                                 {
+                                    /* 讓主要角色換位置時只需停下來換即可 , 而不是關閉迴圈選好再重開 */
+                                    petSupportTarget = comboPetSup_Master.SelectedIndex;
                                     GameFunction.castSpellOnTarget(Coordinate.Friends[petSupportTarget, 0], Coordinate.Friends[petSupportTarget, 1], actionF11HotKey, actionDelay);
                                     break;
                                 }
@@ -139,15 +141,17 @@ namespace buttonClick
                             }
                             else if (GameFunction.BattleCheck_Pet(false) == true)
                             {
+                                // 戰鬥中的鞭炮角色原則上不放寵 , 因此誤放也按防禦件處理
                                 GameFunction.pressDefendButton(actionDelay);
                             }
                             else
                             {
                                 if (GameFunction.NormalCheck() == true)
                                 {
-                                    // 檢查是否需要檢查補魔
+                                    // 確認是不是過場動畫
                                     if (checkMP.Checked == true)
                                     {
+                                        // 檢查是否需要檢查補魔
                                         if (GameFunction.IsNeedReplenishMP(checkMpRatioSel))
                                         {
                                             // 需要符合抓取魔力條低於40%與抓的到升級按鈕兩個條件
@@ -169,6 +173,7 @@ namespace buttonClick
                             }
                             else if (GameFunction.BattleCheck_Pet(false) == true)
                             {
+                                // 戰鬥中的鞭炮角色原則上不放寵 , 因此誤放也按防禦件處理
                                 GameFunction.pressDefendButton(actionDelay);
                             }
                             else
@@ -202,8 +207,7 @@ namespace buttonClick
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // Form1載入時註冊熱鍵
-
+            // Form1載入時註冊主要流程熱鍵
             SystemFuction.RegisterHotKey(this.Handle, 1, 0, registerHK_MainLoop); // 主循環功能啟動/關閉
             SystemFuction.RegisterHotKey(this.Handle, 2, 0, registerHK_GetCoordinate); // 抓取座標
 
@@ -240,31 +244,37 @@ namespace buttonClick
             for (int i = 0; i < GameFunction.PetSupport_Master.Length; i++)
                 comboPetSup_Master.Items.Add(GameFunction.PetSupport_Master[i]);
 
+            DateTime currentTime = DateTime.Now;
 
+            comboPetSup_Master.SelectedIndex = 0;
             comboF11Function.SelectedIndex = 0;
             comboF11HotKey.SelectedIndex = 0;
             comboBoxSkillMode.SelectedIndex = 0;
             comboDefHotKey.SelectedIndex = 1;
             comboHotKeyMP.SelectedIndex = 2;
-            comboTO_Hour.SelectedIndex = 0;
-            comboTO_Min.SelectedIndex = 0;
-            comboTO_sec.SelectedIndex = 0;
+            comboTO_Hour.SelectedIndex = currentTime.Hour;
+            comboTO_Min.SelectedIndex = currentTime.Minute;
+            comboTO_sec.SelectedIndex = currentTime.Second;
             comboCheckMPRatio.SelectedIndex = 0;
             targetTime = DateTime.MinValue;
 
+            // UI訊息載入
             labelX.ForeColor = System.Drawing.Color.Red;
             labelX.Text = "未指定";
-
             labelY.ForeColor = System.Drawing.Color.Red;
             labelY.Text = "未指定";
-
-            labelVersion.Text = "程式版本 v" + Application.ProductVersion;
+            labelVersion.Text = "程式版本  v" + Application.ProductVersion;
             labelVersion.ForeColor = System.Drawing.Color.Red;
-
-#if !DEBUG
+#if !DEBUG            
             labelDebug.Text = "標準版";
             labelDebug.ForeColor = System.Drawing.Color.Green;
 #else
+            /*
+                DEBUG狀態下 , 並非一般使用的功能 , 而是開發時方便測試的環境
+                1. 主迴圈中的 "循環施法" 變為開發功能用, 無需判斷遊戲視窗是否存在
+                2. 抓取座標與迴圈功能在啟動時都不檢查遊戲視窗 , 熱鍵從原先的
+                3. 
+            */
             labelDebug.Text = "測試版";
             labelDebug.ForeColor = System.Drawing.Color.Red;
 #endif
@@ -332,16 +342,7 @@ namespace buttonClick
 
                         targetTime = DateTime.Today.Add(new TimeSpan(hours, minutes, seconds));
                     }
-                    if (checkPetSupport.Checked)
-                    {
-                        if (comboPetSup_Master.SelectedIndex == -1)
-                        {
-                            MessageBox.Show("請選擇寵物輔助的目標位", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-
-                        petSupportTarget = comboPetSup_Master.SelectedIndex;
-                    }
+      
                     if (checkMP.Checked)
                     {
                         checkMpRatioSel = double.Parse(comboCheckMPRatio.SelectedItem.ToString());
@@ -537,6 +538,9 @@ namespace buttonClick
                             }
                             break;
                         case DefineKey.Decimal_Skill:
+#if DEBUG
+                            GameFunction.pressDefendButton(500);
+#else
                             // 一般來說是鞭炮熱鍵
                             switch (comboBoxSkillMode.SelectedIndex)
                             {
@@ -560,6 +564,7 @@ namespace buttonClick
                                     break;
                             }
                             KeyboardSimulator.KeyPress(actionSkillHotKey);
+#endif
                             break;
                         default:
                             break;
@@ -787,6 +792,8 @@ namespace buttonClick
         {
             /*
                 有小bug , 會變成點擊原先停點上的怪物 , 而不是指向防禦按鈕
+                
+                20240510 : 加入 Cursor.Position = new System.Drawing.Point(x, y); 才確保會移動到正確位置上。
              */
             int xOffset = Coordinate.windowBoxLineOffset + Coordinate.windowTop[0];
             int yOffset = Coordinate.windowHOffset + Coordinate.windowTop[1];
@@ -794,7 +801,7 @@ namespace buttonClick
 
             x = 766 + xOffset;
             y = 98 + yOffset;
-
+            Cursor.Position = new System.Drawing.Point(x, y);
             MouseSimulator.LeftMousePress(x, y);
             Thread.Sleep(delay);
         }
@@ -926,6 +933,10 @@ namespace buttonClick
             }
             else if (NotFullColorCom < NeedRatio && NotFullColorCom > 0)
             {
+                /* 
+                 * NotFullColorCom 無論如何必須大於零 , 因為該段程序並不檢查魔力條位置下當前是否為
+                 * 正確的狀態 , 有可能是過場動畫的黑畫面
+                 */
                 return true;
             }
             return false;
