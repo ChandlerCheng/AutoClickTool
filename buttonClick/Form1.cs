@@ -111,7 +111,7 @@ namespace buttonClick
                 {
                     case 0: // 指定座標施放法術
                         {
-                            GameFunction.pressDefendButton(actionDelay);
+                            GameFunction.pressDefendButton();
                         }
                         break;
                     case 1:// 自動打怪功能 , 含寵物輔助功能
@@ -124,7 +124,7 @@ namespace buttonClick
                                 break;
                             }
 
-                            GameFunction.pressDefendButton(actionDelay);
+                            GameFunction.pressDefendButton();
                         }
                         break;
                     case 2: // 自動招怪 , 自動鞭炮
@@ -132,7 +132,7 @@ namespace buttonClick
                     case 4: // 自動施展全體增益法術(目標固定為中間後排招怪位)
                         {
                             // 戰鬥中的鞭炮角色原則上不放寵 , 因此誤放也按防禦鍵處理
-                            GameFunction.pressDefendButton(actionDelay);
+                            GameFunction.pressDefendButton();
                         }
                         break;
                 }
@@ -523,7 +523,7 @@ namespace buttonClick
                             break;
                         case DefineKey.Decimal_Skill:
 #if DEBUG
-                            GameFunction.pressDefendButton(500);
+                            GameFunction.pressDefendButton();
 #else
                             // 一般來說是鞭炮熱鍵
                             switch (comboBoxSkillMode.SelectedIndex)
@@ -772,7 +772,7 @@ namespace buttonClick
             MouseSimulator.LeftMousePress(x, y);
             Thread.Sleep(delay);
         }
-        public static void pressDefendButton(int delay)
+        public static void pressDefendButton()
         {
             /*
                 有小bug , 會變成點擊原先停點上的怪物 , 而不是指向防禦按鈕
@@ -782,12 +782,15 @@ namespace buttonClick
             int xOffset = Coordinate.windowBoxLineOffset + Coordinate.windowTop[0];
             int yOffset = Coordinate.windowHOffset +1+ Coordinate.windowTop[1];
             int x, y;
-
+            // 保存当前光标位置
+            Point originalPosition = Cursor.Position;
             x = 779 + xOffset;
             y = 68 + yOffset;
             Cursor.Position = new System.Drawing.Point(x, y);
             MouseSimulator.LeftMousePress(x, y);
-            Thread.Sleep(delay);
+            Thread.Sleep(50);
+            Cursor.Position = new System.Drawing.Point(originalPosition.X, originalPosition.Y);
+            Thread.Sleep(50);
         }
         public static int getEnemyCoor()
         {
