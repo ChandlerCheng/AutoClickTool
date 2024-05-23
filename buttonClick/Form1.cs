@@ -48,7 +48,7 @@ namespace buttonClick
         private int actionDelay = 1000;
         private int petSupportTarget = 0;
         private double checkMpRatioSel = 0.5;
-        DateTime targetTime;        
+        DateTime targetTime;
 #if DEBUG
         /* 預設熱鍵會影響debug mode下使用單步執行 */
         private int registerHK_MainLoop = (int)Keys.F2;
@@ -59,152 +59,116 @@ namespace buttonClick
 #endif
 
         Stopwatch stopwatch = new Stopwatch();
+        private void BattleLoop(int funcCase)
+        {
+            if (GameFunction.BattleCheck_Player(false) == true)
+            {
+                switch (funcCase)
+                {
+                    case 0: // 指定座標施放法術
+                        {
+                            GameFunction.castSpellOnTarget(actionX, actionY, actionF11HotKey, actionDelay);
+                        }
+                        break;
+                    case 1: // 自動打怪功能 , 含寵物輔助功能
+                        {
+                            if (checkGetEnemyPlus.Checked == true)
+                            {
+                                int i = GameFunction.getEnemyCoor();
+                                if (i > 0)
+                                {
+                                    GameFunction.castSpellOnTarget(Coordinate.Enemy[i - 1, 0], Coordinate.Enemy[i - 1, 1], actionF11HotKey, actionDelay);
+                                    break;
+                                }
+                            }
 
+                            //循環施放法術(敵方)                                
+                            GameFunction.castSpellOnTarget(Coordinate.Enemy[pollingEnemyIndex, 0], Coordinate.Enemy[pollingEnemyIndex, 1], actionF11HotKey, actionDelay);
+
+                            /* 若無法正常取得怪物座標 , 則直接朝所有怪物位置循環點擊 , 最差頂多讀條一半 */
+                            pollingEnemyIndex++;
+                            if (pollingEnemyIndex > 9)
+                                pollingEnemyIndex = 0;
+                        }
+                        break;
+                    case 2: // 自動招怪 , 自動鞭炮
+                    case 3: // 自動鞭炮
+                        {
+                            // 戰鬥中 , 持續鞭炮
+                            GameFunction.hotKeyPress(actionDefHotKey, actionDelay);
+                        }
+                        break; 
+                    case 4: // 自動施展全體增益法術(目標固定為中間後排招怪位)
+                        {
+                            GameFunction.castSpellOnTarget(Coordinate.Friends[7, 0], Coordinate.Friends[7, 1], actionF11HotKey, actionDelay);
+                        }
+                        break;
+                }
+            }
+            else if (GameFunction.BattleCheck_Pet(false) == true)
+            {
+                switch (funcCase)
+                {
+                    case 0: // 指定座標施放法術
+                        {
+                            GameFunction.pressDefendButton(actionDelay);
+                        }
+                        break;
+                    case 1:// 自動打怪功能 , 含寵物輔助功能
+                        {
+                            if (checkPetSupport.Checked == true)
+                            {
+                                /* 讓主要角色換位置時只需停下來換即可 , 而不是關閉迴圈選好再重開 */
+                                petSupportTarget = comboPetSup_Master.SelectedIndex;
+                                GameFunction.castSpellOnTarget(Coordinate.Friends[petSupportTarget, 0], Coordinate.Friends[petSupportTarget, 1], actionF11HotKey, actionDelay);
+                                break;
+                            }
+
+                            GameFunction.pressDefendButton(actionDelay);
+                        }
+                        break;
+                    case 2: // 自動招怪 , 自動鞭炮
+                    case 3: // 自動鞭炮
+                    case 4: // 自動施展全體增益法術(目標固定為中間後排招怪位)
+                        {
+                            // 戰鬥中的鞭炮角色原則上不放寵 , 因此誤放也按防禦鍵處理
+                            GameFunction.pressDefendButton(actionDelay);
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                if (GameFunction.NormalCheck() == true)
+                {
+                    // 確認是不是過場動畫
+                    switch (funcCase)
+                    {
+                        case 2: // 自動招怪 , 自動鞭炮
+                            {                                
+                                if (checkMP.Checked == true)
+                                {
+                                    // 檢查是否需要檢查補魔
+                                    if (GameFunction.IsNeedReplenishMP(checkMpRatioSel))
+                                    {
+                                        // 需要符合抓取魔力條低於40%與抓的到升級按鈕兩個條件
+                                        GameFunction.hotKeyPress(actionMPHotKey, 1000);
+                                    }
+                                }
+                                // 非戰鬥中 , 持續招怪
+                                GameFunction.hotKeyPress(actionF11HotKey, actionDelay);
+                            }
+                            break;
+                    }
+                }
+            }
+        }
         private void ActionLoop()
         {
             // 定義循環運行的方法
             while (continueAction)
             {
-                switch (actionF11Type)
-                {
-                    case 0: // 定點施法
-                        {
-#if !DEBUG
-                            // 施放法術
-                            if (GameFunction.BattleCheck_Player(false) == true)
-                            {
-                                GameFunction.castSpellOnTarget(actionX, actionY, actionF11HotKey, actionDelay);
-                            }
-                            else if (GameFunction.BattleCheck_Pet(false) == true)
-                            {
-                                GameFunction.pressDefendButton(actionDelay);
-                            }
-                            else
-                            {
-                                if (GameFunction.NormalCheck() == true)
-                                {
-
-                                }
-                            }
-#endif
-                        }
-                        break;
-                    case 1: // 循環施法打怪 & 自動尋怪功能 & 寵物施法功能(前排)
-                        {
-                            if (GameFunction.BattleCheck_Player(false) == true)
-                            {
-                                if (checkGetEnemyPlus.Checked == true)
-                                {
-                                    int i = GameFunction.getEnemyCoor();
-                                    if (i > 0)
-                                    {
-                                        GameFunction.castSpellOnTarget(Coordinate.Enemy[i - 1, 0], Coordinate.Enemy[i - 1, 1], actionF11HotKey, actionDelay);
-                                        break;
-                                    }
-                                }
-
-                                //循環施放法術(敵方)                                
-                                GameFunction.castSpellOnTarget(Coordinate.Enemy[pollingEnemyIndex, 0], Coordinate.Enemy[pollingEnemyIndex, 1], actionF11HotKey, actionDelay);
-
-                                /* 若無法正常取得怪物座標 , 則直接朝所有怪物位置循環點擊 , 最差頂多讀條一半 */
-                                pollingEnemyIndex++;
-                                if (pollingEnemyIndex > 9)
-                                    pollingEnemyIndex = 0;
-                            }
-                            else if (GameFunction.BattleCheck_Pet(false) == true)
-                            {
-                                if (checkPetSupport.Checked == true)
-                                {
-                                    /* 讓主要角色換位置時只需停下來換即可 , 而不是關閉迴圈選好再重開 */
-                                    petSupportTarget = comboPetSup_Master.SelectedIndex;
-                                    GameFunction.castSpellOnTarget(Coordinate.Friends[petSupportTarget, 0], Coordinate.Friends[petSupportTarget, 1], actionF11HotKey, actionDelay);
-                                    break;
-                                }
-
-                                GameFunction.pressDefendButton(actionDelay);
-                            }
-                            else
-                            {
-                                if (GameFunction.NormalCheck() == true)
-                                {
-
-                                }
-                            }
-                        }
-                        break;
-                    case 2: // 招怪與防禦(鞭炮)
-                        {
-                            if (GameFunction.BattleCheck_Player(false) == true)
-                            {
-                                // 戰鬥中 , 持續鞭炮
-                                GameFunction.hotKeyPress(actionDefHotKey, actionDelay);
-                            }
-                            else if (GameFunction.BattleCheck_Pet(false) == true)
-                            {
-                                // 戰鬥中的鞭炮角色原則上不放寵 , 因此誤放也按防禦件處理
-                                GameFunction.pressDefendButton(actionDelay);
-                            }
-                            else
-                            {
-                                if (GameFunction.NormalCheck() == true)
-                                {
-                                    // 確認是不是過場動畫
-                                    if (checkMP.Checked == true)
-                                    {
-                                        // 檢查是否需要檢查補魔
-                                        if (GameFunction.IsNeedReplenishMP(checkMpRatioSel))
-                                        {
-                                            // 需要符合抓取魔力條低於40%與抓的到升級按鈕兩個條件
-                                            GameFunction.hotKeyPress(actionMPHotKey, 1000);
-                                        }
-                                    }
-                                    // 非戰鬥中 , 持續招怪
-                                    GameFunction.hotKeyPress(actionF11HotKey, actionDelay);
-                                }
-                            }
-                        }
-                        break;
-                    case 3: // 防禦 (鞭炮)
-                        {
-                            if (GameFunction.BattleCheck_Player(false) == true)
-                            {
-                                // 戰鬥中 , 持續鞭炮
-                                GameFunction.hotKeyPress(actionDefHotKey, actionDelay);
-                            }
-                            else if (GameFunction.BattleCheck_Pet(false) == true)
-                            {
-                                // 戰鬥中的鞭炮角色原則上不放寵 , 因此誤放也按防禦件處理
-                                GameFunction.pressDefendButton(actionDelay);
-                            }
-                            else
-                            {
-
-                            }
-                        }
-                        break;
-                    case 4: 
-                        {
-                            // 施放法術
-                            if (GameFunction.BattleCheck_Player(false) == true)
-                            {
-                                GameFunction.castSpellOnTarget(Coordinate.Friends[7, 0], Coordinate.Friends[7, 1], actionF11HotKey, actionDelay);
-                            }
-                            else if (GameFunction.BattleCheck_Pet(false) == true)
-                            {
-                                GameFunction.pressDefendButton(actionDelay);
-                            }
-                            else
-                            {
-                                if (GameFunction.NormalCheck() == true)
-                                {
-
-                                }
-                            }
-                        }
-                        break;
-                    default:
-                        break;
-                }
+                BattleLoop(actionF11Type);
 
                 if (checkTimeClose.Checked)
                 {
@@ -362,7 +326,7 @@ namespace buttonClick
 
                         targetTime = DateTime.Today.Add(new TimeSpan(hours, minutes, seconds));
                     }
-      
+
                     if (checkMP.Checked)
                     {
                         checkMpRatioSel = double.Parse(comboCheckMPRatio.SelectedItem.ToString());
@@ -770,12 +734,12 @@ namespace buttonClick
                 MessageBox.Show("座標有誤", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-           if (int.TryParse(textGetImgW.Text, out int imgW) == false || int.TryParse(textGetImgH.Text, out int imgH) == false)
+            if (int.TryParse(textGetImgW.Text, out int imgW) == false || int.TryParse(textGetImgH.Text, out int imgH) == false)
             {
                 MessageBox.Show("圖片長寬", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-           if(textGetImgName.Text.Length<=0)
+            if (textGetImgName.Text.Length <= 0)
             {
                 MessageBox.Show("請輸入名稱", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -789,12 +753,12 @@ namespace buttonClick
             y_key = Coordinate.windowTop[1] + yOffset_key;
             // 從畫面上擷取指定區域的圖像
             Bitmap screenshot_keyBar = BitmapImage.CaptureScreen(x_key, y_key, imgW, imgH);
-            screenshot_keyBar.Save(textGetImgName.Text+ ".bmp", ImageFormat.Bmp);
+            screenshot_keyBar.Save(textGetImgName.Text + ".bmp", ImageFormat.Bmp);
         }
     }
     public class GameFunction
     {
-        public static string[] GameFunctionList = { "施放法術", "循環施放法術(敵)", "循環招怪與鞭炮","循環鞭炮" ,"循環全體增益施法(3後)"};
+        public static string[] GameFunctionList = { "施放法術", "循環施放法術(敵)", "循環招怪與鞭炮", "循環鞭炮", "循環全體增益施法(3後)" };
         public static string[] CheckMpRatio = { "0.5", "0.4", "0.3", "0.2", "0.1" };
         public static string[] PetSupport_Master = { "1前", "2前", "3前", "4前", "5前" };
         public static void castSpellOnTarget(int x, int y, byte keyCode, int delay)
