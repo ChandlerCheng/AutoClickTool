@@ -182,6 +182,26 @@ namespace buttonClick
                             }
                         }
                         break;
+                    case 4: 
+                        {
+                            // 施放法術
+                            if (GameFunction.BattleCheck_Player(false) == true)
+                            {
+                                GameFunction.castSpellOnTarget(Coordinate.Friends[7, 0], Coordinate.Friends[7, 1], actionF11HotKey, actionDelay);
+                            }
+                            else if (GameFunction.BattleCheck_Pet(false) == true)
+                            {
+                                GameFunction.pressDefendButton(actionDelay);
+                            }
+                            else
+                            {
+                                if (GameFunction.NormalCheck() == true)
+                                {
+
+                                }
+                            }
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -774,7 +794,7 @@ namespace buttonClick
     }
     public class GameFunction
     {
-        public static string[] GameFunctionList = { "施放法術", "循環施放法術(敵)", "循環招怪與鞭炮","循環鞭炮" };
+        public static string[] GameFunctionList = { "施放法術", "循環施放法術(敵)", "循環招怪與鞭炮","循環鞭炮" ,"循環全體增益施法(3後)"};
         public static string[] CheckMpRatio = { "0.5", "0.4", "0.3", "0.2", "0.1" };
         public static string[] PetSupport_Master = { "1前", "2前", "3前", "4前", "5前" };
         public static void castSpellOnTarget(int x, int y, byte keyCode, int delay)
