@@ -780,11 +780,11 @@ namespace buttonClick
                 20240510 : 加入 Cursor.Position = new System.Drawing.Point(x, y); 才確保會移動到正確位置上。
              */
             int xOffset = Coordinate.windowBoxLineOffset + Coordinate.windowTop[0];
-            int yOffset = Coordinate.windowHOffset + Coordinate.windowTop[1];
+            int yOffset = Coordinate.windowHOffset +1+ Coordinate.windowTop[1];
             int x, y;
 
-            x = 766 + xOffset;
-            y = 98 + yOffset;
+            x = 779 + xOffset;
+            y = 68 + yOffset;
             Cursor.Position = new System.Drawing.Point(x, y);
             MouseSimulator.LeftMousePress(x, y);
             Thread.Sleep(delay);
