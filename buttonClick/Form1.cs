@@ -768,7 +768,7 @@ namespace buttonClick
              */
             Cursor.Position = new System.Drawing.Point(x, y);
             KeyboardSimulator.KeyPress(keyCode);
-            Thread.Sleep(500);
+            Thread.Sleep(100);
             MouseSimulator.LeftMousePress(x, y);
             Thread.Sleep(delay);
         }
@@ -1120,7 +1120,7 @@ namespace buttonClick
             // 模擬滑鼠左鍵按下
             mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_ABSOLUTE, x, y, 0, UIntPtr.Zero);
             // 延遲一段時間
-            Thread.Sleep(100);
+            Thread.Sleep(50);
             // 模擬滑鼠左鍵釋放
             mouse_event(MOUSEEVENTF_LEFTUP | MOUSEEVENTF_ABSOLUTE, x, y, 0, UIntPtr.Zero);
         }
@@ -1129,7 +1129,7 @@ namespace buttonClick
             // 模擬滑鼠左鍵按下
             mouse_event(MOUSEEVENTF_RIGHTDOWN | MOUSEEVENTF_ABSOLUTE, x, y, 0, UIntPtr.Zero);
             // 延遲一段時間
-            Thread.Sleep(100);
+            Thread.Sleep(50);
             // 模擬滑鼠左鍵釋放
             mouse_event(MOUSEEVENTF_RIGHTUP | MOUSEEVENTF_ABSOLUTE, x, y, 0, UIntPtr.Zero);
         }
